@@ -8,7 +8,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="." unique_id=1995413651]
+[node name="Health Bar" type="TextureProgressBar" parent="." unique_id=1995413651]
 layout_mode = 0
 offset_right = 384.0
 offset_bottom = 34.0
+
+[node name="Harmony Meter" type="TextureProgressBar" parent="." unique_id=1811507590]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 43.0
+offset_right = 385.0
+offset_bottom = 77.0
+
+[node name="E-Icon Weapon" type="TextureButton" parent="." unique_id=1671088547]
+layout_mode = 0
+offset_left = 942.0
+offset_top = 576.0
+offset_right = 982.0
+offset_bottom = 616.0
+
+[node name="Q-Icon Weapon" type="TextureButton" parent="." unique_id=707946852]
+layout_mode = 0
+offset_left = 1018.0
+offset_top = 578.0
+offset_right = 1058.0
+offset_bottom = 618.0
+
+[node name="Key Icon" type="TextureRect" parent="." unique_id=1482123426]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 587.0
+offset_right = 59.0
+offset_bottom = 627.0
