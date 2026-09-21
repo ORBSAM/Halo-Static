@@ -412,6 +412,5 @@ sources/1 = SubResource("TileSetAtlasSource_v5vuv")
 position = Vector2(-1, 1)
 
 [node name="walls_floor" type="TileMapLayer" parent="." unique_id=461226725]
-tile_map_data = PackedByteArray(0, 0, 2, 0, 1, 0, 1, 0, 1, 0, 21, 0, 0, 0)
 tile_set = SubResource("TileSet_0r2jx")
 rendering_quadrant_size = 24
