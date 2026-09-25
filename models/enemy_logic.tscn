@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://b7awibc2cgiv6"]
-
-[node name="enemy_logic" type="Node2D" unique_id=466769278]
-visible = false
-
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=2141931309]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1747651074]
