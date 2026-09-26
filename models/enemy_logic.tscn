@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cwpfrjyy6bkwk"]
 
-[ext_resource type="Texture2D" uid="uid://bc4ay7ehrss8y" path="res://background_prefabs/dungeon_tiles_folder/walls_floor.png" id="1_j6an0"]
-[ext_resource type="Texture2D" uid="uid://f10bqi0ts035" path="res://background_prefabs/dungeon_tiles_folder/doors_lever_chest_animation.png" id="2_4pv1l"]
+[ext_resource type="Texture2D" uid="uid://bc4ay7ehrss8y" path="res://background_prefabs/dungeon_tiles_folder/walls_floor.png" id="1_jlocx"]
+[ext_resource type="Texture2D" uid="uid://f10bqi0ts035" path="res://background_prefabs/dungeon_tiles_folder/doors_lever_chest_animation.png" id="2_xjkwp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v5vuv"]
-texture = ExtResource("1_j6an0")
+texture = ExtResource("1_jlocx")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -287,7 +287,7 @@ texture = ExtResource("1_j6an0")
 12:22/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ka7wq"]
-texture = ExtResource("2_4pv1l")
+texture = ExtResource("2_xjkwp")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0

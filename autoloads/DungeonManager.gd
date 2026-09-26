@@ -1,34 +1,29 @@
 extends Node
+
 # ==========================================
-# GLOBAL MANAGER (AUTOLOAD SINGLETON)
-# Responsible for persistent game variables across room loads.
+# DUNGEON MANAGER (AUTOLOAD SINGLETON)
+# Manages 30-room generation, grid state, and scene loading.
 # ==========================================
 
-# TODO: Declare HP and Harmonic Energy variables (HP max 100, Energy 0-100)
-# TODO: Declare boolean flags (e.g., has_key, is_boss_defeated)
-# TODO: Define signals for UI updates (signal hp_changed, signal energy_changed)
+# TODO: Preload base room, key room, boss room, and standard variant scenes
+# TODO: Create array dungeon_grid to store 30 room dictionaries
+# TODO: Track current_room_index (0 to 29)
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# TODO: Initialize default player metrics on game launch
-	pass # Replace with function body.
-
-func take_damage(amount: int) -> void:
-	# TODO: Subtract HP by amount
-	# TODO: Emit hp_changed signal
-	# TODO: Check if HP <= 0 -> trigger player death / Game Over scene
+	# TODO: Call generate_dungeon_layout() on launch
 	pass
 
-func add_energy(amount: int) -> void:
-	# TODO: Increase Harmonic Energy
-	# TODO: Check if Energy >= 100 -> trigger Overload Blast and reset Energy to 25
-	# TODO: Emit energy_changed signal
+func generate_dungeon_layout() -> void:
+	# TODO: Clear previous grid array
+	# TODO: Assign Room 0 as Tutorial
+	# TODO: Assign Room 29 as Final Boss Chamber
+	# TODO: Randomly pick index between 14-23 for Key Vault
+	# TODO: Populate remaining slots with random standard room variants
 	pass
 
-func consume_energy(amount: int) -> void:
-	# TODO: Decrease Harmonic Energy on weapon swing
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func change_room(target_index: int) -> void:
+	# TODO: Verify target_index is valid
+	# TODO: Check if target is Boss Room (Room 29) -> verify GlobalManager.has_key
+	# TODO: Trigger ScreenFader transition
+	# TODO: Unload current room and instantiate target room scene
 	pass
