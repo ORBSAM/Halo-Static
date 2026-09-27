@@ -5,17 +5,44 @@ extends CharacterBody2D
 # Handles 8-way movement, weapon aiming, hit flashes, and energy usage.
 # ==========================================
 
-# TODO: Export movement speed (e.g., const SPEED = 150.0)
-# TODO: Reference Sprite2D, WeaponPivot node, and AnimationPlayer/Shader
+@export var speed: float = 160.0
+@onready var sprite: Sprite2D = $AnimatedSprite2D
+@onready var weapon_pivot: Node2D = $WeaponPivot
+
+# directional tracking; vectors
+var last_facing_direction: Vector2 = Vector2.DOWN
 
 # _physics_process
 func _physics_process(delta: float) -> void:
-	# TODO: Get 8-way directional input vector (WASD / Arrows)
-	# TODO: Normalize vector and set velocity
-	# TODO: Update sprite orientation and flip_h based on horizontal velocity
-	# TODO: Move character using move_and_slide()
-	# TODO: Update WeaponPivot rotation to look_at(get_global_mouse_position())
+	handle_movement()
+	handle_weapon_aiming()
 	pass
+
+# handle_movement
+# For each movement, up,down, left, and right, set the velocity 
+# and handle sprite flipping where needed.
+func handle_movement() -> void:
+	# get the 8-way movement vector
+	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	
+	# set velocity and apply physics movement
+	velocity = input_direction * speed
+	move_and_slide()
+	
+	# handle sprite flipping for left-right movement
+	if input_direction != Vector2.ZERO:
+		last_facing_direction = input_direction
+		
+		# flip sprite when moving left v right
+		if input_direction.x != 0:
+			sprite.flip_h = (input_direction.x < 0)
+
+# handle_weapon_aiming
+# Make sure that the weapon pivot object is actively looking at the mouse.
+func handle_weapon_aiming() -> void:
+	# keep the weapon pivot looking at the mouse position
+	if weapon_pivot:
+		weapon_pivot.look_at(get_global_mouse_position())
 
 # _unhandled_input
 func _unhandled_input(event: InputEvent) -> void:
