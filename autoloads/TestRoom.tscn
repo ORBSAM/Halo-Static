@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dum1t3tbd4m1"]
+
+[ext_resource type="Script" uid="uid://x6b1jsv3ex3e" path="res://autoloads/TestRoom.gd" id="1_d2wdj"]
+
+[node name="TestRoom" type="Node2D" unique_id=1415107993]
+script = ExtResource("1_d2wdj")

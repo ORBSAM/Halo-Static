@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bucra2ic8rx37"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=828346399]
+
+[node name="Opener_Container" type="Container" parent="." unique_id=499460885]
+offset_right = 1154.0
+offset_bottom = 647.0

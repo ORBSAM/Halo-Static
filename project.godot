@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Halo Static"
+run/main_scene="uid://bwfo8g7g82xfw"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="uid://dos7obw5ntd0e"
 
@@ -46,10 +47,19 @@ move_down={
 ]
 }
 
+[layer_names]
+
+2d_render/layer_1="World"
+2d_render/layer_2="Player"
+2d_render/layer_3="Enemies"
+2d_render/layer_4="Pickups / Items"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
+2d/snap/snap_2d_transforms_to_pixel=true

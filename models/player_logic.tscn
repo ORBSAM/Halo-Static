@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://dshjy4jcwpmsv"]
 
 [ext_resource type="Texture2D" uid="uid://c5nvsai8ehi6n" path="res://models/player_images/protag_blast.png" id="1_p7lne"]
+[ext_resource type="Script" uid="uid://j4uc8klrs3bq" path="res://models/Player.gd" id="1_u5ffr"]
 [ext_resource type="Texture2D" uid="uid://d2j7lvo3gsdrq" path="res://models/player_images/protag_down.png" id="2_u5ffr"]
 [ext_resource type="Texture2D" uid="uid://biitqlcl47qe" path="res://models/player_images/protag_side.png" id="3_0cieh"]
 [ext_resource type="Texture2D" uid="uid://e72suqdgjrq6" path="res://models/player_images/protag_up.png" id="4_s8sob"]
 [ext_resource type="Texture2D" uid="uid://mjydfkeeftwj" path="res://models/player_images/protag_idle.png" id="5_tosys"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_khqrj"]
-size = Vector2(38, 62)
+size = Vector2(22, 31)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_aqe1g"]
 animations = [{
@@ -15,8 +16,16 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("1_p7lne")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"blast",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_tosys")
+}],
+"loop": 0,
+"name": &"idle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -24,7 +33,7 @@ animations = [{
 "texture": ExtResource("2_u5ffr")
 }],
 "loop": 1,
-"name": &"float_down",
+"name": &"move_down",
 "speed": 5.0
 }, {
 "frames": [{
@@ -32,7 +41,7 @@ animations = [{
 "texture": ExtResource("3_0cieh")
 }],
 "loop": 1,
-"name": &"float_side",
+"name": &"move_side",
 "speed": 5.0
 }, {
 "frames": [{
@@ -40,33 +49,31 @@ animations = [{
 "texture": ExtResource("4_s8sob")
 }],
 "loop": 1,
-"name": &"float_up",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("5_tosys")
-}],
-"loop": 1,
-"name": &"idle",
+"name": &"move_up",
 "speed": 5.0
 }]
 
 [node name="Angel Protag" type="Area2D" unique_id=342206361]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=127284619]
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("1_u5ffr")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=867338456]
+zoom = Vector2(5, 5)
+position_smoothing_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=732049686]
-position = Vector2(1, -2)
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_khqrj")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D" unique_id=151205176]
-scale = Vector2(0.07347328, 0.05495978)
+scale = Vector2(0.025821595, 0.024019215)
 sprite_frames = SubResource("SpriteFrames_aqe1g")
 animation = &"idle"
+autoplay = "idle"
 
 [node name="WeaponPivot" type="Node2D" parent="CharacterBody2D" unique_id=806644052]
 
 [node name="ActiveWeapon" type="Sprite2D" parent="CharacterBody2D/WeaponPivot" unique_id=805477475]
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=867338456]
