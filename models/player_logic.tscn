@@ -63,6 +63,7 @@ script = ExtResource("1_u5ffr")
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=867338456]
 zoom = Vector2(5, 5)
 position_smoothing_enabled = true
+position_smoothing_speed = 8.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=732049686]
 position = Vector2(0, 0.5)

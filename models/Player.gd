@@ -37,10 +37,6 @@ func handle_movement() -> void:
 	velocity = input_direction * speed
 	move_and_slide()
 
-	# handle sprite flipping for left-right movement
-	if input_direction != Vector2.ZERO:
-		last_facing_direction = input_direction
-
 	update_animation(input_direction)
 
 # handle_weapon_aiming
@@ -50,6 +46,8 @@ func handle_weapon_aiming() -> void:
 	if weapon_pivot:
 		weapon_pivot.look_at(get_global_mouse_position())
 
+# update_animation
+# handles the sprite logic directly
 func update_animation(dir: Vector2) -> void:
 	if is_blasting:
 		return
