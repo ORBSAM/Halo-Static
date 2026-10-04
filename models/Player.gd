@@ -12,7 +12,12 @@ enum Weapon {
 	ORB_OF_LIGHT,
 }
 
+# load the various weapon textures
+var saber_texture = preload("res://weapons/saber_weapon.png")
+var orb_texture = preload("res://weapons/orb_of_light_weapon.png")
+
 @export var speed: float = 160.0
+
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var weapon_pivot: Node2D = $WeaponPivot
 @onready var saber: Sprite2D = $WeaponPivot/Saber
@@ -25,7 +30,14 @@ var current_weapon: Weapon = Weapon.SABER
 var last_facing_direction: Vector2 = Vector2.DOWN
 
 func _ready() -> void:
+	# set textures @ run time
+	saber.texture = saber_texture
+	orb_of_light.texture = orb_texture
+	
+	# pre-maturely equip the saber
 	equip_weapon(Weapon.SABER)
+	
+	# debug: where's the player?
 	print("Player spawned at: ", global_position)
 	
 # _physics_process

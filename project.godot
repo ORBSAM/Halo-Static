@@ -24,6 +24,10 @@ GlobalManager="*uid://b5htgu3qkrwis"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[global_group]
+
+player="global player group; makes finding the player easier for enemy ai"
+
 [input]
 
 move_left={

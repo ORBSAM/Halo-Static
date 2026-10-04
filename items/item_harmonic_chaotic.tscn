@@ -1,7 +1,17 @@
 [gd_scene format=3 uid="uid://dysb465htulxk"]
 
+[ext_resource type="Script" uid="uid://xscc0wtj3qp6" path="res://items/Item.gd" id="1_3xlsc"]
+
 [node name="Node2D" type="Node2D" unique_id=126895059]
+script = ExtResource("1_3xlsc")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1429947738]
+[node name="Item" type="Area2D" parent="." unique_id=1429947738]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1689844549]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item" unique_id=1689844549]
+
+[node name="ColorRect" type="ColorRect" parent="Item" unique_id=779232704]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Item" unique_id=1873146236]
+visible = false

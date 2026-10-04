@@ -1,5 +1,11 @@
 [gd_scene format=3 uid="uid://vw06m5mvrq3e"]
 
+[ext_resource type="Script" uid="uid://clafcwvprt817" path="res://GUI/hud_overlay.gd" id="1_ssm0s"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_d2wdj"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vfqnt"]
+
 [node name="HudOverlay" type="Control" unique_id=1787927698]
 layout_mode = 3
 anchors_preset = 15
@@ -7,11 +13,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ssm0s")
 
 [node name="Health Bar" type="TextureProgressBar" parent="." unique_id=1995413651]
-layout_mode = 0
-offset_right = 384.0
-offset_bottom = 34.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.333
+anchor_bottom = 0.052
+offset_right = 0.3840027
+offset_bottom = 0.30400085
+value = 100.0
+texture_under = SubResource("PlaceholderTexture2D_d2wdj")
+texture_progress = SubResource("PlaceholderTexture2D_vfqnt")
+tint_under = Color(0.20152658, 0.20152658, 0.20152658, 1)
+tint_progress = Color(0.2237288, 0.5656803, 0.29891405, 1)
 
 [node name="Harmony Meter" type="TextureProgressBar" parent="." unique_id=1811507590]
 layout_mode = 0
