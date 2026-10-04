@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://b6cf3xsgb2dji"]
+
+[ext_resource type="Script" uid="uid://2mrkkyrlsb1k" path="res://screens/Screen_Fade.gd" id="1_bxcdp"]
+
+[node name="screen_fade" type="CanvasLayer" unique_id=2089528200]
+layer = 100
+script = ExtResource("1_bxcdp")
+
+[node name="grey_fade" type="ColorRect" parent="." unique_id=1688041605]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.14044744, 0.14044744, 0.14044744, 1)

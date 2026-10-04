@@ -1,29 +1,50 @@
+class_name EnemyBase
 extends CharacterBody2D
 
 # ==========================================
 # BASE ENEMY AI
 # Basic 10 HP demon pathfinding and contact damage logic.
 # ==========================================
+@export var max_hp: int = 10
+@export var speed: float = 80.0
 
-# TODO: Export stats: max_hp = 10, move_speed = 80.0, contact_damage = 5
-# TODO: Reference NavigationAgent2D and Player node
+var current_hp: int
+var target_player: Node2D = null
+
+@onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
+
+# _ready
+# 
+func _ready() -> void:
+	current_hp = max_hp
+	# find player in group
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		target_player = players[0]
 
 # _physics_process
-func _physics_process(delta: float) -> void:
-	# TODO: Get player global position
-	# TODO: Set navigation agent target_position to player position
-	# TODO: Calculate direction vector to next path point
-	# TODO: Set velocity and execute move_and_slide()
-	pass
-# receive_damage
-func receive_damage(amount: int) -> void:
-	# TODO: Subtract amount from enemy HP
-	# TODO: Flash sprite white/red
-	# TODO: If HP <= 0 -> spawn drop item (Harmonic/Chaotic) and call queue_free()
-	pass
+# 
+func _physics_process(_delta: float) -> void:
+	if current_hp <= 0 or not target_player:
+		return
+		
+	nav_agent.target_position = target_player.global_position
+	
+	if not nav_agent.is_navigation_finished():
+		var next_path_pos = nav_agent.get_next_path_position()
+		var dir = global_position.direction_to(next_path_pos)
+		velocity = dir * speed
+		move_and_slide()
 
-# on_body_entered
-func _on_body_entered(body: Node2D) -> void:
-	# TODO: Check if body is in "Player" group
-	# TODO: Call body.take_damage(contact_damage)
-	pass
+# take_damage
+# Enemy's HP subtracts from current amount
+func take_damage(amount: int) -> void:
+	current_hp -= amount
+	if current_hp <= 0:
+		die()
+
+# die
+# enemy dies, and is removed. play particles.
+func die() -> void:
+	# Add death particle effects or drop items here
+	queue_free()
