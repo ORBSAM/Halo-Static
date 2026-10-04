@@ -77,4 +77,7 @@ autoplay = "idle"
 
 [node name="WeaponPivot" type="Node2D" parent="CharacterBody2D" unique_id=806644052]
 
-[node name="ActiveWeapon" type="Sprite2D" parent="CharacterBody2D/WeaponPivot" unique_id=805477475]
+[node name="Saber" type="Sprite2D" parent="CharacterBody2D/WeaponPivot"]
+
+[node name="OrbOfLight" type="Sprite2D" parent="CharacterBody2D/WeaponPivot"]
+visible = false

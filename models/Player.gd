@@ -5,31 +5,38 @@ extends CharacterBody2D
 # Handles 8-way movement, weapon aiming, hit flashes, and energy usage.
 # ==========================================
 
+signal weapon_changed(weapon: Weapon)
+
+enum Weapon {
+	SABER,
+	ORB_OF_LIGHT,
+}
+
 @export var speed: float = 160.0
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var weapon_pivot: Node2D = $WeaponPivot
-var is_blasting := false
+@onready var saber: Sprite2D = $WeaponPivot/Saber
+@onready var orb_of_light: Sprite2D = $WeaponPivot/OrbOfLight
 
+var is_blasting := false
+var current_weapon: Weapon = Weapon.SABER
 
 # directional tracking; vectors
 var last_facing_direction: Vector2 = Vector2.DOWN
 
-# debug 
 func _ready() -> void:
-	# debug
+	equip_weapon(Weapon.SABER)
 	print("Player spawned at: ", global_position)
 	
 # _physics_process
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	handle_movement()
 	handle_weapon_aiming()
-	pass
 
 # handle_movement
 # For each movement, up,down, left, and right, set the velocity 
 # and handle sprite flipping where needed.
 func handle_movement() -> void:
-	print(Input.get_vector("move_left", "move_right", "move_up", "move_down"))
 	# get the 8-way movement vector
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
@@ -42,9 +49,11 @@ func handle_movement() -> void:
 # handle_weapon_aiming
 # Make sure that the weapon pivot object is actively looking at the mouse.
 func handle_weapon_aiming() -> void:
-	# keep the weapon pivot looking at the mouse position
-	if weapon_pivot:
-		weapon_pivot.look_at(get_global_mouse_position())
+	var mouse_position := get_global_mouse_position()
+	weapon_pivot.look_at(mouse_position)
+
+	# Keep right-facing weapon art upright while aiming to the left.
+	weapon_pivot.scale.y = -1.0 if mouse_position.x < global_position.x else 1.0
 
 # update_animation
 # handles the sprite logic directly
@@ -63,10 +72,17 @@ func update_animation(dir: Vector2) -> void:
 
 # _unhandled_input
 func _unhandled_input(event: InputEvent) -> void:
-	# TODO: Detect Q / E key presses for weapon attack
-	# TODO: Calculate HP & energy drain scaling based on current Harmonic Energy
-	# TODO: Play weapon swing animation on active weapon
-	pass
+	if event.is_action_pressed("weapon_saber"):
+		equip_weapon(Weapon.SABER)
+	elif event.is_action_pressed("weapon_orb"):
+		equip_weapon(Weapon.ORB_OF_LIGHT)
+
+func equip_weapon(weapon: Weapon) -> void:
+	current_weapon = weapon
+	saber.visible = weapon == Weapon.SABER
+	orb_of_light.visible = weapon == Weapon.ORB_OF_LIGHT
+	weapon_changed.emit(current_weapon)
+	print("Equipped weapon: ", Weapon.keys()[current_weapon])
 
 # play_hit_flash
 # When player is damaged, "play" a red flash.
