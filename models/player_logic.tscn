@@ -55,6 +55,12 @@ animations = [{
 
 [sub_resource type="ImageTexture" id="ImageTexture_u5ffr"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_81buc"]
+size = Vector2(1512.5, 100)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sxlwc"]
+radius = 100.0
+
 [sub_resource type="Animation" id="Animation_0cieh"]
 length = 0.16666667
 tracks/0/type = "value"
@@ -153,10 +159,33 @@ rotation = 1.5707964
 scale = Vector2(0.005, 0.005)
 texture = SubResource("ImageTexture_u5ffr")
 
+[node name="SaberHitbox" type="Area2D" parent="CharacterBody2D/WeaponPivot/Saber" unique_id=922482409]
+position = Vector2(0.00020981467, 4800)
+rotation = -1.5707964
+scale = Vector2(200, 200)
+collision_mask = 2
+
+[node name="SaberCollision" type="CollisionShape2D" parent="CharacterBody2D/WeaponPivot/Saber/SaberHitbox" unique_id=437602889]
+position = Vector2(27.4375, 0)
+scale = Vector2(0.01, 0.01)
+shape = SubResource("RectangleShape2D_81buc")
+
 [node name="OrbOfLight" type="Sprite2D" parent="CharacterBody2D/WeaponPivot" unique_id=598517654]
-visible = false
+z_index = 1
 position = Vector2(20, 0)
 scale = Vector2(0.003, 0.003)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=294995883]
+[node name="OrbOfLightHitbox" type="Area2D" parent="CharacterBody2D/WeaponPivot/OrbOfLight" unique_id=574757921]
+position = Vector2(-6666.667, 0)
+scale = Vector2(333.33334, 333.33334)
+collision_mask = 2
+
+[node name="OrbOfLightCollision" type="CollisionShape2D" parent="CharacterBody2D/WeaponPivot/OrbOfLight/OrbOfLightHitbox" unique_id=1918478962]
+position = Vector2(20.000002, -1.421086e-14)
+rotation = 1.5707964
+scale = Vector2(0.02, 0.02)
+shape = SubResource("CircleShape2D_sxlwc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D" unique_id=294995883]
+root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_0cieh")

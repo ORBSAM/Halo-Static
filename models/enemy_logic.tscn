@@ -5,18 +5,15 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_16ua8"]
 radius = 6.0827627
 
-[node name="enemy_node" type="CharacterBody2D" unique_id=1166814616]
+[node name="enemy_node" type="CharacterBody2D" unique_id=1166814616 groups=["enemies"]]
 z_index = 2
+collision_layer = 2
 script = ExtResource("1_16ua8")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1670361536]
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 5.0
-color = Color(0.9998848, 0.2968871, 0.26536357, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1784965398]
 shape = SubResource("CircleShape2D_16ua8")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1005713663]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1826838139]
+scale = Vector2(0.05, 0.05)

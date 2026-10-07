@@ -136,3 +136,8 @@ func clear_current_dungeon() -> void:
 		if player_instance:
 			player_instance.queue_free()
 			player_instance = null
+
+func clear_active_projectiles() -> void:
+	for proj in get_tree().get_nodes_in_group("projectiles"):
+		if is_instance_valid(proj):
+			proj.queue_free()

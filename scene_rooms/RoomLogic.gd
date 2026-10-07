@@ -55,30 +55,29 @@ func update_doors(coords: Vector2i) -> void:
 		door_east.set_deferred("monitoring", has_east_room)
 
 func spawn_random_enemies() -> void:
-	if enemy_spawns == null or enemy_scenes.is_empty():
+	if enemy_scenes.is_empty():
 		return
 		
-	var markers = enemy_spawns.get_children()
-	markers.shuffle()
-	
-	# spawn 1 to 2 enemies per room using available markers
-	var spawn_count = randi_range(1, min(2, markers.size()))
-	for i in range(spawn_count):
-		var enemy = enemy_scenes.pick_random().instantiate()
-		enemy.global_position = markers[i].global_position
-		entities.add_child(enemy)
+	# find all Marker2D nodes in EnemySpawns
+	var markers = $Spawns/EnemySpawns.get_children()
+	for marker in markers:
+		var enemy_scene = enemy_scenes.pick_random()
+		if enemy_scene:
+			var enemy = enemy_scene.instantiate()
+			enemy.global_position = marker.global_position
+			add_child(enemy)
 
 func spawn_random_items() -> void:
-	if item_spawns == null or item_scenes.is_empty():
+	if item_scenes.is_empty():
 		return
 		
-	# 30% chance to spawn an item on a marker
-	if randf() < 0.3:
-		var markers = item_spawns.get_children()
-		if markers.size() > 0:
-			var item = item_scenes.pick_random().instantiate()
-			item.global_position = markers.pick_random().global_position
-			entities.add_child(item)
+	var markers = $Spawns/ItemSpawns.get_children() if has_node("ItemMarkers") else []
+	for marker in markers:
+		var item_scene = item_scenes.pick_random()
+		if item_scene:
+			var item = item_scene.instantiate()
+			item.global_position = marker.global_position
+			add_child(item)
 
 # spawn_test_entities
 func spawn_test_entities() -> void:
