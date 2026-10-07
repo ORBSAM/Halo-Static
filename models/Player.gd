@@ -6,6 +6,8 @@ extends CharacterBody2D
 # ==========================================
 
 signal weapon_changed(weapon: Weapon)
+signal health_changed(current_health: float, max_health: float)
+signal energy_changed(current_energy: float, max_energy: float)
 
 enum Weapon {
 	SABER,
@@ -19,6 +21,7 @@ var orb_texture = preload("res://weapons/orb_of_light_weapon.png")
 @export var speed: float = 160.0
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var anim_player: AnimationPlayer = $"../AnimationPlayer"
 @onready var weapon_pivot: Node2D = $WeaponPivot
 @onready var saber: Sprite2D = $WeaponPivot/Saber
 @onready var orb_of_light: Sprite2D = $WeaponPivot/OrbOfLight
@@ -26,16 +29,29 @@ var orb_texture = preload("res://weapons/orb_of_light_weapon.png")
 var is_blasting := false
 var current_weapon: Weapon = Weapon.SABER
 
+@export var max_health: float = 100.0
+var current_health: float = 100.0
+
 # directional tracking; vectors
 var last_facing_direction: Vector2 = Vector2.DOWN
+
+# attack state tracking
+var is_attacking: bool = false
+enum AttackType { SWING, THRUST }
+var current_attack: AttackType = AttackType.SWING
 
 func _ready() -> void:
 	# set textures @ run time
 	saber.texture = saber_texture
 	orb_of_light.texture = orb_texture
 	
+	current_health = max_health
+	
 	# pre-maturely equip the saber
 	equip_weapon(Weapon.SABER)
+	
+	if anim_player:
+		anim_player.animation_finished.connect(_on_animation_finished)
 	
 	# debug: where's the player?
 	print("Player spawned at: ", global_position)
@@ -64,8 +80,15 @@ func handle_weapon_aiming() -> void:
 	var mouse_position := get_global_mouse_position()
 	weapon_pivot.look_at(mouse_position)
 
-	# Keep right-facing weapon art upright while aiming to the left.
+	# keep right-facing weapon art upright while aiming to the left.
 	weapon_pivot.scale.y = -1.0 if mouse_position.x < global_position.x else 1.0
+
+func take_damage(amount: float) -> void:
+	current_health = max(0.0, current_health - amount)
+	health_changed.emit(current_health, max_health)
+	
+	#if current_health <= 0:
+	#	die()
 
 # update_animation
 # handles the sprite logic directly
@@ -95,6 +118,22 @@ func equip_weapon(weapon: Weapon) -> void:
 	orb_of_light.visible = weapon == Weapon.ORB_OF_LIGHT
 	weapon_changed.emit(current_weapon)
 	print("Equipped weapon: ", Weapon.keys()[current_weapon])
+
+func execute_attack() -> void:
+	is_attacking = true
+	
+	# choose between swing and thrust (e.g., alternating attacks)
+	if current_attack == AttackType.SWING:
+		anim_player.play("swing_saber")
+		current_attack = AttackType.THRUST  # Next click will thrust
+	else:
+		anim_player.play("thrust_saber")
+		current_attack = AttackType.SWING   # Next click will swing
+
+func _on_animation_finished(anim_name: StringName) -> void:
+	# reset attack lock when swing/thrust completes
+	if anim_name == "swing_saber" or anim_name == "thrust_saber":
+		is_attacking = false
 
 # play_hit_flash
 # When player is damaged, "play" a red flash.

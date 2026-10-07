@@ -3,7 +3,7 @@ extends CanvasLayer
 signal fade_out_complete
 signal fade_in_complete
 
-@onready var color_rect: ColorRect = $ColorRect
+@onready var color_rect: ColorRect = $grey_fade
 
 # set the color of the rectangle here
 func _ready() -> void:

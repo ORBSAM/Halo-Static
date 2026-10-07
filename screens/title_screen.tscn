@@ -1,7 +1,72 @@
 [gd_scene format=3 uid="uid://fpy5go74uxgx"]
 
-[node name="CanvasLayer" type="CanvasLayer" unique_id=828346399]
+[ext_resource type="Script" uid="uid://cp54yf1ln7i5p" path="res://screens/title_screen.gd" id="1_grftj"]
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="2_81buc"]
 
-[node name="Opener_Container" type="Container" parent="." unique_id=499460885]
-offset_right = 1154.0
-offset_bottom = 647.0
+[sub_resource type="LabelSettings" id="LabelSettings_grftj"]
+font = ExtResource("2_81buc")
+font_size = 90
+
+[node name="TitleScreen" type="Control" unique_id=270575899]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_grftj")
+
+[node name="Background" type="ColorRect" parent="." unique_id=305606911]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.1148968, 0.11489681, 0.1148968, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=374052765]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1530265122]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2096973645]
+layout_mode = 2
+text = "HALO STATIC"
+label_settings = SubResource("LabelSettings_grftj")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Spacer" type="VSeparator" parent="MarginContainer/VBoxContainer" unique_id=765825888]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MenuContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=155702531]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Start" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1108843001]
+layout_mode = 2
+action_mode = 0
+text = "START"
+
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1784414090]
+layout_mode = 2
+action_mode = 0
+text = "QUIT"

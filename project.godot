@@ -11,13 +11,16 @@ config_version=5
 [application]
 
 config/name="Halo Static"
-run/main_scene="uid://bwfo8g7g82xfw"
+run/main_scene="uid://fpy5go74uxgx"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="uid://dos7obw5ntd0e"
 
 [autoload]
 
 GlobalManager="*uid://b5htgu3qkrwis"
+DialogueManager="*uid://c3rodes2l3gxb"
+DungeonManager="*uid://cuvsmgq6q81yn"
+HUD="*uid://vw06m5mvrq3e"
 
 [display]
 
@@ -71,6 +74,9 @@ weapon_orb={
 2d_render/layer_2="Player"
 2d_render/layer_3="Enemies"
 2d_render/layer_4="Pickups / Items"
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Walls / Environment"
+2d_physics/layer_3="Doors"
 
 [physics]
 

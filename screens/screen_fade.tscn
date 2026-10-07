@@ -7,6 +7,9 @@ layer = 100
 script = ExtResource("1_bxcdp")
 
 [node name="grey_fade" type="ColorRect" parent="." unique_id=1688041605]
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.14044744, 0.14044744, 0.14044744, 1)

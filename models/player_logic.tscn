@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://mjydfkeeftwj" path="res://models/player_images/protag_idle.png" id="5_tosys"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_khqrj"]
-size = Vector2(22, 31)
+size = Vector2(18, 30)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_aqe1g"]
 animations = [{
@@ -56,7 +56,7 @@ animations = [{
 [sub_resource type="ImageTexture" id="ImageTexture_u5ffr"]
 
 [sub_resource type="Animation" id="Animation_0cieh"]
-length = 0.001
+length = 0.16666667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -64,15 +64,42 @@ tracks/0/path = NodePath("CharacterBody2D/WeaponPivot/Saber:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(24, 0), Vector2(48, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterBody2D/WeaponPivot/Saber:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(24, 0)]
+"values": [1.5707964]
+}
+
+[sub_resource type="Animation" id="Animation_s8sob"]
+resource_name = "swing_saber"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterBody2D/WeaponPivot/Saber:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.7853981633974483, 0.7853981633974483, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_u5ffr"]
 resource_name = "swing_saber"
-length = 0.19999999999999998
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -89,23 +116,27 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0cieh"]
 _data = {
 &"RESET": SubResource("Animation_0cieh"),
+&"swing_saber": SubResource("Animation_s8sob"),
 &"thrust_saber": SubResource("Animation_u5ffr")
 }
 
-[node name="Angel Protag" type="Area2D" unique_id=342206361 groups=["player"]]
+[node name="Angel Protag" type="Area2D" unique_id=342206361]
+y_sort_enabled = true
+collision_mask = 6
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=127284619]
-collision_layer = 2
-motion_mode = 1
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=127284619 groups=["player"]]
+z_index = 2
+y_sort_enabled = true
+collision_mask = 6
 script = ExtResource("1_u5ffr")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=867338456]
+unique_name_in_owner = true
 zoom = Vector2(5, 5)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=732049686]
-position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_khqrj")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D" unique_id=151205176]
@@ -125,7 +156,7 @@ texture = SubResource("ImageTexture_u5ffr")
 [node name="OrbOfLight" type="Sprite2D" parent="CharacterBody2D/WeaponPivot" unique_id=598517654]
 visible = false
 position = Vector2(20, 0)
-scale = Vector2(0.001, 0.001)
+scale = Vector2(0.003, 0.003)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=294995883]
 libraries/ = SubResource("AnimationLibrary_0cieh")

@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://d1supattjg5e5"]
+
+[sub_resource type="GDScript" id="GDScript_yyw3l"]
+script/source = "extends Node2D
+
+@onready var room_container: Node2D = $RoomContainer
+
+func _ready() -> void:
+	# Ensure HUD is visible and updated
+	if has_node(\"/root/HUD\"):
+		var hud = get_node(\"/root/HUD\")
+		hud.show()
+	elif has_node(\"/root/HUD_overlay\"):
+		var hud = get_node(\"/root/HUD_overlay\")
+		hud.show()
+
+	if DungeonManager:
+		DungeonManager.set_room_container(room_container)
+		DungeonManager.start_new_game()
+"
+
+[node name="MainGame" type="Node2D" unique_id=2116555601]
+script = SubResource("GDScript_yyw3l")
+
+[node name="RoomContainer" type="Node2D" parent="." unique_id=116149393]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2058982366]
