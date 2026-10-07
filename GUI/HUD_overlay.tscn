@@ -1,15 +1,35 @@
 [gd_scene format=3 uid="uid://vw06m5mvrq3e"]
 
 [ext_resource type="Script" uid="uid://clafcwvprt817" path="res://GUI/HUDOverlay.gd" id="1_ssm0s"]
-[ext_resource type="Texture2D" uid="uid://8vqtc86paxjy" path="res://GUI/gui_images/paper_texture.jpg" id="2_ju516"]
+[ext_resource type="Script" uid="uid://cjmmhbp1b5312" path="res://addons/StyleboxFancy/StyleBorder.gd" id="2_o0vto"]
+[ext_resource type="Script" uid="uid://bkl6g25jwb47h" path="res://addons/StyleboxFancy/StyleBoxFancy.gd" id="3_3dox3"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_d2wdj"]
+[sub_resource type="StyleBox" id="StyleBox_6s3sf"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = -1.0
+content_margin_top = -1.0
+content_margin_right = -1.0
+content_margin_bottom = -1.0
+script = ExtResource("3_3dox3")
+color = Color(1.191236e-06, 0.37622797, 0.086656444, 1)
+metadata/_custom_type_script = "uid://bkl6g25jwb47h"
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vfqnt"]
+[sub_resource type="StyleBox" id="StyleBox_k1nul"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = -1.0
+content_margin_top = -1.0
+content_margin_right = -1.0
+content_margin_bottom = -1.0
+script = ExtResource("3_3dox3")
+color = Color(2.8878452e-07, 0.76078457, 0.21298069, 1)
+metadata/_custom_type_script = "uid://bkl6g25jwb47h"
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ssm0s"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ju516"]
+[sub_resource type="LabelSettings" id="LabelSettings_6s3sf"]
+outline_size = 7
+outline_color = Color(1, 0.49711722, 0.641385, 1)
+shadow_color = Color(0.69145715, 0.091008835, 0.38030475, 0)
 
 [node name="HUD" type="CanvasLayer" unique_id=300666281]
 script = ExtResource("1_ssm0s")
@@ -24,6 +44,7 @@ grow_vertical = 2
 
 [node name="TopLeft" type="MarginContainer" parent="Control" unique_id=1445098544]
 layout_mode = 1
+anchors_preset = -1
 offset_right = 200.0
 offset_bottom = 100.0
 
@@ -32,26 +53,21 @@ custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 alignment = 1
 
-[node name="Health Bar" type="TextureProgressBar" parent="Control/TopLeft/VBoxContainer" unique_id=505700404]
-custom_minimum_size = Vector2(200, 20)
+[node name="Health Bar" type="ProgressBar" parent="Control/TopLeft/VBoxContainer" unique_id=24107545]
+custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
-value = 100.0
+theme_override_styles/background = SubResource("StyleBox_6s3sf")
+theme_override_styles/fill = SubResource("StyleBox_k1nul")
+step = 1.0
 rounded = true
-nine_patch_stretch = true
-texture_under = SubResource("PlaceholderTexture2D_d2wdj")
-texture_progress = SubResource("PlaceholderTexture2D_vfqnt")
-tint_under = Color(0.20152658, 0.20152658, 0.20152658, 1)
-tint_progress = Color(0.2237288, 0.5656803, 0.29891405, 1)
+show_percentage = false
 
-[node name="Harmony Meter" type="TextureProgressBar" parent="Control/TopLeft/VBoxContainer" unique_id=26918732]
-custom_minimum_size = Vector2(200, 20)
+[node name="Harmony Bar" type="ProgressBar" parent="Control/TopLeft/VBoxContainer" unique_id=213842667]
+custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
+step = 1.0
 rounded = true
-nine_patch_stretch = true
-texture_under = SubResource("PlaceholderTexture2D_ssm0s")
-texture_progress = SubResource("PlaceholderTexture2D_ju516")
-tint_under = Color(0.22372729, 0.023613768, 0.05919668, 1)
-tint_progress = Color(0.99999994, 0.17587724, 0.93634164, 1)
+show_percentage = false
 
 [node name="TopRight" type="MarginContainer" parent="Control" unique_id=123188202]
 layout_mode = 1
@@ -64,55 +80,56 @@ grow_horizontal = 0
 
 [node name="RoomTrackerLabel" type="Label" parent="Control/TopRight" unique_id=1897663151]
 layout_mode = 2
+label_settings = SubResource("LabelSettings_6s3sf")
 horizontal_alignment = 1
 
 [node name="BoxContainer" type="BoxContainer" parent="Control" unique_id=2057902499]
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(50, 20)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -380.0
-offset_top = -100.0
-offset_right = -162.0
+offset_left = -154.0
+offset_top = -44.0
+offset_right = -46.0
+offset_bottom = -5.0
 grow_horizontal = 0
 grow_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/BoxContainer" unique_id=2086265100]
 layout_mode = 2
 
-[node name="E-Icon Weapon" type="TextureButton" parent="Control/BoxContainer/HBoxContainer" unique_id=1056760814]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture_normal = ExtResource("2_ju516")
-texture_pressed = ExtResource("2_ju516")
-texture_hover = ExtResource("2_ju516")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="E-Label" type="Label" parent="Control/BoxContainer/HBoxContainer/E-Icon Weapon" unique_id=1846971907]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "E"
-
-[node name="Q-Icon Weapon" type="TextureButton" parent="Control/BoxContainer/HBoxContainer" unique_id=879526122]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture_normal = ExtResource("2_ju516")
-texture_pressed = ExtResource("2_ju516")
-texture_hover = ExtResource("2_ju516")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="Q-Label" type="Label" parent="Control/BoxContainer/HBoxContainer/Q-Icon Weapon" unique_id=726936697]
-layout_mode = 0
-offset_left = 1.0
-offset_right = 41.0
-offset_bottom = 23.0
-text = "Q"
-
 [node name="Key Icon" type="TextureRect" parent="Control/BoxContainer/HBoxContainer" unique_id=1371270632]
 layout_mode = 2
+
+[node name="E-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=170196428]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+
+[node name="E-Label" type="Label" parent="Control/BoxContainer/HBoxContainer/E-Icon Weapon" unique_id=1846971907]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 2.9520001
+anchor_right = 2.9520001
+offset_left = -132.6
+offset_top = 8.0
+offset_right = -98.600006
+offset_bottom = 31.0
+text = "E"
+
+[node name="Q-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=756833691]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+
+[node name="Q-Label" type="Label" parent="Control/BoxContainer/HBoxContainer/Q-Icon Weapon" unique_id=1930308093]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 2.9520001
+anchor_right = 2.9520001
+offset_left = -140.6
+offset_top = 8.0
+offset_right = -106.600006
+offset_bottom = 31.0
+text = "Q"

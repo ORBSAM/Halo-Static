@@ -1,7 +1,7 @@
 extends CanvasLayer
 
-@onready var health_bar: TextureProgressBar = $"Control/TopLeft/VBoxContainer/Health Bar"
-@onready var energy_bar: TextureProgressBar = $"Control/TopLeft/VBoxContainer/Harmony Meter"
+@onready var health_bar: ProgressBar = $"Control/TopLeft/VBoxContainer/Health Bar"
+@onready var energy_bar:  ProgressBar = $"Control/TopLeft/VBoxContainer/Harmony Bar"
 @onready var room_label: Label = $"Control/TopRight/RoomTrackerLabel"
 
 

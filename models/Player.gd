@@ -149,7 +149,7 @@ func execute_attack() -> void:
 		is_attacking = false
 		return
 
-	# Saber Attack Logic
+	# saber Attack Logic
 	var stats = weapon_stats[Weapon.SABER]
 	var active_hitbox: Area2D = stats["hitbox"]
 	
@@ -157,9 +157,9 @@ func execute_attack() -> void:
 		anim_player.play("swing_saber")
 
 	if active_hitbox:
-		var hit_enemies = [] # Prevent damaging the same enemy twice in 1 swing
+		var hit_enemies = [] # prevent damaging the same enemy twice in 1 swing
 		
-		# Define hit detection function
+		# define hit detection function
 		var check_and_hit = func(body: Node2D):
 			if body.is_in_group("enemies") and body.has_method("take_damage") and not body in hit_enemies:
 				hit_enemies.append(body)
@@ -175,8 +175,13 @@ func execute_attack() -> void:
 		for body in active_hitbox.get_overlapping_bodies():
 			check_and_hit.call(body)
 
-		# 3. Leave hitbox active long enough for swing to pass through enemies
-		await get_tree().create_timer(0.25).timeout
+		# 3. leave hitbox active long enough for swing to pass through enemies
+		if anim_player and anim_player.has_animation("swing_saber"):
+			anim_player.speed_scale = 1.8 # play attack animation 1.8x faster
+			anim_player.play("swing_saber")
+
+	   # reduce the active hitbox duration to match the faster swing:
+		await get_tree().create_timer(0.12).timeout # reduced from 0.25s
 		
 		active_hitbox.monitoring = false
 		if active_hitbox.body_entered.is_connected(check_and_hit):
