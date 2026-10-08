@@ -5,18 +5,9 @@ extends CharacterBody2D
 # Handles 8-way movement, weapon aiming, hit flashes, and energy usage.
 # ==========================================
 
-# signals
-signal health_changed(current_hp, max_hp)
-signal harmonic_changed(current_harmony, max_harmony)
 signal weapon_changed(current_weapon: Weapon)
 
-# stats
-@export var max_health: float = 100.0
-var current_health: float = 100.0
-
 # harmonic energy system
-var harmonic_energy: float = 0.0 # 0 to 100
-const MAX_HARMONIC: float = 100.0
 const BLAST_THRESHOLD: float = 100.0
 
 # base Combat Stats
@@ -80,10 +71,6 @@ func _ready() -> void:
 	# ensure hitboxes start disabled
 	saber_hitbox.monitoring = false
 	orb_hitbox.monitoring = false
-	
-	current_health = max_health
-	emit_signal("health_changed", current_health, max_health)
-	emit_signal("harmonic_changed", harmonic_energy, MAX_HARMONIC)
 	
 	# Equip default weapon
 	equip_weapon(Weapon.SABER)
@@ -258,25 +245,28 @@ func fire_orb_duplicate() -> void:
 
 # add_harmonic_energy
 func add_harmonic_energy(amount: float) -> void:
-	harmonic_energy = clamp(harmonic_energy + amount, 0.0, MAX_HARMONIC)
-	harmonic_changed.emit(harmonic_energy, MAX_HARMONIC)
+	GlobalManager.add_energy(amount)
 
 # get_scaled_damage
 func get_scaled_damage(base_damage: float) -> float:
 	# damage scales up to 2x at 100 Harmonic Energy
-	var multiplier = 1.0 + (harmonic_energy / 100.0)
+	var multiplier = 1.0 + (
+		GlobalManager.harmonic_energy / GlobalManager.MAX_HARMONIC_ENERGY
+	)
 	return base_damage * multiplier
 
 # trigger_harmonic_blast
 # triggers the blast 
 func trigger_harmonic_blast() -> void:
-	if harmonic_energy < BLAST_THRESHOLD:
-		print("Harmonic Energy not ready! Current: ", harmonic_energy)
+	if GlobalManager.harmonic_energy < BLAST_THRESHOLD:
+		print(
+			"Harmonic Energy not ready! Current: ",
+			GlobalManager.harmonic_energy
+		)
 		return
 		
 	print("HARMONIC BLAST UNLEASHED!")
-	harmonic_energy = 0.0
-	harmonic_changed.emit(harmonic_energy, MAX_HARMONIC)
+	GlobalManager.consume_energy(BLAST_THRESHOLD)
 	
 	is_blasting = true
 	
@@ -294,16 +284,14 @@ func trigger_harmonic_blast() -> void:
 
 # take_damage
 func take_damage(amount: float) -> void:
-	current_health = max(0.0, current_health - amount)
-	health_changed.emit(current_health, max_health)
+	GlobalManager.take_damage(amount)
 	play_hit_flash()
 	
-	if current_health <= 0:
+	if GlobalManager.current_health <= 0.0:
 		die()
 
 func heal(amount: float) -> void:
-	current_health = min(max_health, current_health + amount)
-	health_changed.emit(current_health, max_health)
+	GlobalManager.heal(amount)
 
 func die() -> void:
 	print("Player defeated!")
