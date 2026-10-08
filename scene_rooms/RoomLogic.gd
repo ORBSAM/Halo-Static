@@ -71,13 +71,31 @@ func spawn_random_items() -> void:
 	if item_scenes.is_empty():
 		return
 		
-	var markers = $Spawns/ItemSpawns.get_children() if has_node("ItemMarkers") else []
+	var markers = $Spawns/ItemSpawns.get_children()  
 	for marker in markers:
+		# 30% chance to spawn an item at each marker
+		if randf() > 0.3:
+			continue
+			
 		var item_scene = item_scenes.pick_random()
 		if item_scene:
 			var item = item_scene.instantiate()
 			item.global_position = marker.global_position
+			
+			# Configure random item type variant
+			if item.has_method("set_item_type"):
+				var rand_val = randf()
+				if rand_val < 0.6:
+					item.set_item_type(0) # HARMONIC (60% chance)
+				elif rand_val < 0.9:
+					item.set_item_type(1) # CHAOTIC (30% chance)
+				else:
+					item.set_item_type(2) # KEY (10% chance)
+					
 			add_child(item)
+			
+			if item.has_method("update_item_appearance"):
+				item.update_item_appearance()
 
 # spawn_test_entities
 func spawn_test_entities() -> void:

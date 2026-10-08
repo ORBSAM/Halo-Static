@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cjmmhbp1b5312" path="res://addons/StyleboxFancy/StyleBorder.gd" id="1_tsr4x"]
 [ext_resource type="Script" uid="uid://bkl6g25jwb47h" path="res://addons/StyleboxFancy/StyleBoxFancy.gd" id="2_ctd4n"]
-[ext_resource type="Texture2D" uid="uid://dxyfhfej0hyl8" path="res://GUI/gui_images/button_outline.png" id="3_ctd4n"]
-[ext_resource type="Shader" uid="uid://4odq7m21wgjl" path="res://addons/rmsmartshape/examples/edge_shader/edge_shader.gdshader" id="4_6s3sf"]
 
 [sub_resource type="StyleBox" id="StyleBox_fgfhh"]
 resource_local_to_scene = false
@@ -14,17 +12,15 @@ content_margin_right = -1.0
 content_margin_bottom = -1.0
 script = ExtResource("2_ctd4n")
 color = Color(0.97285587, 0.6326801, 0.8820576, 1)
-texture = ExtResource("3_ctd4n")
-expand_margin_left = 10.0
-expand_margin_top = 2.0
-expand_margin_right = 10.0
-expand_margin_bottom = 2.0
+corner_detail = 2
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+shadow_enabled = true
+shadow_color = Color(0.52212095, 2.2043883e-05, 0.3994375, 0.6)
+shadow_blur = 10
 metadata/_custom_type_script = "uid://bkl6g25jwb47h"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ctd4n"]
-shader = ExtResource("4_6s3sf")
-
-[sub_resource type="StyleBox" id="StyleBox_sxlwc"]
+[sub_resource type="StyleBox" id="StyleBox_e2vrw"]
 resource_local_to_scene = false
 resource_name = ""
 content_margin_left = -1.0
@@ -32,15 +28,17 @@ content_margin_top = -1.0
 content_margin_right = -1.0
 content_margin_bottom = -1.0
 script = ExtResource("2_ctd4n")
-color = Color(0.79588354, 0.0005523485, 0.80731905, 1)
-material = SubResource("ShaderMaterial_ctd4n")
-texture = ExtResource("3_ctd4n")
-expand_margin_left = 10.0
-expand_margin_top = 2.0
-expand_margin_right = 10.0
-expand_margin_bottom = 10.0
+color = Color(0.8745098, 0.24705882, 0.8745098, 1)
+expand_margin_left = 5.0
+expand_margin_top = 1.0
+expand_margin_right = 5.0
+expand_margin_bottom = 1.0
+shadow_enabled = true
+shadow_color = Color(0.3787622, 1.1406988e-05, 0.2865536, 0.6)
+shadow_blur = 10
 metadata/_custom_type_script = "uid://bkl6g25jwb47h"
 
 [resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
 Button/styles/normal = SubResource("StyleBox_fgfhh")
-Button/styles/pressed = SubResource("StyleBox_sxlwc")
+Button/styles/pressed = SubResource("StyleBox_e2vrw")

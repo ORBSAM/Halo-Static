@@ -12,7 +12,7 @@ content_margin_top = -1.0
 content_margin_right = -1.0
 content_margin_bottom = -1.0
 script = ExtResource("3_3dox3")
-color = Color(1.191236e-06, 0.37622797, 0.086656444, 1)
+color = Color(0, 0.13333334, 0.015686275, 0.47058824)
 metadata/_custom_type_script = "uid://bkl6g25jwb47h"
 
 [sub_resource type="StyleBox" id="StyleBox_k1nul"]
@@ -23,13 +23,37 @@ content_margin_top = -1.0
 content_margin_right = -1.0
 content_margin_bottom = -1.0
 script = ExtResource("3_3dox3")
-color = Color(2.8878452e-07, 0.76078457, 0.21298069, 1)
+color = Color(0, 0.7607843, 0.21176471, 0.5882353)
+corner_detail = 10
 metadata/_custom_type_script = "uid://bkl6g25jwb47h"
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_putc8"]
+bg_color = Color(0.328758, 2.4137571e-05, 0.28243902, 0.47058824)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmici"]
+bg_color = Color(0.98039216, 0.57254905, 0.79607844, 0.5882353)
+
 [sub_resource type="LabelSettings" id="LabelSettings_6s3sf"]
-outline_size = 7
+outline_size = 5
 outline_color = Color(1, 0.49711722, 0.641385, 1)
 shadow_color = Color(0.69145715, 0.091008835, 0.38030475, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o0vto"]
+bg_color = Color(0.9529412, 0.57254905, 0.8392157, 0.59607846)
+border_color = Color(0.60197157, 0.032816462, 0.46605694, 0.6)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wk7dk"]
+bg_color = Color(0.52212095, 2.2043883e-05, 0.3994375, 0.6)
+border_color = Color(0.29908007, 0.017990336, 0.17940077, 0.8392157)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0.29311588, 0.017269216, 0.175452, 0.8392157)
 
 [node name="HUD" type="CanvasLayer" unique_id=300666281]
 script = ExtResource("1_ssm0s")
@@ -45,8 +69,16 @@ grow_vertical = 2
 [node name="TopLeft" type="MarginContainer" parent="Control" unique_id=1445098544]
 layout_mode = 1
 anchors_preset = -1
-offset_right = 200.0
-offset_bottom = 100.0
+anchor_top = 0.024
+anchor_bottom = 0.024
+offset_left = 24.0
+offset_top = -8.552
+offset_right = 301.0
+offset_bottom = 91.448
+
+[node name="ColorRect" type="ColorRect" parent="Control/TopLeft" unique_id=836676269]
+layout_mode = 2
+color = Color(0.9490196, 0.26666668, 0.58431375, 0.09019608)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/TopLeft" unique_id=334316637]
 custom_minimum_size = Vector2(100, 100)
@@ -62,24 +94,49 @@ step = 1.0
 rounded = true
 show_percentage = false
 
+[node name="Health Label" type="Label" parent="Control/TopLeft/VBoxContainer/Health Bar" unique_id=1120022810]
+layout_mode = 0
+offset_left = 5.0
+offset_top = -2.0
+offset_right = 189.0
+offset_bottom = 21.0
+text = "HEALTH"
+
 [node name="Harmony Bar" type="ProgressBar" parent="Control/TopLeft/VBoxContainer" unique_id=213842667]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_putc8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_qmici")
 step = 1.0
 rounded = true
 show_percentage = false
+
+[node name="Harmony Label" type="Label" parent="Control/TopLeft/VBoxContainer/Harmony Bar" unique_id=400477773]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -2.0
+offset_right = 188.0
+offset_bottom = 21.0
+text = "HARMONY"
 
 [node name="TopRight" type="MarginContainer" parent="Control" unique_id=123188202]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -213.0
-offset_bottom = 73.0
+offset_left = -173.0
+offset_top = 8.0
+offset_right = -31.0
+offset_bottom = 43.0
 grow_horizontal = 0
+
+[node name="ColorRect" type="ColorRect" parent="Control/TopRight" unique_id=1380948401]
+layout_mode = 2
+color = Color(0.9490196, 0.26666668, 0.58431375, 0.09019608)
 
 [node name="RoomTrackerLabel" type="Label" parent="Control/TopRight" unique_id=1897663151]
 layout_mode = 2
+text = "TEST"
 label_settings = SubResource("LabelSettings_6s3sf")
 horizontal_alignment = 1
 
@@ -91,45 +148,45 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -154.0
-offset_top = -44.0
-offset_right = -46.0
-offset_bottom = -5.0
+offset_left = -119.0
+offset_top = -61.0
+offset_right = -9.0
+offset_bottom = -17.0
 grow_horizontal = 0
 grow_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/BoxContainer" unique_id=2086265100]
 layout_mode = 2
 
-[node name="Key Icon" type="TextureRect" parent="Control/BoxContainer/HBoxContainer" unique_id=1371270632]
-layout_mode = 2
-
 [node name="E-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=170196428]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
-
-[node name="E-Label" type="Label" parent="Control/BoxContainer/HBoxContainer/E-Icon Weapon" unique_id=1846971907]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 2.9520001
-anchor_right = 2.9520001
-offset_left = -132.6
-offset_top = 8.0
-offset_right = -98.600006
-offset_bottom = 31.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_o0vto")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wk7dk")
 text = "E"
 
 [node name="Q-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=756833691]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
-
-[node name="Q-Label" type="Label" parent="Control/BoxContainer/HBoxContainer/Q-Icon Weapon" unique_id=1930308093]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 2.9520001
-anchor_right = 2.9520001
-offset_left = -140.6
-offset_top = 8.0
-offset_right = -106.600006
-offset_bottom = 31.0
+theme_override_colors/icon_normal_color = Color(0.52212095, 2.2043883e-05, 0.3994375, 0.6)
+theme_override_styles/normal = SubResource("StyleBoxFlat_o0vto")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wk7dk")
 text = "Q"
+icon_alignment = 1
+
+[node name="BottomRight Box" type="ColorRect" parent="." unique_id=1577014875]
+offset_left = 1024.0
+offset_top = 581.0
+offset_right = 1146.0
+offset_bottom = 637.0
+color = Color(0.9490196, 0.26666668, 0.58431375, 0.09019608)
+
+[node name="Key_Icon_Place" type="ColorRect" parent="." unique_id=486507311]
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = -37.0
+offset_right = 37.0
+offset_bottom = -7.0
+color = Color(0.99215686, 0.94509804, 0.47058824, 0.972549)

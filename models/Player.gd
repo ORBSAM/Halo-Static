@@ -6,8 +6,8 @@ extends CharacterBody2D
 # ==========================================
 
 # signals
-signal health_changed(current_health: float, max_health: float)
-signal harmonic_changed(current_energy: float, max_energy: float)
+signal health_changed(current_hp, max_hp)
+signal harmonic_changed(current_harmony, max_harmony)
 signal weapon_changed(current_weapon: Weapon)
 
 # stats
@@ -66,6 +66,7 @@ var last_facing_direction: Vector2 = Vector2.DOWN
 enum AttackType { SWING, THRUST }
 var current_attack: AttackType = AttackType.SWING
 
+# _ready
 func _ready() -> void:
 	add_to_group("player")
 	
@@ -92,24 +93,27 @@ func _ready() -> void:
 	
 	print("Player spawned at: ", global_position)
 
+# _physics_process
 func _physics_process(_delta: float) -> void:
 	handle_movement()
 	handle_weapon_aiming()
 
+# _input
 func _input(event: InputEvent) -> void:
-	# weapon Switching
+	# weapon switching
 	if event.is_action_pressed("weapon_saber"):
 		equip_weapon(Weapon.SABER)
 	elif event.is_action_pressed("weapon_orb"):
 		equip_weapon(Weapon.ORB_OF_LIGHT)
 		
-	# combat Actions
+	# combat actions
 	if event.is_action_pressed("attack") and not is_attacking:
 		execute_attack()
 	elif event.is_action_pressed("harmonic_blast"): # "B" key or Shift
 		trigger_harmonic_blast()
 
-# Movement logic
+# handle_movement
+# movement logic
 func handle_movement() -> void:
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = input_direction * speed
@@ -146,49 +150,45 @@ func execute_attack() -> void:
 
 	if current_weapon == Weapon.ORB_OF_LIGHT:
 		fire_orb_duplicate()
+		# add brief cooldown so orb isn't spammed instantly
+		await get_tree().create_timer(0.3).timeout
 		is_attacking = false
 		return
 
-	# saber Attack Logic
+	# Saber Attack Logic
 	var stats = weapon_stats[Weapon.SABER]
 	var active_hitbox: Area2D = stats["hitbox"]
-	
-	if anim_player and anim_player.has_animation("swing_saber"):
-		anim_player.play("swing_saber")
 
 	if active_hitbox:
-		var hit_enemies = [] # prevent damaging the same enemy twice in 1 swing
+		var hit_enemies = []
 		
-		# define hit detection function
 		var check_and_hit = func(body: Node2D):
 			if body.is_in_group("enemies") and body.has_method("take_damage") and not body in hit_enemies:
 				hit_enemies.append(body)
 				body.take_damage(get_scaled_damage(stats["base_damage"]), global_position)
 				add_harmonic_energy(stats["energy_gain"])
 
-		# 1. Dynamic connection while swing is active
 		var connection = active_hitbox.body_entered.connect(check_and_hit)
 		active_hitbox.monitoring = true
 		
-		# 2. Check any enemies already standing inside hitbox on frame 1
+		# Play fast animation once
+		if anim_player and anim_player.has_animation("swing_saber"):
+			anim_player.speed_scale = 1.8
+			anim_player.play("swing_saber")
+
+		# Check enemies standing inside on frame 1
 		await get_tree().physics_frame
 		for body in active_hitbox.get_overlapping_bodies():
 			check_and_hit.call(body)
 
-		# 3. leave hitbox active long enough for swing to pass through enemies
-		if anim_player and anim_player.has_animation("swing_saber"):
-			anim_player.speed_scale = 1.8 # play attack animation 1.8x faster
-			anim_player.play("swing_saber")
-
-	   # reduce the active hitbox duration to match the faster swing:
-		await get_tree().create_timer(0.12).timeout # reduced from 0.25s
+		# Active window timing
+		await get_tree().create_timer(0.12).timeout
 		
 		active_hitbox.monitoring = false
 		if active_hitbox.body_entered.is_connected(check_and_hit):
 			active_hitbox.body_entered.disconnect(check_and_hit)
 
 	is_attacking = false
-
 # fire_orb_dupe
 # fires a duplicate orb rather than using another scene entirely
 func fire_orb_duplicate() -> void:

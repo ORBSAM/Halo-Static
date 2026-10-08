@@ -36,7 +36,7 @@ offset_left = -545.04803
 offset_top = 132.0
 offset_right = 600.95197
 offset_bottom = 215.0
-text = "VANQUISHED"
+text = "PURGED"
 label_settings = SubResource("LabelSettings_aqe1g")
 horizontal_alignment = 1
 

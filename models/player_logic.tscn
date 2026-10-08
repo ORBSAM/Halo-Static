@@ -163,6 +163,7 @@ texture = SubResource("ImageTexture_u5ffr")
 position = Vector2(0.00020981467, 4800)
 rotation = -1.5707964
 scale = Vector2(200, 200)
+collision_layer = 0
 collision_mask = 2
 
 [node name="SaberCollision" type="CollisionShape2D" parent="CharacterBody2D/WeaponPivot/Saber/SaberHitbox" unique_id=437602889]
@@ -178,6 +179,7 @@ scale = Vector2(0.003, 0.003)
 [node name="OrbOfLightHitbox" type="Area2D" parent="CharacterBody2D/WeaponPivot/OrbOfLight" unique_id=574757921]
 position = Vector2(-6666.667, 0)
 scale = Vector2(333.33334, 333.33334)
+collision_layer = 0
 collision_mask = 2
 
 [node name="OrbOfLightCollision" type="CollisionShape2D" parent="CharacterBody2D/WeaponPivot/OrbOfLight/OrbOfLightHitbox" unique_id=1918478962]

@@ -446,6 +446,8 @@ size = Vector2(44, 11)
 [node name="2D_Base" type="Node2D" unique_id=1256971738]
 y_sort_enabled = true
 script = ExtResource("1_flvv0")
+enemy_scenes = null
+item_scenes = null
 
 [node name="Entities" type="Node2D" parent="." unique_id=1647710192]
 position = Vector2(277, 170)
