@@ -521,3 +521,4 @@ position = Vector2(232, 110)
 position = Vector2(763, 418)
 
 [connection signal="body_entered" from="Doors/DoorEast" to="." method="_on_door_east_body_entered"]
+[connection signal="body_entered" from="Doors/DoorSouth" to="." method="_on_door_south_body_entered"]

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d3ivbs4fcsgd7"
-path="res://.godot/imported/Monument-Valley-Silhouette.svg-d93d3cfa74c85422e719e7f3dc1ba0ba.ctex"
+path="res://.godot/imported/stags.svg-f4154bb0580c77a675076b129a7a3c4d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://screens/screen_images/Monument-Valley-Silhouette.svg"
-dest_files=["res://.godot/imported/Monument-Valley-Silhouette.svg-d93d3cfa74c85422e719e7f3dc1ba0ba.ctex"]
+source_file="res://screens/screen_images/stags.svg"
+dest_files=["res://.godot/imported/stags.svg-f4154bb0580c77a675076b129a7a3c4d.ctex"]
 
 [params]
 

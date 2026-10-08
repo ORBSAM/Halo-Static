@@ -446,8 +446,6 @@ size = Vector2(44, 11)
 [node name="2D_Base" type="Node2D" unique_id=1256971738]
 y_sort_enabled = true
 script = ExtResource("1_flvv0")
-enemy_scenes = null
-item_scenes = null
 
 [node name="Entities" type="Node2D" parent="." unique_id=1647710192]
 position = Vector2(277, 170)
@@ -545,3 +543,5 @@ position = Vector2(763, 418)
 
 [connection signal="body_entered" from="Doors/DoorWest" to="." method="_on_door_west_body_entered"]
 [connection signal="body_entered" from="Doors/DoorEast" to="." method="_on_door_east_body_entered"]
+[connection signal="body_entered" from="Doors/DoorNorth" to="." method="_on_door_north_body_entered"]
+[connection signal="body_entered" from="Doors/DoorSouth" to="." method="_on_door_south_body_entered"]

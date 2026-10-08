@@ -1,5 +1,11 @@
 extends Node2D
 
+# =====================
+# ROOM LOGIC
+# 
+# All room logic for base rooms are stored here. Other instances such as the boss room and the key room may be different.
+# ================
+
 @export var enemy_scenes: Array[PackedScene] = [preload("res://models/enemy_logic.tscn")]
 @export var item_scenes: Array[PackedScene] = [preload("res://items/item_harmonic_chaotic.tscn")]
 
@@ -10,6 +16,8 @@ extends Node2D
 
 @onready var door_west: Area2D = $Doors/DoorWest
 @onready var door_east: Area2D = $Doors/DoorEast
+@onready var door_north: Area2D = $Doors/DoorNorth
+@onready var door_south: Area2D = $Doors/DoorSouth
 
 @onready var top_left_marker: Marker2D = $TopLeftMarker
 @onready var bottom_right_marker: Marker2D = $BottomRightMarker
@@ -117,6 +125,36 @@ func _on_door_east_body_entered(body: Node2D) -> void:
 		var target_coords = DungeonManager.current_room_coords + Vector2i.RIGHT
 		if DungeonManager and DungeonManager.has_method("transition_to_room"):
 			DungeonManager.transition_to_room(target_coords)
+			
+func _on_door_north_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		door_north.set_deferred("monitoring", false)
+		DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.UP)
+
+func _on_door_south_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		door_south.set_deferred("monitoring", false)
+		DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.DOWN)
+
+# trigger_room_dialogue
+# Trigger a random snippet of dialogue whenever the protagonist enters a room.
+# Slim chance of this happening.
+func trigger_room_dialogue(is_boss_room: bool = false) -> void:
+	var dialogue_ui = get_node_or_null("/root/DialogueUI")
+	if not dialogue_ui or dialogue_ui.is_active:
+		return
+
+	if is_boss_room:
+		dialogue_ui.start_dialogue("Boss", ["You made it far, hero...", "This room will be your grave!"])
+	else:
+		# 30% chance on entering a regular room
+		if randf() < 0.3:
+			var random_quotes = [
+				"Something feels off in this sector...",
+				"The harmonic energy here is unstable.",
+				"I need to keep moving."
+			]
+			dialogue_ui.start_dialogue("Protagonist", [random_quotes.pick_random()])
 
 # get_bounds
 # set the bounds for the current room (using the walls), which will later be called by the dungeon manager to set up the camera

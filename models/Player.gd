@@ -232,7 +232,7 @@ func fire_orb_duplicate() -> void:
 	var target_dir = (get_global_mouse_position() - global_position).normalized()
 	var proj_damage = get_scaled_damage(weapon_stats[Weapon.ORB_OF_LIGHT]["base_damage"])
 
-	# 5. Connect hit detection
+	# 5. connect hit detection
 	var on_hit = func(body: Node2D):
 		if body == self or body.is_in_group("player"):
 			return

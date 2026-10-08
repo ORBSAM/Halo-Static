@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cp54yf1ln7i5p" path="res://screens/title_screen.gd" id="1_grftj"]
 [ext_resource type="Texture2D" uid="uid://dbja30q4byr12" path="res://screens/screen_images/halo_static_icon.png" id="2_81buc"]
-[ext_resource type="Texture2D" uid="uid://d3ivbs4fcsgd7" path="res://screens/screen_images/Monument-Valley-Silhouette.svg" id="2_n8gtu"]
+[ext_resource type="Texture2D" uid="uid://d3ivbs4fcsgd7" path="res://screens/screen_images/stags.svg" id="2_n8gtu"]
 [ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="2_sxlwc"]
 
 [sub_resource type="Gradient" id="Gradient_n8gtu"]
