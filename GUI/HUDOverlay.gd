@@ -5,32 +5,20 @@ extends CanvasLayer
 @onready var room_label: Label = $"Control/TopRight/RoomTrackerLabel"
 
 func _ready() -> void:
-	# 1. Connect DungeonManager signals
-	if DungeonManager:
+	if not DungeonManager.room_changed.is_connected(_on_room_changed):
 		DungeonManager.room_changed.connect(_on_room_changed)
-		_on_room_changed(DungeonManager.current_room_coords)
-		
-	# 2. Connect Player signals dynamically
-	var player = get_tree().get_first_node_in_group("player")
-	if player:
-		connect_player_signals(player)
-	else:
-		# If player spawns slightly later, wait for node
-		get_tree().node_added.connect(_on_node_added)
+	_on_room_changed(DungeonManager.current_room_coords)
 
-func _on_node_added(node: Node) -> void:
-	if node.is_in_group("player"):
-		connect_player_signals(node)
+	if not GlobalManager.health_changed.is_connected(update_health):
+		GlobalManager.health_changed.connect(update_health)
+	if not GlobalManager.energy_changed.is_connected(update_energy):
+		GlobalManager.energy_changed.connect(update_energy)
 
-func connect_player_signals(player: Node) -> void:
-	if not player.health_changed.is_connected(update_health):
-		player.health_changed.connect(update_health)
-	if not player.harmonic_changed.is_connected(update_energy):
-		player.harmonic_changed.connect(update_energy)
-		 
-	# Initialize initial values immediately
-	update_health(player.current_health, player.max_health)
-	update_energy(player.harmonic_energy, player.MAX_HARMONIC)
+	update_health(GlobalManager.current_health, GlobalManager.max_health)
+	update_energy(
+		GlobalManager.harmonic_energy,
+		GlobalManager.MAX_HARMONIC_ENERGY
+	)
 
 func update_health(current: float, max_val: float) -> void:
 	if health_bar:
