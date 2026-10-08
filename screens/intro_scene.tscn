@@ -1,7 +1,51 @@
 [gd_scene format=3 uid="uid://oelk6ei5cy6k"]
 
-[node name="CanvasLayer" type="CanvasLayer" unique_id=828346399]
+[ext_resource type="Script" uid="uid://cstcs52x3hta2" path="res://screens/IntroCutscene.gd" id="1_3wdwh"]
+[ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="1_j6yrn"]
 
-[node name="Opener_Container" type="Container" parent="." unique_id=499460885]
-offset_right = 1154.0
-offset_bottom = 647.0
+[node name="Control" type="Control" unique_id=1106766824]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3wdwh")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1646459958]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.055978335, 0.05620656, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=2041181189]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -577.0
+offset_top = -322.0
+offset_right = 578.0
+offset_bottom = 321.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=1659091340]
+layout_mode = 2
+
+[node name="StoryLabel" type="Label" parent="ScrollContainer/VBoxContainer" unique_id=1273457685]
+layout_mode = 2
+
+[node name="SkipButton" type="Button" parent="." unique_id=690380475]
+layout_mode = 0
+offset_left = 1038.0
+offset_top = 573.0
+offset_right = 1116.0
+offset_bottom = 613.0
+theme = ExtResource("1_j6yrn")
+text = "SKIP"

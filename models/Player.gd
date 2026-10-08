@@ -189,6 +189,7 @@ func execute_attack() -> void:
 			active_hitbox.body_entered.disconnect(check_and_hit)
 
 	is_attacking = false
+
 # fire_orb_dupe
 # fires a duplicate orb rather than using another scene entirely
 func fire_orb_duplicate() -> void:
@@ -275,12 +276,34 @@ func trigger_harmonic_blast() -> void:
 		return
 		
 	print("HARMONIC BLAST UNLEASHED!")
-	harmonic_energy = 0.0
+	harmonic_energy = 25.0
 	harmonic_changed.emit(harmonic_energy, MAX_HARMONIC)
 	
 	is_blasting = true
 	
-	# AOE Blast: Deals 35+ damage to all enemies within 250px
+	# trigger a generic 2D line as the blast
+	var blast_line: Line2D = get_node_or_null("Blast")
+	if blast_line:
+		var blast_radius: float = 250.0
+	
+		# calculate normalized direction vector toward target (e.g., mouse)
+		var aim_direction: Vector2 = (get_global_mouse_position() - global_position).normalized()
+	
+		# Clear previous points and set Start (0,0) and End point in local space
+		blast_line.clear_points()
+		blast_line.add_point(Vector2.ZERO)
+		blast_line.add_point(aim_direction * blast_radius)
+	
+	# show the line beam
+		blast_line.visible = true
+	
+	# hide the line after a brief delay (e.g., 0.15 seconds)
+	get_tree().create_timer(0.15).timeout.connect(func():
+		if is_instance_valid(blast_line):
+			blast_line.visible = false
+	)
+	
+	# AOE Blast: deals 35+ damage to all enemies within 250px
 	var blast_radius = 250.0
 	var blast_damage = 35.0
 	
@@ -291,7 +314,7 @@ func trigger_harmonic_blast() -> void:
 				
 	await get_tree().create_timer(0.4).timeout
 	is_blasting = false
-
+	
 # take_damage
 func take_damage(amount: float) -> void:
 	current_health = max(0.0, current_health - amount)

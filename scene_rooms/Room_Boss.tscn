@@ -446,3 +446,7 @@ tile_set = SubResource("TileSet_den6x")
 rendering_quadrant_size = 24
 
 [node name="Doors" type="Node2D" parent="." unique_id=451192783]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=379047569]
+visible = false
+color = Color(0.06666667, 0.06666667, 0.101960786, 0.7294118)

@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bgtc4slfe2rva" path="res://GUI/DialogueUI.gd" id="1_qmici"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_si3jm"]
-
 [node name="text_box_control" type="Control" unique_id=1149151188]
 layout_mode = 3
 anchors_preset = 15
@@ -13,33 +11,26 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qmici")
 
-[node name="textbox" type="TextureRect" parent="." unique_id=2043485679]
-material = SubResource("CanvasItemMaterial_si3jm")
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.252
-anchor_right = 0.26500002
-anchor_bottom = 0.381
-offset_left = -1.0
-offset_top = -0.29600525
-offset_right = -0.2800293
-offset_bottom = 0.11199951
+[node name="Panel" type="Panel" parent="." unique_id=1890717189]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 468.0
+offset_right = 1044.0
+offset_bottom = 646.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="textbox" unique_id=674422709]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.36400002
-offset_right = -266.0
-offset_bottom = -0.040000916
+[node name="HBox" type="HBoxContainer" parent="Panel" unique_id=911987972]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="portrait" type="TextureRect" parent="." unique_id=1751697838]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.20400001
-anchor_right = 0.097
-anchor_bottom = 0.381
-offset_left = 1.0
-offset_top = -0.19200134
-offset_right = 0.2559967
-offset_bottom = 2.1119995
+[node name="Portrait" type="TextureRect" parent="Panel/HBox" unique_id=1751697838]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel/HBox" unique_id=783096443]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="Panel/HBox/VBox" unique_id=1626546896]
+layout_mode = 2
+
+[node name="TextLabel" type="Label" parent="Panel/HBox/VBox" unique_id=1599640531]
+layout_mode = 2

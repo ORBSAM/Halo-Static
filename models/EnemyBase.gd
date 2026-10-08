@@ -75,7 +75,7 @@ func _physics_process(_delta: float) -> void:
 		if dist_to_player <= (stop_distance + 8.0) and can_attack:
 			attack_player()
 
-# Calculates push vector to keep enemies spaced apart
+# calculates push vector to keep enemies spaced apart
 func get_separation_vector() -> Vector2:
 	var push_vector = Vector2.ZERO
 	var neighbor_count = 0
@@ -97,11 +97,11 @@ func attack_player() -> void:
 		
 		target_player.take_damage(attack_damage)
 		
-		# Pause briefly during attack swing
-		await get_tree().create_timer(0.3).timeout
+		# pause briefly during attack swing
+		await get_tree().create_timer(0.6).timeout
 		is_attacking = false
 		
-		await get_tree().create_timer(attack_cooldown - 0.3).timeout
+		await get_tree().create_timer(attack_cooldown - 0.6).timeout
 		can_attack = true
 
 func take_damage(amount: float, knockback_source_pos: Vector2 = Vector2.ZERO) -> void:
@@ -119,19 +119,27 @@ func take_damage(amount: float, knockback_source_pos: Vector2 = Vector2.ZERO) ->
 		die()
 
 func spawn_damage_number(amount: float) -> void:
-	var label = Label.new()
+	var template_label = $DamageLabel
+	if not is_instance_valid(template_label):
+		return
+
+	# Duplicate the template label so the original on the enemy isn't destroyed
+	var label: Label = template_label.duplicate()
 	label.text = str(round(amount))
-	label.modulate = Color.YELLOW
 	label.z_index = 100
 	label.global_position = global_position + Vector2(-10, -30)
+	label.visible = true  # ensure it is visible
+	label.modulate.a = 1.0 # reset alpha in case template was faded
 	
+	# spawn in the world tree (parent) so it doesn't move with the enemy
 	get_parent().add_child(label)
 	
 	var tween = label.create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(label, "global_position:y", label.global_position.y - 30.0, 0.5)
-	tween.tween_property(label, "modulate:a", 0.0, 0.5)
+	tween.tween_property(label, "global_position:y", label.global_position.y - 30.0, 0.7)
+	tween.tween_property(label, "modulate:a", 0.0, 0.6)
 	tween.finished.connect(label.queue_free)
+	
 
 func die() -> void:
 	queue_free()

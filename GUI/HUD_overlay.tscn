@@ -1,59 +1,55 @@
 [gd_scene format=3 uid="uid://vw06m5mvrq3e"]
 
 [ext_resource type="Script" uid="uid://clafcwvprt817" path="res://GUI/HUDOverlay.gd" id="1_ssm0s"]
-[ext_resource type="Script" uid="uid://cjmmhbp1b5312" path="res://addons/StyleboxFancy/StyleBorder.gd" id="2_o0vto"]
-[ext_resource type="Script" uid="uid://bkl6g25jwb47h" path="res://addons/StyleboxFancy/StyleBoxFancy.gd" id="3_3dox3"]
+[ext_resource type="Material" uid="uid://dpec5hjpflmri" path="res://addons/rmsmartshape/examples/edge_shader/material_edge_shader.tres" id="2_3dox3"]
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="4_3dox3"]
+[ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="5_wk7dk"]
 
-[sub_resource type="StyleBox" id="StyleBox_6s3sf"]
-resource_local_to_scene = false
-resource_name = ""
-content_margin_left = -1.0
-content_margin_top = -1.0
-content_margin_right = -1.0
-content_margin_bottom = -1.0
-script = ExtResource("3_3dox3")
-color = Color(0, 0.13333334, 0.015686275, 0.47058824)
-metadata/_custom_type_script = "uid://bkl6g25jwb47h"
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e270b"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBox" id="StyleBox_k1nul"]
-resource_local_to_scene = false
-resource_name = ""
-content_margin_left = -1.0
-content_margin_top = -1.0
-content_margin_right = -1.0
-content_margin_bottom = -1.0
-script = ExtResource("3_3dox3")
-color = Color(0, 0.7607843, 0.21176471, 0.5882353)
-corner_detail = 10
-metadata/_custom_type_script = "uid://bkl6g25jwb47h"
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mw6it"]
+bg_color = Color(0.36862746, 0.6901961, 0.28627452, 0.5647059)
+border_width_bottom = 1
+border_color = Color(0.36862746, 0.6901961, 0.28627452, 0.7647059)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_putc8"]
-bg_color = Color(0.328758, 2.4137571e-05, 0.28243902, 0.47058824)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apgfa"]
+bg_color = Color(0.36829495, 0.6905624, 0.27968323, 0.9019608)
+border_width_bottom = 1
+border_color = Color(0.36862746, 0.6901961, 0.2784314, 0.972549)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmici"]
-bg_color = Color(0.98039216, 0.57254905, 0.79607844, 0.5882353)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yikmn"]
+bg_color = Color(0.99215686, 0.7607843, 0.8901961, 0.8509804)
+border_width_bottom = 1
+border_color = Color(0.99215686, 0.7607843, 0.8901961, 0.9529412)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh2jj"]
+bg_color = Color(0.9764706, 0.28627452, 0.7490196, 0.81960785)
+border_color = Color(0.9764706, 0.28627452, 0.7490196, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="LabelSettings" id="LabelSettings_6s3sf"]
-outline_size = 5
+font = ExtResource("4_3dox3")
+outline_size = 3
 outline_color = Color(1, 0.49711722, 0.641385, 1)
 shadow_color = Color(0.69145715, 0.091008835, 0.38030475, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o0vto"]
-bg_color = Color(0.9529412, 0.57254905, 0.8392157, 0.59607846)
-border_color = Color(0.60197157, 0.032816462, 0.46605694, 0.6)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wk7dk"]
-bg_color = Color(0.52212095, 2.2043883e-05, 0.3994375, 0.6)
-border_color = Color(0.29908007, 0.017990336, 0.17940077, 0.8392157)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-shadow_color = Color(0.29311588, 0.017269216, 0.175452, 0.8392157)
 
 [node name="HUD" type="CanvasLayer" unique_id=300666281]
 script = ExtResource("1_ssm0s")
@@ -76,47 +72,57 @@ offset_top = -8.552
 offset_right = 301.0
 offset_bottom = 91.448
 
-[node name="ColorRect" type="ColorRect" parent="Control/TopLeft" unique_id=836676269]
+[node name="Panel" type="Panel" parent="Control/TopLeft" unique_id=1825627825]
+material = ExtResource("2_3dox3")
 layout_mode = 2
-color = Color(0.9490196, 0.26666668, 0.58431375, 0.09019608)
+theme_override_styles/panel = SubResource("StyleBoxFlat_e270b")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/TopLeft" unique_id=334316637]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/TopLeft/Panel" unique_id=334316637]
 custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
+layout_mode = 0
+offset_left = 15.0
+offset_right = 258.0
+offset_bottom = 100.0
 alignment = 1
 
-[node name="Health Bar" type="ProgressBar" parent="Control/TopLeft/VBoxContainer" unique_id=24107545]
+[node name="Health Bar" type="ProgressBar" parent="Control/TopLeft/Panel/VBoxContainer" unique_id=24107545]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBox_6s3sf")
-theme_override_styles/fill = SubResource("StyleBox_k1nul")
+theme_override_styles/background = SubResource("StyleBoxFlat_mw6it")
+theme_override_styles/fill = SubResource("StyleBoxFlat_apgfa")
 step = 1.0
 rounded = true
 show_percentage = false
 
-[node name="Health Label" type="Label" parent="Control/TopLeft/VBoxContainer/Health Bar" unique_id=1120022810]
+[node name="Health Label" type="Label" parent="Control/TopLeft/Panel/VBoxContainer/Health Bar" unique_id=1120022810]
 layout_mode = 0
-offset_left = 5.0
-offset_top = -2.0
-offset_right = 189.0
-offset_bottom = 21.0
+offset_left = 3.0
+offset_top = -4.0
+offset_right = 83.0
+offset_bottom = 25.0
+theme_override_colors/font_shadow_color = Color(0.36862746, 0.6901961, 0.28627452, 0.7647059)
+theme_override_fonts/font = ExtResource("4_3dox3")
+theme_override_font_sizes/font_size = 22
 text = "HEALTH"
 
-[node name="Harmony Bar" type="ProgressBar" parent="Control/TopLeft/VBoxContainer" unique_id=213842667]
+[node name="Harmony Bar" type="ProgressBar" parent="Control/TopLeft/Panel/VBoxContainer" unique_id=213842667]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_putc8")
-theme_override_styles/fill = SubResource("StyleBoxFlat_qmici")
+theme_override_styles/background = SubResource("StyleBoxFlat_yikmn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xh2jj")
 step = 1.0
 rounded = true
 show_percentage = false
 
-[node name="Harmony Label" type="Label" parent="Control/TopLeft/VBoxContainer/Harmony Bar" unique_id=400477773]
+[node name="Harmony Label" type="Label" parent="Control/TopLeft/Panel/VBoxContainer/Harmony Bar" unique_id=400477773]
 layout_mode = 0
-offset_left = 4.0
-offset_top = -2.0
-offset_right = 188.0
-offset_bottom = 21.0
+offset_left = 5.0
+offset_top = -3.0
+offset_right = 189.0
+offset_bottom = 22.0
+theme_override_colors/font_shadow_color = Color(0.9764706, 0.28627452, 0.7490196, 0.90588236)
+theme_override_fonts/font = ExtResource("4_3dox3")
+theme_override_font_sizes/font_size = 19
 text = "HARMONY"
 
 [node name="TopRight" type="MarginContainer" parent="Control" unique_id=123188202]
@@ -130,9 +136,9 @@ offset_right = -31.0
 offset_bottom = 43.0
 grow_horizontal = 0
 
-[node name="ColorRect" type="ColorRect" parent="Control/TopRight" unique_id=1380948401]
+[node name="Panel" type="Panel" parent="Control/TopRight" unique_id=505178597]
 layout_mode = 2
-color = Color(0.9490196, 0.26666668, 0.58431375, 0.09019608)
+theme_override_styles/panel = SubResource("StyleBoxFlat_e270b")
 
 [node name="RoomTrackerLabel" type="Label" parent="Control/TopRight" unique_id=1897663151]
 layout_mode = 2
@@ -161,25 +167,15 @@ layout_mode = 2
 [node name="E-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=170196428]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_o0vto")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wk7dk")
+theme = ExtResource("5_wk7dk")
 text = "E"
 
 [node name="Q-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=756833691]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
-theme_override_colors/icon_normal_color = Color(0.52212095, 2.2043883e-05, 0.3994375, 0.6)
-theme_override_styles/normal = SubResource("StyleBoxFlat_o0vto")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wk7dk")
+theme = ExtResource("5_wk7dk")
 text = "Q"
 icon_alignment = 1
-
-[node name="BottomRight Box" type="ColorRect" parent="." unique_id=1577014875]
-offset_left = 1024.0
-offset_top = 581.0
-offset_right = 1146.0
-offset_bottom = 637.0
-color = Color(0.9490196, 0.26666668, 0.58431375, 0.09019608)
 
 [node name="Key_Icon_Place" type="ColorRect" parent="." unique_id=486507311]
 anchors_preset = -1

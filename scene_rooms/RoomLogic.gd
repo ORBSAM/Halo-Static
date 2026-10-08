@@ -51,16 +51,23 @@ func update_doors(coords: Vector2i) -> void:
 	if DungeonManager == null:
 		return
 		
-	var has_west_room = DungeonManager.grid.has(coords + Vector2i.LEFT)
-	var has_east_room = DungeonManager.grid.has(coords + Vector2i.RIGHT)
+	var has_west = DungeonManager.grid.has(coords + Vector2i.LEFT)
+	var has_east = DungeonManager.grid.has(coords + Vector2i.RIGHT)
+	var has_north = DungeonManager.grid.has(coords + Vector2i.UP)
+	var has_south = DungeonManager.grid.has(coords + Vector2i.DOWN)
 	
 	if door_west:
-		door_west.visible = has_west_room
-		door_west.set_deferred("monitoring", has_west_room)
-		
+		door_west.visible = has_west
+		door_west.set_deferred("monitoring", has_west)
 	if door_east:
-		door_east.visible = has_east_room
-		door_east.set_deferred("monitoring", has_east_room)
+		door_east.visible = has_east
+		door_east.set_deferred("monitoring", has_east)
+	if door_north:
+		door_north.visible = has_north
+		door_north.set_deferred("monitoring", has_north)
+	if door_south:
+		door_south.visible = has_south
+		door_south.set_deferred("monitoring", has_south)
 
 func spawn_random_enemies() -> void:
 	if enemy_scenes.is_empty():

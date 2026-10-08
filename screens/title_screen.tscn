@@ -1,9 +1,16 @@
 [gd_scene format=3 uid="uid://fpy5go74uxgx"]
 
-[ext_resource type="Script" uid="uid://cp54yf1ln7i5p" path="res://screens/title_screen.gd" id="1_grftj"]
+[ext_resource type="Script" uid="uid://cp54yf1ln7i5p" path="res://screens/TitleScreen.gd" id="1_grftj"]
 [ext_resource type="Texture2D" uid="uid://dbja30q4byr12" path="res://screens/screen_images/halo_static_icon.png" id="2_81buc"]
 [ext_resource type="Texture2D" uid="uid://d3ivbs4fcsgd7" path="res://screens/screen_images/stags.svg" id="2_n8gtu"]
 [ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="2_sxlwc"]
+
+[sub_resource type="Gradient" id="Gradient_txg6x"]
+colors = PackedColorArray(0, 0, 0, 1, 0.88235295, 0.8745098, 0, 0.15294118)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aqe1g"]
+gradient = SubResource("Gradient_txg6x")
+width = 10
 
 [sub_resource type="Gradient" id="Gradient_n8gtu"]
 colors = PackedColorArray(0, 0, 0, 1, 0.88510495, 5.015224e-05, 0.6612694, 1)
@@ -19,13 +26,6 @@ colors = PackedColorArray(0, 0, 0, 1, 0.91764706, 0.003921569, 0, 0.79607844)
 gradient = SubResource("Gradient_cjojn")
 fill_from = Vector2(1, 1)
 fill_to = Vector2(0.491453, 0.43589744)
-
-[sub_resource type="Gradient" id="Gradient_txg6x"]
-colors = PackedColorArray(0, 0, 0, 1, 0.88235295, 0.8745098, 0, 0.15294118)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_aqe1g"]
-gradient = SubResource("Gradient_txg6x")
-width = 10
 
 [node name="TitleScreen" type="Control" unique_id=270575899]
 layout_mode = 3
@@ -56,12 +56,16 @@ expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=374052765]
 layout_mode = 1
-anchors_preset = 4
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = 9.0
-offset_right = 309.0
-offset_bottom = 263.0
+offset_left = -221.5
+offset_top = -103.0
+offset_right = 221.5
+offset_bottom = 324.0
+grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 40
@@ -91,32 +95,34 @@ action_mode = 0
 text = "QUIT"
 
 [node name="Logo" type="TextureRect" parent="." unique_id=1638262792]
+light_mask = 0
 custom_minimum_size = Vector2(40, 40)
-custom_maximum_size = Vector2(300, 300)
+custom_maximum_size = Vector2(500, 500)
 layout_mode = 0
-offset_left = 2.0
-offset_top = 1.0
-offset_right = 302.0
-offset_bottom = 301.0
+offset_left = 323.0
+offset_top = -78.0
+offset_right = 823.0
+offset_bottom = 422.0
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
 mouse_filter = 2
 texture = ExtResource("2_81buc")
 expand_mode = 5
 
-[node name="PinkLight" type="PointLight2D" parent="." unique_id=1991473507]
-position = Vector2(312.31992, 320.86783)
-scale = Vector2(-62.12486, 642.73566)
-texture = SubResource("GradientTexture1D_xfo6b")
-
-[node name="RedLight" type="PointLight2D" parent="." unique_id=2000910204]
-position = Vector2(881, 325.5)
-scale = Vector2(8.3125, 10.078125)
-texture = SubResource("GradientTexture2D_cjojn")
-
 [node name="YellowLight" type="PointLight2D" parent="." unique_id=1237206055]
-position = Vector2(550, 325)
+position = Vector2(206.99988, 185.00002)
 rotation = 3.1415927
 scale = Vector2(62.12486, -642.73566)
 color = Color(1, 1, 0.54901963, 1)
 texture = SubResource("GradientTexture1D_aqe1g")
+
+[node name="PinkLight" type="PointLight2D" parent="." unique_id=1991473507]
+position = Vector2(1034, 221)
+rotation = 3.1415927
+scale = Vector2(63.572876, -647.56714)
+texture = SubResource("GradientTexture1D_xfo6b")
+
+[node name="RedLight" type="PointLight2D" parent="." unique_id=2000910204]
+position = Vector2(566, 515)
+scale = Vector2(8.3125, 10.078125)
+texture = SubResource("GradientTexture2D_cjojn")

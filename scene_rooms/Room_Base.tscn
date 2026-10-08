@@ -541,6 +541,10 @@ position = Vector2(232, 110)
 [node name="BottomRightMarker" type="Marker2D" parent="." unique_id=6988005]
 position = Vector2(763, 418)
 
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1124712755]
+visible = false
+color = Color(0.06666667, 0.06666667, 0.101960786, 0.37254903)
+
 [connection signal="body_entered" from="Doors/DoorWest" to="." method="_on_door_west_body_entered"]
 [connection signal="body_entered" from="Doors/DoorEast" to="." method="_on_door_east_body_entered"]
 [connection signal="body_entered" from="Doors/DoorNorth" to="." method="_on_door_north_body_entered"]

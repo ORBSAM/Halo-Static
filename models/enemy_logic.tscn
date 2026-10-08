@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cwpfrjyy6bkwk"]
 
 [ext_resource type="Script" uid="uid://baainhppb5ewk" path="res://models/EnemyBase.gd" id="1_16ua8"]
+[ext_resource type="Texture2D" uid="uid://b350jwt2tgchl" path="res://addons/rmsmartshape/assets/light1-1.png" id="2_jlocx"]
+[ext_resource type="FontFile" uid="uid://b4hnjj3j8e5mf" path="res://fonts/enemy_font.ttf" id="3_xjkwp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_16ua8"]
 radius = 6.0827627
@@ -17,3 +19,21 @@ shape = SubResource("CircleShape2D_16ua8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1826838139]
 scale = Vector2(0.05, 0.05)
+
+[node name="PointLight2D" type="PointLight2D" parent="Sprite2D" unique_id=149174226]
+position = Vector2(-7.6293945e-06, 0)
+scale = Vector2(10, 10.751)
+color = Color(0.93333334, 0, 0.21176471, 0.60784316)
+shadow_color = Color(0.93333334, 0, 0.95686275, 0.8784314)
+texture = ExtResource("2_jlocx")
+texture_scale = 0.05
+
+[node name="DamageLabel" type="Label" parent="." unique_id=1532732656]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.42230794, 0, 0.023707861, 1)
+theme_override_colors/font_shadow_color = Color(0.2627451, 0, 0, 0.88235295)
+theme_override_fonts/font = ExtResource("3_xjkwp")
+theme_override_font_sizes/font_size = 20
+text = "TEST"

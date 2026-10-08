@@ -17,7 +17,6 @@ config/icon="uid://dos7obw5ntd0e"
 
 [autoload]
 
-GlobalManager="*uid://b5htgu3qkrwis"
 DialogueManager="*uid://c3rodes2l3gxb"
 DungeonManager="*uid://cuvsmgq6q81yn"
 HUD="*uid://vw06m5mvrq3e"

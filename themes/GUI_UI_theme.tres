@@ -1,44 +1,29 @@
 [gd_resource type="Theme" format=3 uid="uid://bbhrga8hinx4m"]
 
-[ext_resource type="Script" uid="uid://cjmmhbp1b5312" path="res://addons/StyleboxFancy/StyleBorder.gd" id="1_tsr4x"]
-[ext_resource type="Script" uid="uid://bkl6g25jwb47h" path="res://addons/StyleboxFancy/StyleBoxFancy.gd" id="2_ctd4n"]
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="1_2wp4o"]
 
-[sub_resource type="StyleBox" id="StyleBox_fgfhh"]
-resource_local_to_scene = false
-resource_name = ""
-content_margin_left = -1.0
-content_margin_top = -1.0
-content_margin_right = -1.0
-content_margin_bottom = -1.0
-script = ExtResource("2_ctd4n")
-color = Color(0.97285587, 0.6326801, 0.8820576, 1)
-corner_detail = 2
-expand_margin_left = 5.0
-expand_margin_right = 5.0
-shadow_enabled = true
-shadow_color = Color(0.52212095, 2.2043883e-05, 0.3994375, 0.6)
-shadow_blur = 10
-metadata/_custom_type_script = "uid://bkl6g25jwb47h"
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wp4o"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 5
+border_color = Color(0.9415416, 0.67442095, 0.995886, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 5
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 5
+corner_detail = 1
 
-[sub_resource type="StyleBox" id="StyleBox_e2vrw"]
-resource_local_to_scene = false
-resource_name = ""
-content_margin_left = -1.0
-content_margin_top = -1.0
-content_margin_right = -1.0
-content_margin_bottom = -1.0
-script = ExtResource("2_ctd4n")
-color = Color(0.8745098, 0.24705882, 0.8745098, 1)
-expand_margin_left = 5.0
-expand_margin_top = 1.0
-expand_margin_right = 5.0
-expand_margin_bottom = 1.0
-shadow_enabled = true
-shadow_color = Color(0.3787622, 1.1406988e-05, 0.2865536, 0.6)
-shadow_blur = 10
-metadata/_custom_type_script = "uid://bkl6g25jwb47h"
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mw6it"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.9415416, 0.67442095, 0.995886, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 5
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 5
+corner_detail = 1
 
 [resource]
-Button/colors/font_color = Color(1, 1, 1, 1)
-Button/styles/normal = SubResource("StyleBox_fgfhh")
-Button/styles/pressed = SubResource("StyleBox_e2vrw")
+Button/colors/font_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
+Button/fonts/font = ExtResource("1_2wp4o")
+Button/styles/normal = SubResource("StyleBoxFlat_2wp4o")
+Button/styles/pressed = SubResource("StyleBoxFlat_mw6it")
