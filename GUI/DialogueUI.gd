@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 
 # ==========================================
 # DIALOGUE OVERLAY ENGINE
@@ -6,7 +6,7 @@ extends CanvasLayer
 # ==========================================
 
 @onready var panel: Panel = $Panel
-@onready var portrait: TextureRect = $Portrait
+@onready var portrait: TextureRect = $Panel/Portrait
 @onready var name_label: Label = $Panel/NamePanel/NameLabel
 @onready var text_label: Label = $Panel/TextLabel
 

@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://bns5xeqeeqko0"]
 
+[ext_resource type="Script" uid="uid://bmrxpjweap0yk" path="res://scene_rooms/KeyVaultLogic.gd" id="1_su8y5"]
 [ext_resource type="Texture2D" uid="uid://bc4ay7ehrss8y" path="res://background_prefabs/dungeon_tiles_folder/walls_floor.png" id="1_xgi4y"]
 [ext_resource type="Texture2D" uid="uid://f10bqi0ts035" path="res://background_prefabs/dungeon_tiles_folder/doors_lever_chest_animation.png" id="2_c1vy5"]
 
@@ -443,7 +444,7 @@ size = Vector2(20, 10)
 size = Vector2(44, 11)
 
 [node name="2D_Vault" type="Node2D" unique_id=1256971738]
-position = Vector2(-1, 1)
+script = ExtResource("1_su8y5")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=234851904]
 visible = false

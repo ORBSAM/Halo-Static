@@ -58,9 +58,10 @@ func _on_body_entered(body: Node2D) -> void:
 func collect(player: Node2D) -> void:
 	match item_type:
 		ItemType.HARMONIC:
-			if player.has_method("add_harmonic_energy"):
+			if player.has_method("add_harmonic_energy") and player.has_method("heal"):
 				player.add_harmonic_energy(value)
-				print("Picked up Harmonic Shard (+", value, " energy)")
+				player.heal(value)
+				print("Picked up Harmonic Shard (+", value, " energy & health)")
 		ItemType.CHAOTIC:
 			if player.has_method("take_damage"):
 				player.take_damage(value)
@@ -70,8 +71,9 @@ func collect(player: Node2D) -> void:
 				player.add_key(1)
 				print("Picked up Dungeon Key!")
 	
-	# General inventory tracking call if used
+	# general inventory tracking call if used
 	if player.has_method("add_item"):
 		player.add_item(item_type)
 	
+	# free item
 	queue_free()
