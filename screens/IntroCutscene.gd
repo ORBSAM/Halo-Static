@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 	if auto_scroll and scroll_container:
 		scroll_container.scroll_vertical += int(scroll_speed * delta)
 		
-		# Check if scrolled to bottom
+		# check if scrolled to bottom
 		var max_scroll = scroll_container.get_v_scroll_bar().max_value - scroll_container.size.y
 		if scroll_container.scroll_vertical >= max_scroll:
 			start_game()

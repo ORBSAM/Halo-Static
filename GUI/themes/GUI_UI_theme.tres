@@ -1,0 +1,29 @@
+[gd_resource type="Theme" format=3 uid="uid://dk4bu2i5ty13j"]
+
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="1_nsoio"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wp4o"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 5
+border_color = Color(0.9415416, 0.67442095, 0.995886, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 5
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 5
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mw6it"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.9415416, 0.67442095, 0.995886, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 5
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 5
+corner_detail = 1
+
+[resource]
+Button/colors/font_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
+Button/fonts/font = ExtResource("1_nsoio")
+Button/styles/normal = SubResource("StyleBoxFlat_2wp4o")
+Button/styles/pressed = SubResource("StyleBoxFlat_mw6it")

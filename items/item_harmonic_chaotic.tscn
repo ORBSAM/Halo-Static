@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://dysb465htulxk"]
 
+[ext_resource type="Script" uid="uid://xscc0wtj3qp6" path="res://items/Item.gd" id="1_3xlsc"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_flvv0"]
 radius = 5.0
 
 [node name="Item" type="Area2D" unique_id=108440843]
+script = ExtResource("1_3xlsc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=612623649]
 position = Vector2(3, 3)

@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://btpy5bgtprkjw"]
 
+[ext_resource type="Script" uid="uid://b8wska6p27oyf" path="res://scene_rooms/RoomBoss.gd" id="1_pnfd3"]
 [ext_resource type="Texture2D" uid="uid://bc4ay7ehrss8y" path="res://background_prefabs/dungeon_tiles_folder/walls_floor.png" id="1_ybnv4"]
 [ext_resource type="Texture2D" uid="uid://f10bqi0ts035" path="res://background_prefabs/dungeon_tiles_folder/doors_lever_chest_animation.png" id="2_pnfd3"]
 
@@ -423,6 +424,7 @@ sources/1 = SubResource("TileSetAtlasSource_ybnv4")
 
 [node name="2D_Boss" type="Node2D" unique_id=1256971738]
 position = Vector2(-1, 1)
+script = ExtResource("1_pnfd3")
 
 [node name="walls_boss" type="TileMapLayer" parent="." unique_id=1818494331]
 z_index = 1
@@ -450,3 +452,29 @@ rendering_quadrant_size = 24
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=379047569]
 visible = false
 color = Color(0.06666667, 0.06666667, 0.101960786, 0.7294118)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=741461710]
+
+[node name="ItemSpawns" type="Node2D" parent="Spawns" unique_id=716354179]
+
+[node name="ItemMarker1" type="Marker2D" parent="Spawns/ItemSpawns" unique_id=1828691203]
+position = Vector2(495, 231)
+
+[node name="EnemySpawns" type="Node2D" parent="Spawns" unique_id=1950033083]
+
+[node name="EnemyMarker1" type="Marker2D" parent="Spawns/EnemySpawns" unique_id=1240293832]
+position = Vector2(361, 159)
+
+[node name="EnemyMarker2" type="Marker2D" parent="Spawns/EnemySpawns" unique_id=1630585673]
+position = Vector2(575, 355)
+
+[node name="BossSpawn" type="Marker2D" parent="Spawns" unique_id=1411719251]
+position = Vector2(491, 218)
+
+[node name="TopLeftMarker" type="Marker2D" parent="." unique_id=1590701331]
+position = Vector2(232, 103)
+
+[node name="BottomRightMarker" type="Marker2D" parent="." unique_id=334123797]
+position = Vector2(761, 486)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=537597412]

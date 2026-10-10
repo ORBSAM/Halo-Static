@@ -5,10 +5,10 @@ extends CanvasLayer
 # Displays portraits, typewriter text using handwritten .ttf font, and input progression.
 # ==========================================
 
-@onready var panel: Panel = $Control/Panel
-@onready var portrait: TextureRect = $Control/Panel/HBox/Portrait
-@onready var name_label: Label = $Control/Panel/HBox/VBox/NameLabel
-@onready var text_label: Label = $Control/Panel/HBox/VBox/TextLabel
+@onready var panel: Panel = $Panel
+@onready var portrait: TextureRect = $Portrait
+@onready var name_label: Label = $Panel/NamePanel/NameLabel
+@onready var text_label: Label = $Panel/TextLabel
 
 @export var protagonist_portrait: Texture2D
 @export var boss_portrait: Texture2D
@@ -26,19 +26,19 @@ func _ready() -> void:
 
 func start_dialogue(speaker: String, lines: Array[String]) -> void:
 	if is_active:
-		return # Prevent interrupting active dialogue
+		return # prevent interrupting active dialogue
 		
 	is_active = true
 	current_speaker = speaker
 	current_lines = lines
 	line_index = 0
 	
-	# Freeze player
+	# freeze player
 	var player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.set_physics_process(false)
 		
-	# Setup portrait and name
+	# setup portrait and name
 	name_label.text = speaker
 	if speaker.to_lower() == "boss" and boss_portrait:
 		portrait.texture = boss_portrait
@@ -85,7 +85,7 @@ func close_dialogue() -> void:
 	is_active = false
 	hide()
 	
-	# Unfreeze player
+	# unfreeze player
 	var player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.set_physics_process(true)

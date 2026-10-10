@@ -6,11 +6,11 @@ enum ItemType { HARMONIC, CHAOTIC, KEY }
 @export var item_type: ItemType = ItemType.HARMONIC:
 	set(value):
 		item_type = value
-		# Automatically update visuals if node is ready in tree
+		# automatically update visuals if node is ready in tree
 		if is_node_ready():
 			update_item_appearance()
 
-@export var item_name: String = "Harmonic Shard"
+@export var item_name: String
 @export var value: float = 25.0
 
 # Color mapping for placeholders and glow
@@ -33,7 +33,7 @@ const TYPE_NAMES = {
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	update_item_appearance()
-
+	
 func update_item_appearance() -> void:
 	var item_color = TYPE_COLORS.get(item_type, Color.WHITE)
 	item_name = TYPE_NAMES.get(item_type, "Item")

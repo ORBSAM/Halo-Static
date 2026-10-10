@@ -92,33 +92,36 @@ func spawn_random_items() -> void:
 		if randf() > 0.3:
 			continue
 			
+		# inside spawn_random_items() in Room_Base.gd:
 		var item_scene = item_scenes.pick_random()
 		if item_scene:
 			var item = item_scene.instantiate()
 			item.global_position = marker.global_position
-			
-			# Configure random item type variant
-			if item.has_method("set_item_type"):
-				var rand_val = randf()
-				if rand_val < 0.6:
-					item.set_item_type(0) # HARMONIC (60% chance)
-				elif rand_val < 0.9:
-					item.set_item_type(1) # CHAOTIC (30% chance)
-				else:
-					item.set_item_type(2) # KEY (10% chance)
-					
+	
+			# determine type directly
+			var rand_val = randf()
+			if rand_val < 0.6:
+				item.item_type = Item.ItemType.HARMONIC
+			elif rand_val < 0.9:
+				item.item_type = Item.ItemType.CHAOTIC
+			else:
+				item.item_type = Item.ItemType.KEY
+
+			# add to scene tree
 			add_child(item)
-			
+	
+			# force visual refresh after entering tree
 			if item.has_method("update_item_appearance"):
 				item.update_item_appearance()
 
 # spawn_test_entities
 func spawn_test_entities() -> void:
-	# Fallback for standalone F6 testing
+	# fallback for standalone F6 testing
 	spawn_random_enemies()
 	spawn_random_items()
 
 # _on_door_west_body_entered
+# when you enter the western door, go "down" one on the X-axis
 func _on_door_west_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		door_west.set_deferred("monitoring", false)
@@ -126,6 +129,7 @@ func _on_door_west_body_entered(body: Node2D) -> void:
 			DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.LEFT)
 
 # _on_door_east_body_entered
+# when you enter an eastern door, go up one on the X-axis
 func _on_door_east_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		door_east.set_deferred("monitoring", false) # prevents spam
@@ -133,11 +137,15 @@ func _on_door_east_body_entered(body: Node2D) -> void:
 		if DungeonManager and DungeonManager.has_method("transition_to_room"):
 			DungeonManager.transition_to_room(target_coords)
 			
+# _on_door_north_body_entered
+# when you enter a northern door, go up one on the Y-axis
 func _on_door_north_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		door_north.set_deferred("monitoring", false)
 		DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.UP)
 
+# _on_door_south_body_entered
+# when you enter a southern door, go down one on the Y-axis
 func _on_door_south_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		door_south.set_deferred("monitoring", false)

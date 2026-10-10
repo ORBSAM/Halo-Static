@@ -1,6 +1,20 @@
 [gd_scene format=3 uid="uid://cmsdje726m8yw"]
 
 [ext_resource type="Script" uid="uid://bgtc4slfe2rva" path="res://GUI/DialogueUI.gd" id="1_qmici"]
+[ext_resource type="StyleBox" uid="uid://daxrd3upawsbq" path="res://GUI/themes/style_box_theme.tres" id="2_8hfyi"]
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="3_xmy6g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmy6g"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 10
+border_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
+border_blend = true
+corner_radius_top_left = 60
+corner_radius_top_right = 5
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 10
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vlcmw"]
 
 [node name="text_box_control" type="Control" unique_id=1149151188]
 layout_mode = 3
@@ -13,24 +27,42 @@ script = ExtResource("1_qmici")
 
 [node name="Panel" type="Panel" parent="." unique_id=1890717189]
 layout_mode = 0
-offset_left = 66.0
-offset_top = 468.0
-offset_right = 1044.0
-offset_bottom = 646.0
+offset_left = 70.0
+offset_top = 436.0
+offset_right = 1048.0
+offset_bottom = 614.0
+theme_override_styles/panel = ExtResource("2_8hfyi")
 
-[node name="HBox" type="HBoxContainer" parent="Panel" unique_id=911987972]
+[node name="NamePanel" type="Panel" parent="Panel" unique_id=1615654005]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 214.0
+offset_top = -37.0
+offset_right = 500.0
+offset_bottom = 28.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xmy6g")
 
-[node name="Portrait" type="TextureRect" parent="Panel/HBox" unique_id=1751697838]
-layout_mode = 2
+[node name="NameLabel" type="Label" parent="Panel/NamePanel" unique_id=1626546896]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 11.0
+offset_right = 258.0
+offset_bottom = 46.0
+theme_override_fonts/font = ExtResource("3_xmy6g")
 
-[node name="VBox" type="VBoxContainer" parent="Panel/HBox" unique_id=783096443]
-layout_mode = 2
+[node name="Portrait" type="TextureRect" parent="Panel" unique_id=1751697838]
+custom_minimum_size = Vector2(60, 50)
+layout_mode = 0
+offset_left = -21.0
+offset_top = -31.0
+offset_right = 200.0
+offset_bottom = 177.0
+texture = SubResource("PlaceholderTexture2D_vlcmw")
 
-[node name="NameLabel" type="Label" parent="Panel/HBox/VBox" unique_id=1626546896]
-layout_mode = 2
-
-[node name="TextLabel" type="Label" parent="Panel/HBox/VBox" unique_id=1599640531]
-layout_mode = 2
+[node name="TextLabel" type="Label" parent="Panel" unique_id=1599640531]
+layout_mode = 0
+offset_left = 217.0
+offset_top = 33.0
+offset_right = 960.0
+offset_bottom = 159.0
+theme_override_fonts/font = ExtResource("3_xmy6g")
+horizontal_alignment = 1

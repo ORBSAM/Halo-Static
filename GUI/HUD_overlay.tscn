@@ -2,17 +2,9 @@
 
 [ext_resource type="Script" uid="uid://clafcwvprt817" path="res://GUI/HUDOverlay.gd" id="1_ssm0s"]
 [ext_resource type="Material" uid="uid://dpec5hjpflmri" path="res://addons/rmsmartshape/examples/edge_shader/material_edge_shader.tres" id="2_3dox3"]
+[ext_resource type="StyleBox" uid="uid://daxrd3upawsbq" path="res://GUI/themes/style_box_theme.tres" id="3_wk7dk"]
 [ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="4_3dox3"]
-[ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="5_wk7dk"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e270b"]
-bg_color = Color(1, 1, 1, 1)
-border_width_bottom = 2
-border_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[ext_resource type="Theme" uid="uid://dk4bu2i5ty13j" path="res://GUI/themes/GUI_UI_theme.tres" id="5_mw6it"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mw6it"]
 bg_color = Color(0.36862746, 0.6901961, 0.28627452, 0.5647059)
@@ -40,6 +32,15 @@ corner_radius_bottom_left = 5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh2jj"]
 bg_color = Color(0.9764706, 0.28627452, 0.7490196, 0.81960785)
 border_color = Color(0.9764706, 0.28627452, 0.7490196, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e270b"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -75,7 +76,7 @@ offset_bottom = 91.448
 [node name="Panel" type="Panel" parent="Control/TopLeft" unique_id=1825627825]
 material = ExtResource("2_3dox3")
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_e270b")
+theme_override_styles/panel = ExtResource("3_wk7dk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/TopLeft/Panel" unique_id=334316637]
 custom_minimum_size = Vector2(100, 100)
@@ -167,13 +168,13 @@ layout_mode = 2
 [node name="E-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=170196428]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
-theme = ExtResource("5_wk7dk")
+theme = ExtResource("5_mw6it")
 text = "E"
 
 [node name="Q-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=756833691]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
-theme = ExtResource("5_wk7dk")
+theme = ExtResource("5_mw6it")
 text = "Q"
 icon_alignment = 1
 
