@@ -4,18 +4,31 @@ extends CanvasLayer
 @onready var energy_bar: ProgressBar = $"Control/TopLeft/Panel/VBoxContainer/Harmony Bar"
 @onready var room_label: Label = $"Control/TopRight/RoomTrackerLabel"
 
+@onready var key_icon: ColorRect = $Key_Icon_Place
+@onready var saber_button: Button = $"Control/BoxContainer/HBoxContainer/E-Icon Weapon"
+@onready var orb_button: Button = $"Control/BoxContainer/HBoxContainer/Q-Icon Weapon"
+
 func _ready() -> void:
 	# 1. Connect DungeonManager signals
 	if DungeonManager:
 		DungeonManager.room_changed.connect(_on_room_changed)
 		_on_room_changed(DungeonManager.current_room_coords)
 		
-	# 2. Connect Player signals dynamically
+	# Initially hide key icon
+	if key_icon:
+		key_icon.visible = false
+		
+	# Connect GUI weapon button clicks
+	if saber_button:
+		saber_button.pressed.connect(_on_saber_button_pressed)
+	if orb_button:
+		orb_button.pressed.connect(_on_orb_button_pressed)
+		
+	# Connect to player signals
 	var player = get_tree().get_first_node_in_group("player")
 	if player:
 		connect_player_signals(player)
 	else:
-		# If player spawns slightly later, wait for node
 		get_tree().node_added.connect(_on_node_added)
 
 func _on_node_added(node: Node) -> void:
@@ -31,7 +44,7 @@ func connect_player_signals(player: Node) -> void:
 	# Initialize initial values immediately
 	update_health(player.current_health, player.max_health)
 	update_energy(player.harmonic_energy, player.MAX_HARMONIC)
-
+	
 func update_health(current: float, max_val: float) -> void:
 	if health_bar:
 		health_bar.max_value = max_val
@@ -41,6 +54,28 @@ func update_energy(current: float, max_val: float) -> void:
 	if energy_bar:
 		energy_bar.max_value = max_val
 		energy_bar.value = current
+	
+func _on_weapon_changed(weapon_index: int) -> void:
+	# Highlight selected button and unhighlight the other
+	# Assuming 0 = Saber, 1 = Orb of Light
+	if saber_button:
+		saber_button.button_pressed = (weapon_index == 0)
+	if orb_button:
+		orb_button.button_pressed = (weapon_index == 1)
+
+func _on_saber_button_pressed() -> void:
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_method("equip_weapon"):
+		player.equip_weapon(player.Weapon.SABER)
+
+func _on_orb_button_pressed() -> void:
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_method("equip_weapon"):
+		player.equip_weapon(player.Weapon.ORB_OF_LIGHT)
+		
+func _on_key_collected(has_key: bool) -> void:
+	if key_icon:
+		key_icon.visible = has_key
 
 func _on_room_changed(coords: Vector2i) -> void:
 	if room_label and DungeonManager:

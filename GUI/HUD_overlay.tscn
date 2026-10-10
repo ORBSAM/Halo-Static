@@ -169,12 +169,14 @@ layout_mode = 2
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
 theme = ExtResource("5_mw6it")
+toggle_mode = true
 text = "E"
 
 [node name="Q-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=756833691]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
 theme = ExtResource("5_mw6it")
+toggle_mode = true
 text = "Q"
 icon_alignment = 1
 

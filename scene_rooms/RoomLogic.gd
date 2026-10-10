@@ -102,11 +102,9 @@ func spawn_random_items() -> void:
 			var rand_val = randf()
 			if rand_val < 0.6:
 				item.item_type = Item.ItemType.HARMONIC
-			elif rand_val < 0.9:
-				item.item_type = Item.ItemType.CHAOTIC
 			else:
-				item.item_type = Item.ItemType.KEY
-
+				item.item_type = Item.ItemType.CHAOTIC
+  
 			# add to scene tree
 			add_child(item)
 	

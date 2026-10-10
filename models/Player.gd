@@ -9,6 +9,7 @@ extends CharacterBody2D
 signal health_changed(current_hp, max_hp)
 signal harmonic_changed(current_harmony, max_harmony)
 signal weapon_changed(current_weapon: Weapon)
+signal key_collected(has_key: bool)
 
 # stats
 @export var max_health: float = 100.0
@@ -22,6 +23,10 @@ const BLAST_THRESHOLD: float = 100.0
 # base Combat Stats
 @export var base_weapon_damage: float = 10.0
 @export var speed: float = 160.0
+
+# key variables
+var has_dungeon_key: bool = false
+
 
 # weapon Types
 enum Weapon {
@@ -256,6 +261,11 @@ func fire_orb_duplicate() -> void:
 	var tween = create_tween()
 	tween.tween_property(projectile, "global_position", target_pos, duration)
 	tween.finished.connect(projectile.queue_free)
+
+func add_key(amount: int = 1) -> void:
+	has_dungeon_key = true
+	key_collected.emit(true)
+	print("Key added to inventory!")
 
 # add_harmonic_energy
 func add_harmonic_energy(amount: float) -> void:
