@@ -20,19 +20,25 @@ enum DoorFlags {
 # preload all rooms
 @export var room_scenes: Dictionary = {
 	"BASE": preload("res://scene_rooms/Room_Base.tscn"),          # Doors: N, E, S, W (Mask: 15)
-	"BC": preload("res://scene_rooms/Room_Base_BC.tscn"),          # Doors: N, W       (Mask: 9)
+	"BC": preload("res://scene_rooms/Room_Base_BC.tscn"),          # Doors: N, E       (Mask: 9)
 	"SIDE": preload("res://scene_rooms/Room_Base_Side.tscn"),      # Doors: N, S, W    (Mask: 13)
-	"TC": preload("res://scene_rooms/Room_Base_TC.tscn"),          # Doors: S, W       (Mask: 12)
+	"TC": preload("res://scene_rooms/Room_Base_TC.tscn"),          # Doors: S, E      (Mask: 12)
 	"BOSS": preload("res://scene_rooms/Room_Boss.tscn"),          # Doors: S          (Mask: 4)
 	"KEY_VAULT": preload("res://scene_rooms/Room_KeyVault.tscn")  # Doors: N, E, S, W (Mask: 15)
 }
 
 const TEMPLATE_MASKS = {
+	# base room has all sides
 	"BASE": DoorFlags.NORTH | DoorFlags.EAST | DoorFlags.SOUTH | DoorFlags.WEST, # 15
-	"BC": DoorFlags.NORTH | DoorFlags.WEST,                                      # 9
+	# the bottom corner has only the northern door, and the eastern door
+	"BC": DoorFlags.NORTH | DoorFlags.EAST,                                      # 9
+	# side room only is missing the eastern door
 	"SIDE": DoorFlags.NORTH | DoorFlags.SOUTH | DoorFlags.WEST,                  # 13
-	"TC": DoorFlags.SOUTH | DoorFlags.WEST,                                      # 12
+	# top corner only has the southern door and the eastern door
+	"TC": DoorFlags.SOUTH | DoorFlags.EAST,                                      # 12
+	# the boss room only has the southern door
 	"BOSS": DoorFlags.SOUTH,                                                     # 4
+	# vault always has all doors
 	"KEY_VAULT": DoorFlags.NORTH | DoorFlags.EAST | DoorFlags.SOUTH | DoorFlags.WEST # 15
 }
 
@@ -57,15 +63,17 @@ var is_transitioning: bool = false
 # did the room change?
 signal room_changed(coords: Vector2i)
 
+# _ready
 # let the main menu handle this with start_new_game
 func _ready() -> void:
 	pass	
 	
+# start_new_game
 func start_new_game() -> void:
 	# 1. instantly remove the title screen / current scene
 	var current_scene = get_tree().current_scene
 	if current_scene:
-		current_scene.queue_free() # Sshedule for cleanup
+		current_scene.queue_free() # schedule for cleanup
 		current_scene.get_parent().remove_child(current_scene) # remove from tree IMMEDIATELY so it stops rendering!
 		get_tree().current_scene = null
 
@@ -79,6 +87,7 @@ func start_new_game() -> void:
 	generate_dungeon_layout()
 	load_room(Vector2i.ZERO)
 
+# generate_dungeon_layout
 # Generate 2D Layout and Match Templates with Rotations
 func generate_dungeon_layout() -> void:
 	grid.clear()
@@ -100,7 +109,7 @@ func generate_dungeon_layout() -> void:
 				layout_positions.append(next_pos)
 			curr = next_pos
 
-	# 2. Assign required door masks based on adjacent rooms
+	# 2. assign required door masks based on adjacent rooms
 	var room_required_doors: Dictionary = {}
 	for pos in layout_positions:
 		var mask = 0
@@ -110,7 +119,7 @@ func generate_dungeon_layout() -> void:
 		if layout_positions.has(pos + Vector2i.LEFT): mask |= DoorFlags.WEST
 		room_required_doors[pos] = mask
 
-	# 3. Select special room locations (Boss & Key Vault at path ends)
+	# 3. select special room locations (Boss & Key Vault at path ends)
 	var end_rooms: Array[Vector2i] = []
 	for pos in layout_positions:
 		if pos != Vector2i.ZERO and get_door_count(room_required_doors[pos]) == 1:
@@ -122,7 +131,7 @@ func generate_dungeon_layout() -> void:
 	var boss_pos = end_rooms.pop_back()
 	var key_vault_pos = end_rooms.pop_back()
 
-	# 4. Match required door masks to rotated room templates
+	# 4. match required door masks to rotated room templates
 	for pos in layout_positions:
 		var required_mask = room_required_doors[pos]
 		var match_data = {}
@@ -136,6 +145,7 @@ func generate_dungeon_layout() -> void:
 
 		grid[pos] = match_data
 
+# rotate_mask
 func rotate_mask(mask: int, steps: int) -> int:
 	var rotated = mask
 	for i in range(steps):
@@ -147,6 +157,7 @@ func rotate_mask(mask: int, steps: int) -> int:
 		rotated = new_mask
 	return rotated
 
+# find_template_match
 # Find a template and rotation angle matching required doors
 func find_template_match(required_mask: int, allowed_templates: Array) -> Dictionary:
 	for template_name in allowed_templates:
@@ -170,13 +181,17 @@ func find_template_match(required_mask: int, allowed_templates: Array) -> Dictio
 		"type": "BASE"
 	}
 
+# get_door_count
+# get the number of doors in a room
 func get_door_count(mask: int) -> int:
 	var count = 0
 	for i in range(4):
 		if (mask & (1 << i)) != 0:
 			count += 1
 	return count
-		
+
+# transition_to_room
+
 func transition_to_room(new_coords: Vector2i) -> void:
 	print("Attempting transition to: ", new_coords, " | Exists in grid: ", grid.has(new_coords))
 	
@@ -186,16 +201,16 @@ func transition_to_room(new_coords: Vector2i) -> void:
 		
 	is_transitioning = true
 	
-	# Calculate directional shift (e.g. Vector2i.UP)
+	# calculate directional shift (e.g. Vector2i.UP)
 	last_entry_direction = new_coords - current_room_coords
 	
 	if screen_fader and screen_fader.has_method("fade_out"):
 		await screen_fader.fade_out(0.3)
 	
-	# Clear active projectiles before loading the room
+	# clear active projectiles before loading the room
 	clear_active_projectiles()
 	
-	# Defer load_room so physics finishes flushing before scenes swap
+	# defer load_room so physics finishes flushing before scenes swap
 	call_deferred("load_room", new_coords)
 	
 	if screen_fader and screen_fader.has_method("fade_in"):
