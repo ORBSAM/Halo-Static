@@ -29,7 +29,7 @@ func _ready() -> void:
 		spawn_test_entities()
 
 # setup_room
-func setup_room(coords: Vector2i, room_type: String) -> void:
+func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i = Vector2i.ZERO) -> void:	
 	update_doors(coords)
 	
 	# reposition player to spawn marker upon entering
@@ -42,10 +42,31 @@ func setup_room(coords: Vector2i, room_type: String) -> void:
 			player.velocity = Vector2.ZERO
 
 		# 2. update global position
-		player.global_position = player_spawn.global_position
+		var spawn_pos = get_spawn_position_for_entry(entry_direction)
+		player.global_position = spawn_pos
 	
 	spawn_random_enemies()
 	spawn_random_items()
+
+func get_spawn_position_for_entry(entry_dir: Vector2i) -> Vector2:
+	# If player moved NORTH into this room, spawn them at the SOUTH spawn point
+	match entry_dir:
+		Vector2i.UP:
+			var node = get_node_or_null("Spawns/SpawnSouth")
+			if node: return node.global_position
+		Vector2i.DOWN:
+			var node = get_node_or_null("Spawns/SpawnNorth")
+			if node: return node.global_position
+		Vector2i.RIGHT:
+			var node = get_node_or_null("Spawns/SpawnWest")
+			if node: return node.global_position
+		Vector2i.LEFT:
+			var node = get_node_or_null("Spawns/SpawnEast")
+			if node: return node.global_position
+			
+	# default fallback marker
+	var default_spawn = get_node_or_null("Spawns/PlayerSpawn")
+	return default_spawn.global_position if default_spawn else global_position
 	
 func update_doors(coords: Vector2i) -> void:
 	if DungeonManager == null:
@@ -117,6 +138,10 @@ func spawn_test_entities() -> void:
 	# fallback for standalone F6 testing
 	spawn_random_enemies()
 	spawn_random_items()
+
+# ==========================================
+# CARDINAL DOOR TRANSITIONS
+# ==========================================
 
 # _on_door_west_body_entered
 # when you enter the western door, go "down" one on the X-axis

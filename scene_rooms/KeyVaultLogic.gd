@@ -25,20 +25,44 @@ func _ready() -> void:
 	if get_tree().get_nodes_in_group("player").size() == 0:
 		spawn_test_entities()
 
-func setup_room(coords: Vector2i, room_type: String) -> void:
+func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i = Vector2i.ZERO) -> void:	
 	update_doors(coords)
 	
-	# reposition player to spawn marker
 	var players = get_tree().get_nodes_in_group("player")
-	if players.size() > 0 and player_spawn:
+	if players.size() > 0:
 		var player = players[0]
+		
+		# reset movement physics
 		if "velocity" in player:
 			player.velocity = Vector2.ZERO
-		player.global_position = player_spawn.global_position
+		
+		# reposition player based on entry side
+		var spawn_pos = get_spawn_position_for_entry(entry_direction)
+		player.global_position = spawn_pos
 	
 	spawn_guaranteed_key_and_loot()
 	spawn_random_enemies()
 	trigger_vault_dialogue()
+
+func get_spawn_position_for_entry(entry_dir: Vector2i) -> Vector2:
+	# If player moved NORTH into this room, spawn them at the SOUTH spawn point
+	match entry_dir:
+		Vector2i.UP:
+			var node = get_node_or_null("Spawns/SpawnSouth")
+			if node: return node.global_position
+		Vector2i.DOWN:
+			var node = get_node_or_null("Spawns/SpawnNorth")
+			if node: return node.global_position
+		Vector2i.RIGHT:
+			var node = get_node_or_null("Spawns/SpawnWest")
+			if node: return node.global_position
+		Vector2i.LEFT:
+			var node = get_node_or_null("Spawns/SpawnEast")
+			if node: return node.global_position
+			
+	# Default fallback marker
+	var default_spawn = get_node_or_null("Spawns/PlayerSpawn")
+	return default_spawn.global_position if default_spawn else global_position
 
 # Transform local door positions into global grid directions based on room rotation
 func update_doors(coords: Vector2i) -> void:
@@ -89,18 +113,26 @@ func handle_door_transition(door_node: Area2D, local_dir: Vector2i) -> void:
 func _on_door_west_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		handle_door_transition(door_west, Vector2i.LEFT)
-
+		var target_coords = DungeonManager.current_room_coords + Vector2i.LEFT
+		DungeonManager.transition_to_room(target_coords)
+		
 func _on_door_east_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		handle_door_transition(door_east, Vector2i.RIGHT)
+		var target_coords = DungeonManager.current_room_coords + Vector2i.RIGHT
+		DungeonManager.transition_to_room(target_coords)
 
 func _on_door_north_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		handle_door_transition(door_north, Vector2i.UP)
+		var target_coords = DungeonManager.current_room_coords + Vector2i.UP
+		DungeonManager.transition_to_room(target_coords)
 
 func _on_door_south_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		handle_door_transition(door_south, Vector2i.DOWN)
+		var target_coords = DungeonManager.current_room_coords + Vector2i.DOWN
+		DungeonManager.transition_to_room(target_coords)
 
 # Key Vault specific item spawning: Guarantees 1 Key + Harmonic items
 func spawn_guaranteed_key_and_loot() -> void:

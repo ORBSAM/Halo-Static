@@ -6,7 +6,8 @@ extends Node2D
 @onready var top_left_marker: Marker2D = $TopLeftMarker
 @onready var bottom_right_marker: Marker2D = $BottomRightMarker
 
-
+# setup_room
+# set up the room by spawning boss and the dialogue
 func setup_room(coords: Vector2i, room_type: String) -> void:
 	# Spawn boss
 	if boss_scene and boss_spawn:
@@ -24,12 +25,14 @@ func setup_room(coords: Vector2i, room_type: String) -> void:
 			"Your journey ends here!"
 		])
 
+# _on_boss_defeated
+# transition to the cliffhanger cutscene
 func _on_boss_defeated() -> void:
 	print("Boss Defeated!")
 	# Transition to Game Complete / Cliffhanger scene
 	get_tree().change_scene_to_file("res://scenes/GameComplete.tscn")
 	
-	# get_bounds
+# get_bounds
 # set the bounds for the current room (using the walls), which will later be called by the dungeon manager to set up the camera
 # 
 func get_bounds() -> Rect2:

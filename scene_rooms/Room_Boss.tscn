@@ -458,18 +458,24 @@ color = Color(0.06666667, 0.06666667, 0.101960786, 0.7294118)
 [node name="ItemSpawns" type="Node2D" parent="Spawns" unique_id=716354179]
 
 [node name="ItemMarker1" type="Marker2D" parent="Spawns/ItemSpawns" unique_id=1828691203]
-position = Vector2(495, 231)
+position = Vector2(340, 416)
+
+[node name="ItemMarker2" type="Marker2D" parent="Spawns/ItemSpawns" unique_id=1886070919]
+position = Vector2(640, 395)
 
 [node name="EnemySpawns" type="Node2D" parent="Spawns" unique_id=1950033083]
 
 [node name="EnemyMarker1" type="Marker2D" parent="Spawns/EnemySpawns" unique_id=1240293832]
-position = Vector2(361, 159)
+position = Vector2(294, 231)
 
 [node name="EnemyMarker2" type="Marker2D" parent="Spawns/EnemySpawns" unique_id=1630585673]
-position = Vector2(575, 355)
+position = Vector2(640, 235)
 
 [node name="BossSpawn" type="Marker2D" parent="Spawns" unique_id=1411719251]
 position = Vector2(491, 218)
+
+[node name="SpawnSouth" type="Marker2D" parent="Spawns" unique_id=1349409797]
+position = Vector2(501, 500)
 
 [node name="TopLeftMarker" type="Marker2D" parent="." unique_id=1590701331]
 position = Vector2(232, 103)

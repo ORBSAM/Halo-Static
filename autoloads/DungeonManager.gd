@@ -49,6 +49,8 @@ var grid: Dictionary = {}
 var current_room_coords: Vector2i = Vector2i.ZERO
 var current_room_instance: Node2D = null
 
+var last_entry_direction: Vector2i = Vector2i.ZERO
+
 # are we transitioning?
 var is_transitioning: bool = false
 
@@ -184,6 +186,9 @@ func transition_to_room(new_coords: Vector2i) -> void:
 		
 	is_transitioning = true
 	
+	# Calculate directional shift (e.g. Vector2i.UP)
+	last_entry_direction = new_coords - current_room_coords
+	
 	if screen_fader and screen_fader.has_method("fade_out"):
 		await screen_fader.fade_out(0.3)
 	
@@ -208,16 +213,17 @@ func load_room(coords: Vector2i) -> void:
 		current_room_instance = room_data["scene"].instantiate()
 		add_child(current_room_instance)
 		
-		# Apply procedural rotation
+		# apply procedural rotation
 		current_room_instance.rotation_degrees = room_data["rotation"]
 		
-		# Instantiate or persist player
+		# instantiate or persist player
 		if player_instance == null:
 			player_instance = player_scene.instantiate()
 			add_child(player_instance)
 		
+		# Pass entry direction into setup_room
 		if current_room_instance.has_method("setup_room"):
-			current_room_instance.setup_room(coords, room_data["type"])
+			current_room_instance.setup_room(coords, room_data["type"], last_entry_direction)
 			
 	update_camera_limits()
 	room_changed.emit(coords)
