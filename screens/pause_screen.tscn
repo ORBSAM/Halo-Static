@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://eqqs5m1a53r7"]
+
+[ext_resource type="Script" uid="uid://b7s68u26s3e6x" path="res://screens/PauseMenu.gd" id="1_jxgud"]
+[ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="2_ow6ec"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nisxu"]
+bg_color = Color(0.9529412, 0.9529412, 0.9529412, 0.63529414)
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1651142144]
+layer = 100
+script = ExtResource("1_jxgud")
+
+[node name="Control" type="Control" parent="." unique_id=201243455]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="Control" unique_id=780204906]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nisxu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1507021379]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -61.0
+offset_right = 312.0
+offset_bottom = 61.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ResumeButton" type="Button" parent="Control/VBoxContainer" unique_id=191262440]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme = ExtResource("2_ow6ec")
+text = "RESUME"
+
+[node name="RestartButton" type="Button" parent="Control/VBoxContainer" unique_id=614609933]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme = ExtResource("2_ow6ec")
+text = "RESTART"
+
+[node name="MainMenuButton" type="Button" parent="Control/VBoxContainer" unique_id=311535387]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme = ExtResource("2_ow6ec")
+text = "MAIN MENU"
+
+[connection signal="pressed" from="Control/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

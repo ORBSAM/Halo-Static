@@ -20,6 +20,7 @@ config/icon="uid://dos7obw5ntd0e"
 DungeonManager="*uid://cuvsmgq6q81yn"
 HUD="*uid://vw06m5mvrq3e"
 DialogueLogic="*uid://cmsdje726m8yw"
+PauseMenu="*uid://eqqs5m1a53r7"
 
 [display]
 
