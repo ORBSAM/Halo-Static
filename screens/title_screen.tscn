@@ -5,6 +5,7 @@
 [ext_resource type="Theme" uid="uid://dk4bu2i5ty13j" path="res://GUI/themes/GUI_UI_theme.tres" id="2_sxlwc"]
 
 [node name="TitleScreen" type="Control" unique_id=270575899]
+z_index = 110
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,3 +79,6 @@ size_flags_stretch_ratio = 0.0
 mouse_filter = 2
 texture = ExtResource("2_81buc")
 expand_mode = 5
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MenuContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MenuContainer/Quit" to="." method="_on_quit_pressed"]
