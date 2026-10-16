@@ -437,7 +437,7 @@ size = Vector2(9.999985, 56)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t35mo"]
 size = Vector2(44, 11)
 
-[node name="2D_Base" type="Node2D" unique_id=1256971738]
+[node name="Room_Base_TC" type="Node2D" unique_id=1256971738]
 y_sort_enabled = true
 script = ExtResource("1_nm6st")
 

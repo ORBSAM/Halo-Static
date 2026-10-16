@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bc4ay7ehrss8y" path="res://background_prefabs/dungeon_tiles_folder/walls_floor.png" id="1_rprbw"]
 [ext_resource type="Texture2D" uid="uid://f10bqi0ts035" path="res://background_prefabs/dungeon_tiles_folder/doors_lever_chest_animation.png" id="2_x3dby"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g1ong"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_flvv0"]
 texture = ExtResource("1_rprbw")
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-3.057598, -0.8992939, 8, -0.8992939, 8, 8, -3.057598, 8)
@@ -307,7 +307,7 @@ texture = ExtResource("1_rprbw")
 11:22/0 = 0
 12:22/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_flvv0"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2txce"]
 texture = ExtResource("2_x3dby")
 0:0/0 = 0
 1:0/0 = 0
@@ -428,8 +428,8 @@ texture = ExtResource("2_x3dby")
 [sub_resource type="TileSet" id="TileSet_0r2jx"]
 physics_layer_0/collision_layer = 2
 physics_layer_0/collision_mask = 0
-sources/2 = SubResource("TileSetAtlasSource_flvv0")
-sources/1 = SubResource("TileSetAtlasSource_g1ong")
+sources/2 = SubResource("TileSetAtlasSource_2txce")
+sources/1 = SubResource("TileSetAtlasSource_flvv0")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yg5ta"]
 size = Vector2(11, 57)
@@ -443,7 +443,7 @@ size = Vector2(20, 10)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xfo6b"]
 size = Vector2(44, 11)
 
-[node name="2D_Base" type="Node2D" unique_id=1256971738]
+[node name="Room_Base" type="Node2D" unique_id=1256971738]
 y_sort_enabled = true
 script = ExtResource("1_flvv0")
 

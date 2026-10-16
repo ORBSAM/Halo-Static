@@ -14,10 +14,11 @@ extends Node2D
 @onready var item_spawns: Node2D = $Spawns/ItemSpawns
 @onready var entities: Node2D = $Entities
 
-@onready var door_west: Area2D = $Doors/DoorWest
-@onready var door_east: Area2D = $Doors/DoorEast
-@onready var door_north: Area2D = $Doors/DoorNorth
-@onready var door_south: Area2D = $Doors/DoorSouth
+# not every room will have these doors, so make it "get_node_or_null"
+@onready var door_west: Area2D = get_node_or_null("Doors/DoorWest")
+@onready var door_east: Area2D = get_node_or_null("Doors/DoorEast")
+@onready var door_north: Area2D = get_node_or_null("Doors/DoorNorth")
+@onready var door_south: Area2D = get_node_or_null("Doors/DoorSouth")
 
 @onready var top_left_marker: Marker2D = $TopLeftMarker
 @onready var bottom_right_marker: Marker2D = $BottomRightMarker
@@ -69,26 +70,23 @@ func get_spawn_position_for_entry(entry_dir: Vector2i) -> Vector2:
 	return default_spawn.global_position if default_spawn else global_position
 	
 func update_doors(coords: Vector2i) -> void:
-	if DungeonManager == null:
-		return
-		
-	var has_west = DungeonManager.grid.has(coords + Vector2i.LEFT)
-	var has_east = DungeonManager.grid.has(coords + Vector2i.RIGHT)
-	var has_north = DungeonManager.grid.has(coords + Vector2i.UP)
-	var has_south = DungeonManager.grid.has(coords + Vector2i.DOWN)
-	
-	if door_west:
-		door_west.visible = has_west
-		door_west.set_deferred("monitoring", has_west)
-	if door_east:
-		door_east.visible = has_east
-		door_east.set_deferred("monitoring", has_east)
-	if door_north:
-		door_north.visible = has_north
-		door_north.set_deferred("monitoring", has_north)
-	if door_south:
-		door_south.visible = has_south
-		door_south.set_deferred("monitoring", has_south)
+	var open := {
+		door_west:  DungeonManager.grid.has(coords + Vector2i.LEFT),
+		door_east:  DungeonManager.grid.has(coords + Vector2i.RIGHT),
+		door_north: DungeonManager.grid.has(coords + Vector2i.UP),
+		door_south: DungeonManager.grid.has(coords + Vector2i.DOWN),
+	}
+	# everything off first
+	for door in open.keys():
+		if door:
+			door.visible = open[door]
+			door.set_deferred("monitoring", false)
+
+	# re-enable after the player has been placed and had time to walk off the spawn
+	await get_tree().create_timer(0.4).timeout
+	for door in open.keys():
+		if door and open[door]:
+			door.monitoring = true
 
 func spawn_random_enemies() -> void:
 	if enemy_scenes.is_empty():

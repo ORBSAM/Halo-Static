@@ -34,19 +34,20 @@ enum DoorFlags {
 	"KEY_VAULT": preload("res://scene_rooms/Room_KeyVault.tscn")  # Doors: N, E, S, W (Mask: 15)
 }
 
-const TEMPLATE_MASKS = {
-	# base room has all sides
-	"BASE": DoorFlags.NORTH | DoorFlags.EAST | DoorFlags.SOUTH | DoorFlags.WEST, # 15
-	# the bottom corner has only the northern door, and the eastern door
-	"BC": DoorFlags.NORTH | DoorFlags.EAST,                                      # 9
-	# side room only is missing the eastern door
-	"SIDE": DoorFlags.NORTH | DoorFlags.SOUTH | DoorFlags.WEST,                  # 13
-	# top corner only has the southern door and the eastern door
-	"TC": DoorFlags.SOUTH | DoorFlags.EAST,                                      # 12
-	# the boss room only has the southern door
-	"BOSS": DoorFlags.SOUTH,                                                     # 4
-	# vault always has all doors
-	"KEY_VAULT": DoorFlags.NORTH | DoorFlags.EAST | DoorFlags.SOUTH | DoorFlags.WEST # 15
+const N = DoorFlags.NORTH
+const E = DoorFlags.EAST
+const S = DoorFlags.SOUTH
+const W = DoorFlags.WEST
+
+# mask -> scene; add variants as you make them
+var room_by_mask: Dictionary = {
+	N|E|S|W: preload("res://scene_rooms/Room_Base.tscn"),
+	N|E:     preload("res://scene_rooms/Room_Base_BC.tscn"),   # bottom-right-ish corner
+	S|E:     preload("res://scene_rooms/Room_Base_TC.tscn"),   # top-left corner
+	S|W:     preload("res://scene_rooms/Room_Base_TR.tscn"),   # new
+	N|W:     preload("res://scene_rooms/Room_Base_BL.tscn"),   # new
+	N|S|W:   preload("res://scene_rooms/Room_Base_Side.tscn"),
+	# ... N|S|E, E|S|W, N|E|W, N|S, E|W, and single-door ends
 }
 
 @export var player_scene: PackedScene = preload("res://models/player_logic.tscn")
@@ -72,6 +73,7 @@ signal room_changed(coords: Vector2i)
 
 # did we kill an enemy?
 signal kill_count_changed(current: int, required: int)
+
 # _ready
 # let the main menu handle this with start_new_game
 func _ready() -> void:
@@ -79,6 +81,7 @@ func _ready() -> void:
 	
 # start_new_game
 func start_new_game() -> void:
+	# ADD HEALTH RESET LOGIC; start off with 100 health
 	enemy_kill_count = 0
 	visited_rooms.clear()
 	# 1. instantly remove the title screen / current scene
@@ -166,26 +169,14 @@ func rotate_mask(mask: int, steps: int) -> int:
 # find_template_match
 # Find a template and rotation angle matching required doors
 func find_template_match(required_mask: int, allowed_templates: Array) -> Dictionary:
-	for template_name in allowed_templates:
-		var base_mask = TEMPLATE_MASKS[template_name]
-		
-		for steps in range(4): # 0, 90, 180, 270 degrees
-			var rotated_base = rotate_mask(base_mask, steps)
-			
-			# Check if rotated mask matches required doors
-			if (rotated_base & required_mask) == required_mask:
-				return {
-					"scene": room_scenes[template_name],
-					"rotation": steps * 90.0,
-					"type": template_name
-				}
-				
-	# fallback to BASE template (contains all 4 doors)
-	return {
-		"scene": room_scenes["BASE"],
-		"rotation": 0.0,
-		"type": "BASE"
-	}
+	if room_by_mask.has(required_mask):
+		return {"scene": room_by_mask[required_mask], "rotation": 0.0, "type": "AUTO", "mask": required_mask}
+	# fallback: smallest superset (or BASE), walled off by setup_room
+	var best_mask := N|E|S|W
+	for m in room_by_mask.keys():
+		if (m & required_mask) == required_mask and get_door_count(m) < get_door_count(best_mask):
+			best_mask = m
+	return {"scene": room_by_mask[best_mask], "rotation": 0.0, "type": "AUTO", "mask": required_mask}
 
 # get_door_count
 # get the number of doors in a room
