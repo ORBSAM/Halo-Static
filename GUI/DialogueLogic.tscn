@@ -16,21 +16,18 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vlcmw"]
 
-[node name="text_box_control" type="Control" unique_id=1149151188]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="text_box_control" type="CanvasLayer" unique_id=1794601379]
 script = ExtResource("1_qmici")
 
 [node name="Panel" type="Panel" parent="." unique_id=1890717189]
-layout_mode = 0
-offset_left = 70.0
-offset_top = 436.0
-offset_right = 1048.0
-offset_bottom = 614.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -190.0
+offset_right = 1010.0
+offset_bottom = -12.0
+grow_vertical = 0
 theme_override_styles/panel = ExtResource("2_8hfyi")
 
 [node name="NamePanel" type="Panel" parent="Panel" unique_id=1615654005]
@@ -47,7 +44,11 @@ offset_left = 32.0
 offset_top = 11.0
 offset_right = 258.0
 offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.8668957, 0.45357233, 0.67391104, 1)
 theme_override_fonts/font = ExtResource("3_xmy6g")
+theme_override_font_sizes/font_size = 20
+text = "TEST"
+horizontal_alignment = 1
 
 [node name="Portrait" type="TextureRect" parent="Panel" unique_id=1751697838]
 custom_minimum_size = Vector2(60, 50)
@@ -64,5 +65,7 @@ offset_left = 217.0
 offset_top = 33.0
 offset_right = 960.0
 offset_bottom = 159.0
+theme_override_colors/font_color = Color(0.8668957, 0.45357233, 0.67391104, 1)
 theme_override_fonts/font = ExtResource("3_xmy6g")
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 25
+text = "TEST"

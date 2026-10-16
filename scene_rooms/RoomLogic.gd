@@ -46,6 +46,9 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 		var spawn_pos = get_spawn_position_for_entry(entry_direction)
 		player.global_position = spawn_pos
 	
+	await get_tree().create_timer(0.5).timeout
+	trigger_room_dialogue(room_type == "BOSS")
+	
 	spawn_random_enemies()
 	spawn_random_items()
 
@@ -176,21 +179,23 @@ func _on_door_south_body_entered(body: Node2D) -> void:
 # Trigger a random snippet of dialogue whenever the protagonist enters a room.
 # Slim chance of this happening.
 func trigger_room_dialogue(is_boss_room: bool = false) -> void:
-	var dialogue_ui = get_node_or_null("/root/DialogueUI")
+	var dialogue_ui = get_node_or_null("/root/DialogueLogic")
 	if not dialogue_ui or dialogue_ui.is_active:
 		return
 
 	if is_boss_room:
-		dialogue_ui.start_dialogue("Boss", ["You made it far, hero...", "This room will be your grave!"])
+		var boss_lines: Array[String] = ["You made it far, hero...", "This room will be your grave!"]
+		dialogue_ui.start_dialogue("Boss", boss_lines)
 	else:
-		# 30% chance on entering a regular room
-		if randf() < 0.3:
-			var random_quotes = [
+		# slim chance on entering a regular room
+		if randf() < 0.1:
+			var random_quotes: Array[String] = [
 				"Something feels off in this sector...",
 				"The harmonic energy here is unstable.",
 				"I need to keep moving."
 			]
-			dialogue_ui.start_dialogue("Protagonist", [random_quotes.pick_random()])
+			var lines: Array[String] = [random_quotes.pick_random()]
+			dialogue_ui.start_dialogue("Protagonist", lines)
 
 # get_bounds
 # set the bounds for the current room (using the walls), which will later be called by the dungeon manager to set up the camera
