@@ -2,11 +2,13 @@ extends CanvasLayer
 
 @onready var health_bar: ProgressBar = $"Control/TopLeft/Panel/VBoxContainer/Health Bar"
 @onready var energy_bar: ProgressBar = $"Control/TopLeft/Panel/VBoxContainer/Harmony Bar"
-@onready var room_label: Label = $"Control/TopRight/RoomTrackerLabel"
+@onready var room_label: Label = $"Control/TopRight/Panel/RoomTrack/RoomTrackerLabel"
+@onready var kill_count_label: Label = $"Control/TopRight/Panel/RoomTrack2/KillCountLabel"
 
 @onready var key_icon: ColorRect = $Key_Icon_Place
 @onready var saber_button: Button = $"Control/BoxContainer/HBoxContainer/E-Icon Weapon"
 @onready var orb_button: Button = $"Control/BoxContainer/HBoxContainer/Q-Icon Weapon"
+
 
 func _ready() -> void:
 	# 1. Connect DungeonManager signals
@@ -38,8 +40,18 @@ func _on_node_added(node: Node) -> void:
 func connect_player_signals(player: Node) -> void:
 	if not player.health_changed.is_connected(update_health):
 		player.health_changed.connect(update_health)
+		
 	if not player.harmonic_changed.is_connected(update_energy):
 		player.harmonic_changed.connect(update_energy)
+		
+	if player.has_signal("key_collected") and not player.key_collected.is_connected(_on_key_collected):
+		player.key_collected.connect(_on_key_collected)
+		
+	# connect DungeonManager kill signal
+	if DungeonManager and not DungeonManager.kill_count_changed.is_connected(_on_kill_count_changed):
+		DungeonManager.kill_count_changed.connect(_on_kill_count_changed)
+		# Initialize display
+		_on_kill_count_changed(DungeonManager.enemy_kill_count, DungeonManager.REQUIRED_KILLS)
 		 
 	# Initialize initial values immediately
 	update_health(player.current_health, player.max_health)
@@ -80,3 +92,7 @@ func _on_key_collected(has_key: bool) -> void:
 func _on_room_changed(coords: Vector2i) -> void:
 	if room_label and DungeonManager:
 		room_label.text = "Room %d / %d" % [coords.x + 1, DungeonManager.TOTAL_ROOMS]
+
+func _on_kill_count_changed(current: int, required: int) -> void:
+	if kill_count_label:
+		kill_count_label.text = "Kills: %d / %d" % [current, required]

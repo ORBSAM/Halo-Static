@@ -142,4 +142,7 @@ func spawn_damage_number(amount: float) -> void:
 	
 
 func die() -> void:
+	if DungeonManager:
+		DungeonManager.add_kill()
+	
 	queue_free()

@@ -9,6 +9,13 @@ const GRID_WIDTH: int = 4
 const GRID_HEIGHT: int = 5
 const TOTAL_ROOMS: int = 20
 
+# kill tracking & Boss requirements
+var enemy_kill_count: int = 0
+const REQUIRED_KILLS: int = 50
+
+# store visited rooms
+var visited_rooms: Array[Vector2i] = []
+
 # door direction flags
 enum DoorFlags {
 	NORTH = 1,
@@ -63,6 +70,8 @@ var is_transitioning: bool = false
 # did the room change?
 signal room_changed(coords: Vector2i)
 
+# did we kill an enemy?
+signal kill_count_changed(current: int, required: int)
 # _ready
 # let the main menu handle this with start_new_game
 func _ready() -> void:
@@ -70,6 +79,8 @@ func _ready() -> void:
 	
 # start_new_game
 func start_new_game() -> void:
+	enemy_kill_count = 0
+	visited_rooms.clear()
 	# 1. instantly remove the title screen / current scene
 	var current_scene = get_tree().current_scene
 	if current_scene:
@@ -92,7 +103,6 @@ func start_new_game() -> void:
 func generate_dungeon_layout() -> void:
 	grid.clear()
 	
-	# 1. Walk through a 2D grid to determine room connections
 	var layout_positions: Array[Vector2i] = []
 	var curr = Vector2i.ZERO
 	layout_positions.append(curr)
@@ -103,13 +113,11 @@ func generate_dungeon_layout() -> void:
 		var dir = directions.pick_random()
 		var next_pos = curr + dir
 		
-		# Clamp within grid dimensions
 		if next_pos.x >= 0 and next_pos.x < GRID_WIDTH and next_pos.y >= 0 and next_pos.y < GRID_HEIGHT:
 			if not layout_positions.has(next_pos):
 				layout_positions.append(next_pos)
 			curr = next_pos
 
-	# 2. assign required door masks based on adjacent rooms
 	var room_required_doors: Dictionary = {}
 	for pos in layout_positions:
 		var mask = 0
@@ -119,7 +127,6 @@ func generate_dungeon_layout() -> void:
 		if layout_positions.has(pos + Vector2i.LEFT): mask |= DoorFlags.WEST
 		room_required_doors[pos] = mask
 
-	# 3. select special room locations (Boss & Key Vault at path ends)
 	var end_rooms: Array[Vector2i] = []
 	for pos in layout_positions:
 		if pos != Vector2i.ZERO and get_door_count(room_required_doors[pos]) == 1:
@@ -131,7 +138,6 @@ func generate_dungeon_layout() -> void:
 	var boss_pos = end_rooms.pop_back()
 	var key_vault_pos = end_rooms.pop_back()
 
-	# 4. match required door masks to rotated room templates
 	for pos in layout_positions:
 		var required_mask = room_required_doors[pos]
 		var match_data = {}
@@ -174,7 +180,7 @@ func find_template_match(required_mask: int, allowed_templates: Array) -> Dictio
 					"type": template_name
 				}
 				
-	# Fallback to BASE template (contains all 4 doors)
+	# fallback to BASE template (contains all 4 doors)
 	return {
 		"scene": room_scenes["BASE"],
 		"rotation": 0.0,
@@ -191,7 +197,6 @@ func get_door_count(mask: int) -> int:
 	return count
 
 # transition_to_room
-
 func transition_to_room(new_coords: Vector2i) -> void:
 	print("Attempting transition to: ", new_coords, " | Exists in grid: ", grid.has(new_coords))
 	
@@ -199,18 +204,30 @@ func transition_to_room(new_coords: Vector2i) -> void:
 		print("Transition blocked: No room exists at ", new_coords)
 		return
 		
+	# check if entering the Boss Room requires key & 50+ kills
+	var room_data = grid.get(new_coords, {})
+	if room_data.get("type") == "BOSS":
+		var player = get_tree().get_first_node_in_group("player")
+		var has_key = player and player.has_dungeon_key
+		var has_enough_kills = enemy_kill_count >= REQUIRED_KILLS
+		
+		if not (has_key and has_enough_kills):
+			print("Boss door locked! Kills: ", enemy_kill_count, "/", REQUIRED_KILLS, " | Has Key: ", has_key)
+			
+			# optional: trigger dialogue warning if DialogueUI exists
+			var dialogue_ui = get_node_or_null("/root/DialogueUI")
+			if dialogue_ui and not dialogue_ui.is_active:
+				dialogue_ui.start_dialogue("Protagonist", ["The door is sealed. I need the Dungeon Key and must defeat at least 50 corrupted entities first!"])
+			return
+
 	is_transitioning = true
 	
-	# calculate directional shift (e.g. Vector2i.UP)
 	last_entry_direction = new_coords - current_room_coords
 	
 	if screen_fader and screen_fader.has_method("fade_out"):
 		await screen_fader.fade_out(0.3)
 	
-	# clear active projectiles before loading the room
 	clear_active_projectiles()
-	
-	# defer load_room so physics finishes flushing before scenes swap
 	call_deferred("load_room", new_coords)
 	
 	if screen_fader and screen_fader.has_method("fade_in"):
@@ -240,6 +257,10 @@ func load_room(coords: Vector2i) -> void:
 		if current_room_instance.has_method("setup_room"):
 			current_room_instance.setup_room(coords, room_data["type"], last_entry_direction)
 			
+	# track unique rooms visited
+	if not visited_rooms.has(coords):
+		visited_rooms.append(coords)
+	
 	update_camera_limits()
 	room_changed.emit(coords)
 	
@@ -260,6 +281,11 @@ func update_camera_limits() -> void:
 		camera.limit_right = int(bounds.position.x + bounds.size.x)
 		camera.limit_bottom = int(bounds.position.y + bounds.size.y)
 		camera.reset_smoothing()
+
+func add_kill() -> void:
+	enemy_kill_count += 1
+	print("Enemies defeated: ", enemy_kill_count, "/", REQUIRED_KILLS)
+	kill_count_changed.emit(enemy_kill_count, REQUIRED_KILLS)
 
 func clear_active_projectiles() -> void:
 	for proj in get_tree().get_nodes_in_group("projectiles"):

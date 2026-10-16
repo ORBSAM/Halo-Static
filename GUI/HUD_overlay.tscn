@@ -46,6 +46,19 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wk7dk"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 5
+border_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
+border_blend = true
+corner_radius_top_left = 2
+corner_radius_top_right = 8
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 8
+
 [sub_resource type="LabelSettings" id="LabelSettings_6s3sf"]
 font = ExtResource("4_3dox3")
 outline_size = 3
@@ -127,6 +140,7 @@ theme_override_font_sizes/font_size = 19
 text = "HARMONY"
 
 [node name="TopRight" type="MarginContainer" parent="Control" unique_id=123188202]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -134,15 +148,66 @@ anchor_right = 1.0
 offset_left = -173.0
 offset_top = 8.0
 offset_right = -31.0
-offset_bottom = 43.0
+offset_bottom = 134.0
 grow_horizontal = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 3
 
 [node name="Panel" type="Panel" parent="Control/TopRight" unique_id=505178597]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(250, 250)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_e270b")
 
-[node name="RoomTrackerLabel" type="Label" parent="Control/TopRight" unique_id=1897663151]
-layout_mode = 2
+[node name="RoomTrack" type="Panel" parent="Control/TopRight/Panel" unique_id=1938160832]
+custom_minimum_size = Vector2(100, 25)
+custom_maximum_size = Vector2(100, 50)
+layout_mode = 1
+offset_left = 16.0
+offset_top = 4.0
+offset_right = 116.0
+offset_bottom = 54.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wk7dk")
+
+[node name="RoomTrackerLabel" type="Label" parent="Control/TopRight/Panel/RoomTrack" unique_id=1897663151]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -66.0
+offset_top = 16.0
+offset_right = 66.0
+offset_bottom = 37.0
+grow_horizontal = 2
+text = "TEST"
+label_settings = SubResource("LabelSettings_6s3sf")
+horizontal_alignment = 1
+
+[node name="RoomTrack2" type="Panel" parent="Control/TopRight/Panel" unique_id=2033773526]
+custom_minimum_size = Vector2(100, 25)
+custom_maximum_size = Vector2(100, 50)
+layout_mode = 1
+offset_left = 16.0
+offset_top = 62.0
+offset_right = 116.0
+offset_bottom = 112.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wk7dk")
+
+[node name="KillCountLabel" type="Label" parent="Control/TopRight/Panel/RoomTrack2" unique_id=1803631200]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -66.0
+offset_top = -35.0
+offset_right = 67.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "TEST"
 label_settings = SubResource("LabelSettings_6s3sf")
 horizontal_alignment = 1
