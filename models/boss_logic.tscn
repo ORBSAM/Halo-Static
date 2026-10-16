@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://models/enemy_logic.tscn" id="1_base"]
+[ext_resource type="Script" path="res://models/EnemyBoss.gd" id="2_script"]
+
+; Inherits enemy_logic.tscn (sprite, collision, damage label) and swaps in the
+; boss script. Scaled 2x per the GDD. Spawned by RoomBoss.gd.
+[node name="EnemyBoss" instance=ExtResource("1_base")]
+scale = Vector2(2, 2)
+collision_mask = 3
+script = ExtResource("2_script")
