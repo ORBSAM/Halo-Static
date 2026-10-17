@@ -515,7 +515,7 @@ position = Vector2(763, 418)
 [node name="Spawns" type="Node2D" parent="." unique_id=130175781]
 
 [node name="PlayerSpawn" type="Marker2D" parent="Spawns" unique_id=1062431574]
-position = Vector2(241, 239)
+position = Vector2(296, 239)
 
 [node name="EnemySpawns" type="Node2D" parent="Spawns" unique_id=2057298529]
 

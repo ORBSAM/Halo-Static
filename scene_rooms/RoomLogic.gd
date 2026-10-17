@@ -44,7 +44,7 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 	if player and player_spawn:
 		if "velocity" in player:
 			player.velocity = Vector2.ZERO
-		player.global_position = player_spawn.global_position
+		player.global_position = get_spawn_position_for_entry(entry_direction)
 
 	# spawn content right away, then do the delayed dialogue
 	spawn_random_enemies()
@@ -74,6 +74,23 @@ func update_doors(coords: Vector2i) -> void:
 		var door: Area2D = pair[0]
 		if door and is_instance_valid(door) and DungeonManager.grid.has(coords + pair[1]):
 			door.monitoring = true
+			print(door)
+
+func get_spawn_position_for_entry(entry_dir: Vector2i) -> Vector2:
+	var spawn_name := ""
+	match entry_dir:
+		Vector2i.RIGHT: spawn_name = "SpawnWest"    # moved east, arrive on the west side
+		Vector2i.LEFT:  spawn_name = "SpawnEast"
+		Vector2i.DOWN:  spawn_name = "SpawnNorth"   # moved south, arrive on the north side
+		Vector2i.UP:    spawn_name = "SpawnSouth"
+
+	if spawn_name != "":
+		var marker := get_node_or_null("Spawns/" + spawn_name) as Node2D
+		if marker:
+			return marker.global_position
+		push_warning(name + " is missing Spawns/" + spawn_name + ", using PlayerSpawn")
+
+	return player_spawn.global_position if player_spawn else global_position
 
 func spawn_random_enemies() -> void:
 	if enemy_scenes.is_empty():

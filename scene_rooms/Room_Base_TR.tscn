@@ -530,3 +530,6 @@ position = Vector2(226, 100)
 
 [node name="BottomRightMarker" type="Marker2D" parent="." unique_id=125114482]
 position = Vector2(768, 424)
+
+[connection signal="body_entered" from="Doors/DoorWest" to="." method="_on_door_west_body_entered"]
+[connection signal="body_entered" from="Doors/DoorSouth" to="." method="_on_door_south_body_entered"]

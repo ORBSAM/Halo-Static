@@ -13,7 +13,7 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 	if player and player_spawn:
 		if "velocity" in player:
 			player.velocity = Vector2.ZERO
-		player.global_position = player_spawn.global_position
+		player.global_position = get_spawn_position_for_entry(entry_direction)
 
 	spawn_guaranteed_key_and_loot(player)
 	spawn_random_enemies()
