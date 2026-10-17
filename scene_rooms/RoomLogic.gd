@@ -8,6 +8,7 @@ class_name RoomLogic
 
 @export var enemy_scenes: Array[PackedScene] = [preload("res://models/enemy_logic.tscn")]
 @export var item_scenes: Array[PackedScene] = [preload("res://items/item_harmonic_chaotic.tscn")]
+@export var miniboss_scene: PackedScene = preload("res://models/miniboss_logic.tscn")
 
 @onready var player_spawn: Marker2D = $Spawns/PlayerSpawn
 @onready var enemy_spawns: Node2D = $Spawns/EnemySpawns
@@ -20,13 +21,14 @@ class_name RoomLogic
 @onready var door_north: Area2D = get_node_or_null("Doors/DoorNorth")
 @onready var door_south: Area2D = get_node_or_null("Doors/DoorSouth")
 
-@export var spawn_inset: float = 64.0
-
 @onready var top_left_marker: Marker2D = $TopLeftMarker
 @onready var bottom_right_marker: Marker2D = $BottomRightMarker
 
+# @export var spawn_inset: float = 64.0
 @export var wall_thickness: float = 64.0
 @export_flags_2d_physics var wall_layer: int = 1
+
+@export_range(0.0, 1.0) var miniboss_chance: float = 0.05
 
 # _ready
 func _ready() -> void:
@@ -98,6 +100,22 @@ func spawn_random_enemies() -> void:
 		
 	# find all Marker2D nodes in EnemySpawns
 	var markers = $Spawns/EnemySpawns.get_children()
+	if markers.is_empty():
+		return
+	
+	# rarely, one marker gets a miniboss instead of a regular enemy
+	var miniboss_idx := -1
+	if miniboss_scene and randf() < miniboss_chance:
+		miniboss_idx = randi() % markers.size()
+
+	for i in range(markers.size()):
+		var scene: PackedScene = miniboss_scene if i == miniboss_idx else enemy_scenes.pick_random()
+		var enemy = scene.instantiate()
+		add_child(enemy)                                  # add first, then position
+		enemy.global_position = markers[i].global_position
+		if i == miniboss_idx and enemy.has_signal("miniboss_defeated"):
+			enemy.miniboss_defeated.connect(func(): DungeonManager.add_kill())
+	
 	for marker in markers:
 		var enemy_scene = enemy_scenes.pick_random()
 		if enemy_scene:

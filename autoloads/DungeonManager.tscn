@@ -2,11 +2,9 @@
 
 [ext_resource type="Script" uid="uid://wedcjv0l10ux" path="res://autoloads/DungeonManager.gd" id="1_jxgu5"]
 [ext_resource type="PackedScene" uid="uid://b6cf3xsgb2dji" path="res://screens/screen_fade.tscn" id="3_3chmf"]
-[ext_resource type="PackedScene" uid="uid://btpy5bgtprkjw" path="res://scene_rooms/Room_Boss.tscn" id="3_mfcrh"]
 
 [node name="DungeonManager" type="Node2D" unique_id=1148305747 node_paths=PackedStringArray("screen_fader")]
 script = ExtResource("1_jxgu5")
-boss_room_scene = ExtResource("3_mfcrh")
 screen_fader = NodePath("screen_fade")
 
 [node name="screen_fade" parent="." unique_id=2089528200 instance=ExtResource("3_3chmf")]

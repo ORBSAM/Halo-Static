@@ -426,6 +426,9 @@ sources/1 = SubResource("TileSetAtlasSource_ybnv4")
 position = Vector2(-1, 1)
 script = ExtResource("1_pnfd3")
 
+[node name="Entities" type="Node2D" parent="." unique_id=2054392988]
+position = Vector2(277, 170)
+
 [node name="walls_boss" type="TileMapLayer" parent="." unique_id=1818494331]
 z_index = 1
 y_sort_enabled = true
@@ -454,6 +457,9 @@ visible = false
 color = Color(0.06666667, 0.06666667, 0.101960786, 0.7294118)
 
 [node name="Spawns" type="Node2D" parent="." unique_id=741461710]
+
+[node name="PlayerSpawn" type="Marker2D" parent="Spawns" unique_id=1419799869]
+position = Vector2(496, 482)
 
 [node name="ItemSpawns" type="Node2D" parent="Spawns" unique_id=716354179]
 

@@ -1,11 +1,20 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cbw5430mvau4s"]
 
-[ext_resource type="PackedScene" path="res://models/enemy_logic.tscn" id="1_base"]
-[ext_resource type="Script" path="res://models/EnemyMiniBoss.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://cwpfrjyy6bkwk" path="res://models/enemy_logic.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://p14ibm0mbsn3" path="res://models/EnemyMiniBoss.gd" id="2_script"]
 
-; Inherits enemy_logic.tscn (sprite, collision, damage label) and swaps in the
-; mini-boss script. Scaled 1.5x per the GDD.
-[node name="EnemyMiniBoss" instance=ExtResource("1_base")]
+[node name="EnemyMiniBoss" unique_id=160744166 instance=ExtResource("1_base")]
 scale = Vector2(1.5, 1.5)
 collision_mask = 3
 script = ExtResource("2_script")
+miniboss_texture = null
+charge_speed = 330.0
+windup_time = 0.7
+charge_time = 0.5
+recover_time = 1.0
+charge_cooldown = 2.5
+charge_damage = 25.0
+charge_min_range = 60.0
+charge_max_range = 280.0
+hit_radius = 26.0
+recover_damage_multiplier = 1.5

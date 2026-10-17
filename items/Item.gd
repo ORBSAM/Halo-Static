@@ -13,6 +13,10 @@ enum ItemType { HARMONIC, CHAOTIC, KEY }
 @export var item_name: String
 @export var value: float = 25.0
 
+# for any item that can be destroyed; this checks if it is destroyed
+var _destroyed := false
+
+
 # Color mapping for placeholders and glow
 const TYPE_COLORS = {
 	ItemType.HARMONIC: Color(0.869, 0.626, 0.938, 1.0), # Pink
@@ -50,6 +54,12 @@ func update_item_appearance() -> void:
 	if light:
 		light.color = item_color
 		light.energy = 1.5
+	
+	# only chaotic items can be shot or slashed
+	if item_type == ItemType.CHAOTIC:
+		add_to_group("destructible")
+	else:
+		remove_from_group("destructible")
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
@@ -77,3 +87,18 @@ func collect(player: Node2D) -> void:
 	
 	# free item
 	queue_free()
+
+func take_damage(_amount: float, _source_pos: Vector2 = Vector2.ZERO) -> void:
+	if item_type != ItemType.CHAOTIC or _destroyed:
+		return
+	
+	_destroyed = true
+	
+	set_deferred("monitoring", false)     # can't be picked up while it pops
+	set_deferred("monitorable", false)
+	
+	var tw := create_tween().set_parallel(true)
+	tw.tween_property(self, "scale", scale * 1.6, 0.2)
+	tw.tween_property(self, "modulate:a", 0.0, 0.2)
+	
+	tw.finished.connect(queue_free)

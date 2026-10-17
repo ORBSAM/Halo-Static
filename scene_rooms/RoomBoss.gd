@@ -1,49 +1,32 @@
-extends Node2D
+extends RoomLogic
 
-@export var boss_scene: PackedScene = preload("res://scene_rooms/Room_Boss.tscn")
+@export var boss_scene: PackedScene = preload("res://models/boss_logic.tscn")
 @onready var boss_spawn: Marker2D = $Spawns/BossSpawn
 
-@onready var top_left_marker: Marker2D = $TopLeftMarker
-@onready var bottom_right_marker: Marker2D = $BottomRightMarker
+func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i = Vector2i.ZERO) -> void:
+	update_doors(coords)
 
-# setup_room
-# set up the room by spawning boss and the dialogue
-func setup_room(coords: Vector2i, room_type: String) -> void:
-	# Spawn boss
-	if boss_scene and boss_spawn:
-		var boss = boss_scene.instantiate()
-		boss.global_position = boss_spawn.global_position
-		add_child(boss)
-		
-		if boss.has_signal("boss_defeated"):
-			boss.boss_defeated.connect(_on_boss_defeated)
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		if "velocity" in player:
+			player.velocity = Vector2.ZERO
+		player.global_position = get_spawn_position_for_entry(entry_direction)
 
-	# trigger Boss Dialogue
-	if has_node("/root/DialogueUI"):
-		get_node("/root/DialogueUI").start_dialogue("Boss", [
-			"Ah... the intruder arrives.",
-			"Your journey ends here!"
-		])
+	var boss = boss_scene.instantiate()
+	add_child(boss)
+	boss.global_position = boss_spawn.global_position
+	if boss.has_signal("boss_defeated"):
+		boss.boss_defeated.connect(_on_boss_defeated)
 
-# _on_boss_defeated
-# transition to the cliffhanger cutscene
+	await get_tree().create_timer(0.5).timeout
+	var dialogue_ui = get_node_or_null("/root/DialogueLogic")
+	if dialogue_ui:
+		var lines: Array = ["Ah... the intruder arrives.", "Your journey ends here!"]
+		dialogue_ui.start_dialogue("Boss", lines, true)
+
 func _on_boss_defeated() -> void:
-	print("Boss Defeated!")
-	# Transition to Game Complete / Cliffhanger scene
-	get_tree().change_scene_to_file("res://scenes/GameComplete.tscn")
-	
-# get_bounds
-# set the bounds for the current room (using the walls), which will later be called by the dungeon manager to set up the camera
-# 
-func get_bounds() -> Rect2:
-	if top_left_marker and bottom_right_marker:
-		var top_left = top_left_marker.global_position
-		var bottom_right = bottom_right_marker.global_position
-		
-		var width = bottom_right.x - top_left.x
-		var height = bottom_right.y - top_left.y
-		
-		return Rect2(top_left, Vector2(width, height))
-	else:
-		push_warning("Camera markers missing on room! Falling back to default bounds.")
-		return Rect2(Vector2.ZERO, Vector2(1152, 648))
+	get_tree().change_scene_to_file("res://screens/win_splash.tscn")
+
+func spawn_random_enemies() -> void: pass   # no ambient enemies in the boss room
+func spawn_random_items() -> void: pass
+func spawn_test_entities() -> void: pass

@@ -5,14 +5,9 @@ extends Node
 # Manages 20-room generation, grid state, and scene loading.
 # ==========================================
 
-#const GRID_WIDTH: int = 4
-#const GRID_HEIGHT: int = 5
-#const TOTAL_ROOMS: int = 20
-
 const GRID_RADIUS: int = 2                 # -2..2 = 5x5, start (0,0) is the center
 const BOSS_POS := Vector2i(0, -3)          # hangs off the top-middle room
 var vault_pos: Vector2i = Vector2i(1, 1)   # replaces the VAULT_POS const
-
 
 # kill tracking & Boss requirements
 var enemy_kill_count: int = 0
@@ -57,6 +52,9 @@ var room_by_mask: Dictionary = {
 	# ... N|S|E, E|S|W, N|E|W, N|S, E|W, and single-door ends
 }
 
+# debug for boss inside of the actual dungeon manager
+@export var debug_skip_boss_lock: bool = false   # tick this in the inspector while testing
+
 @export var player_scene: PackedScene = preload("res://models/player_logic.tscn")
 var player_instance: Node2D = null
 
@@ -74,10 +72,8 @@ var last_entry_direction: Vector2i = Vector2i.ZERO
 
 # are we transitioning?
 var is_transitioning: bool = false
-
 # did the room change?
 signal room_changed(coords: Vector2i)
-
 # did we kill an enemy?
 signal kill_count_changed(current: int, required: int)
 
@@ -192,6 +188,20 @@ func transition_to_room(new_coords: Vector2i) -> void:
 	
 	if screen_fader and screen_fader.has_method("fade_in"):
 		screen_fader.fade_in(0.3)
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not OS.is_debug_build() or not (event is InputEventKey and event.pressed and not event.echo):
+		return
+	match event.keycode:
+		KEY_BRACKETLEFT:   # give the kills
+			enemy_kill_count = REQUIRED_KILLS
+			kill_count_changed.emit(enemy_kill_count, REQUIRED_KILLS)
+		KEY_BRACKETRIGHT:  # give the key
+			var p = get_tree().get_first_node_in_group("player")
+			if p and p.has_method("add_key"):
+				p.add_key(1)
+		KEY_BACKSLASH:  # jump straight to the boss room
+			transition_to_room(BOSS_POS)
 
 func load_room(coords: Vector2i) -> void:
 	is_transitioning = true
