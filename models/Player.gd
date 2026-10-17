@@ -99,7 +99,7 @@ func _ready() -> void:
 	print("Player spawned at: ", global_position)
 
 # _physics_process
-func _physics_process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:	
 	handle_movement()
 	handle_weapon_aiming()
 
@@ -340,6 +340,8 @@ func heal(amount: float) -> void:
 
 func die() -> void:
 	print("Player defeated!")
+	# works, but the lose splash has no logic as of now
+	# get_tree().change_scene_to_file("res://screens/lose_splash.tscn")
 	# signal to DungeonManager or handle game over
 
 # update_animation

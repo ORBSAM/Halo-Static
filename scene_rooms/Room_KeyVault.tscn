@@ -441,7 +441,7 @@ size = Vector2(9.999985, 56)
 size = Vector2(20, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gsvxb"]
-size = Vector2(44, 11)
+size = Vector2(44, 15)
 
 [node name="2D_Vault" type="Node2D" unique_id=1256971738]
 script = ExtResource("1_su8y5")
@@ -500,9 +500,10 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_y8xbj")
 
 [node name="DoorSouth" type="Area2D" parent="Doors" unique_id=419744333]
+position = Vector2(491, 401)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Doors/DoorSouth" unique_id=37527286]
-position = Vector2(495, 397.5)
+position = Vector2(5, -2)
 shape = SubResource("RectangleShape2D_gsvxb")
 
 [node name="TopLeftMarker" type="Marker2D" parent="." unique_id=2060951525]

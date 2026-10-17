@@ -5,9 +5,14 @@ extends Node
 # Manages 20-room generation, grid state, and scene loading.
 # ==========================================
 
-const GRID_WIDTH: int = 4
-const GRID_HEIGHT: int = 5
-const TOTAL_ROOMS: int = 20
+#const GRID_WIDTH: int = 4
+#const GRID_HEIGHT: int = 5
+#const TOTAL_ROOMS: int = 20
+
+const GRID_RADIUS: int = 2                 # -2..2 = 5x5, start (0,0) is the center
+const BOSS_POS := Vector2i(0, -3)          # hangs off the top-middle room
+var vault_pos: Vector2i = Vector2i(1, 1)   # replaces the VAULT_POS const
+
 
 # kill tracking & Boss requirements
 var enemy_kill_count: int = 0
@@ -24,29 +29,31 @@ enum DoorFlags {
 	WEST = 8
 }
 
-# preload all rooms
-@export var room_scenes: Dictionary = {
-	"BASE": preload("res://scene_rooms/Room_Base.tscn"),          # Doors: N, E, S, W (Mask: 15)
-	"BC": preload("res://scene_rooms/Room_Base_BC.tscn"),          # Doors: N, E       (Mask: 9)
-	"SIDE": preload("res://scene_rooms/Room_Base_Side.tscn"),      # Doors: N, S, W    (Mask: 13)
-	"TC": preload("res://scene_rooms/Room_Base_TC.tscn"),          # Doors: S, E      (Mask: 12)
-	"BOSS": preload("res://scene_rooms/Room_Boss.tscn"),          # Doors: S          (Mask: 4)
-	"KEY_VAULT": preload("res://scene_rooms/Room_KeyVault.tscn")  # Doors: N, E, S, W (Mask: 15)
-}
-
 const N = DoorFlags.NORTH
 const E = DoorFlags.EAST
 const S = DoorFlags.SOUTH
 const W = DoorFlags.WEST
 
+const BASE_SCENE = preload("res://scene_rooms/Room_Base.tscn")
+const BOSS_SCENE = preload("res://scene_rooms/Room_Boss.tscn")
+const VAULT_SCENE = preload("res://scene_rooms/Room_KeyVault.tscn")
+
 # mask -> scene; add variants as you make them
 var room_by_mask: Dictionary = {
+	# all sides
 	N|E|S|W: preload("res://scene_rooms/Room_Base.tscn"),
-	N|E:     preload("res://scene_rooms/Room_Base_BC.tscn"),   # bottom-right-ish corner
+	N|E:     preload("res://scene_rooms/Room_Base_BL.tscn"),   # bottom-left-ish corner
 	S|E:     preload("res://scene_rooms/Room_Base_TC.tscn"),   # top-left corner
-	S|W:     preload("res://scene_rooms/Room_Base_TR.tscn"),   # new
-	N|W:     preload("res://scene_rooms/Room_Base_BL.tscn"),   # new
-	N|S|W:   preload("res://scene_rooms/Room_Base_Side.tscn"),
+	S|W:     preload("res://scene_rooms/Room_Base_TR.tscn"),   # top-right
+	N|W:     preload("res://scene_rooms/Room_Base_BR.tscn"),   # bottom-right
+	# side rooms
+	# left / right edges (Side_X)
+	N|S|E: preload("res://scene_rooms/Room_Base_X_L.tscn"),  # left edge, no west door
+	N|S|W: preload("res://scene_rooms/Room_Base_X_R.tscn"),  # right edge, no east door
+	# top / bottom edges (Side_Y)
+	E|S|W: preload("res://scene_rooms/Room_Base_Y_T.tscn"),  # top edge, no north door
+	N|E|W: preload("res://scene_rooms/Room_Base_Y_B.tscn"),  # bottom edge, no south door
+	
 	# ... N|S|E, E|S|W, N|E|W, N|S, E|W, and single-door ends
 }
 
@@ -55,7 +62,7 @@ var player_instance: Node2D = null
 
 var hud_instance: CanvasLayer = null
 
-@export var boss_room_scene: PackedScene
+# @export var boss_room_scene: PackedScene
 @export var screen_fader: CanvasLayer
 
 # grid stores RoomData: { "scene": PackedScene, "rotation": float, "type": String }
@@ -81,16 +88,25 @@ func _ready() -> void:
 	
 # start_new_game
 func start_new_game() -> void:
-	# ADD HEALTH RESET LOGIC; start off with 100 health
 	enemy_kill_count = 0
 	visited_rooms.clear()
+	last_entry_direction = Vector2i.ZERO # ensures starting room uses PlayerSpawn!
+	# make sure any transitioning logic is disabled
+	is_transitioning = false
+	
+	# restart the player instance, so it's fresh.
+	if player_instance:
+		remove_child(player_instance)
+		player_instance.queue_free()
+		player_instance = null
+	
 	# 1. instantly remove the title screen / current scene
 	var current_scene = get_tree().current_scene
 	if current_scene:
 		current_scene.queue_free() # schedule for cleanup
 		current_scene.get_parent().remove_child(current_scene) # remove from tree IMMEDIATELY so it stops rendering!
 		get_tree().current_scene = null
-
+	
 	# 2. re-enable and display the HUD overlay
 	if has_node("/root/HUD"):
 		get_node("/root/HUD").show()
@@ -105,87 +121,40 @@ func start_new_game() -> void:
 # Generate 2D Layout and Match Templates with Rotations
 func generate_dungeon_layout() -> void:
 	grid.clear()
+
+	# random interior cell (4 neighbors), never the start room
+	var interior: Array[Vector2i] = []
+	for x in range(-GRID_RADIUS + 1, GRID_RADIUS):
+		for y in range(-GRID_RADIUS + 1, GRID_RADIUS):
+			if Vector2i(x, y) != Vector2i.ZERO:
+				interior.append(Vector2i(x, y))
+	vault_pos = interior.pick_random()
 	
-	var layout_positions: Array[Vector2i] = []
-	var curr = Vector2i.ZERO
-	layout_positions.append(curr)
-	
-	var directions = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
-	
-	while layout_positions.size() < TOTAL_ROOMS:
-		var dir = directions.pick_random()
-		var next_pos = curr + dir
-		
-		if next_pos.x >= 0 and next_pos.x < GRID_WIDTH and next_pos.y >= 0 and next_pos.y < GRID_HEIGHT:
-			if not layout_positions.has(next_pos):
-				layout_positions.append(next_pos)
-			curr = next_pos
+	var positions: Array[Vector2i] = []
+	for x in range(-GRID_RADIUS, GRID_RADIUS + 1):
+		for y in range(-GRID_RADIUS, GRID_RADIUS + 1):
+			positions.append(Vector2i(x, y))
+	positions.append(BOSS_POS)          # no vault append anymore
 
-	var room_required_doors: Dictionary = {}
-	for pos in layout_positions:
-		var mask = 0
-		if layout_positions.has(pos + Vector2i.UP): mask |= DoorFlags.NORTH
-		if layout_positions.has(pos + Vector2i.RIGHT): mask |= DoorFlags.EAST
-		if layout_positions.has(pos + Vector2i.DOWN): mask |= DoorFlags.SOUTH
-		if layout_positions.has(pos + Vector2i.LEFT): mask |= DoorFlags.WEST
-		room_required_doors[pos] = mask
+	for pos in positions:
+		var mask := 0
+		if positions.has(pos + Vector2i.UP):    mask |= N
+		if positions.has(pos + Vector2i.RIGHT): mask |= E
+		if positions.has(pos + Vector2i.DOWN):  mask |= S
+		if positions.has(pos + Vector2i.LEFT):  mask |= W
 
-	var end_rooms: Array[Vector2i] = []
-	for pos in layout_positions:
-		if pos != Vector2i.ZERO and get_door_count(room_required_doors[pos]) == 1:
-			end_rooms.append(pos)
-			
-	if end_rooms.size() < 2:
-		end_rooms = layout_positions.slice(TOTAL_ROOMS - 3, TOTAL_ROOMS)
+		var kind := "NORMAL"
+		if pos == BOSS_POS:    kind = "BOSS"
+		elif pos == vault_pos: kind = "VAULT"
+		grid[pos] = make_room(mask, kind)
 
-	var boss_pos = end_rooms.pop_back()
-	var key_vault_pos = end_rooms.pop_back()
-
-	for pos in layout_positions:
-		var required_mask = room_required_doors[pos]
-		var match_data = {}
-
-		if pos == boss_pos:
-			match_data = find_template_match(required_mask, ["BOSS"])
-		elif pos == key_vault_pos:
-			match_data = find_template_match(required_mask, ["KEY_VAULT", "BASE"])
-		else:
-			match_data = find_template_match(required_mask, ["BASE", "SIDE", "BC", "TC"])
-
-		grid[pos] = match_data
-
-# rotate_mask
-func rotate_mask(mask: int, steps: int) -> int:
-	var rotated = mask
-	for i in range(steps):
-		var new_mask = 0
-		if rotated & DoorFlags.NORTH: new_mask |= DoorFlags.EAST
-		if rotated & DoorFlags.EAST:  new_mask |= DoorFlags.SOUTH
-		if rotated & DoorFlags.SOUTH: new_mask |= DoorFlags.WEST
-		if rotated & DoorFlags.WEST:  new_mask |= DoorFlags.NORTH
-		rotated = new_mask
-	return rotated
-
-# find_template_match
-# Find a template and rotation angle matching required doors
-func find_template_match(required_mask: int, allowed_templates: Array) -> Dictionary:
-	if room_by_mask.has(required_mask):
-		return {"scene": room_by_mask[required_mask], "rotation": 0.0, "type": "AUTO", "mask": required_mask}
-	# fallback: smallest superset (or BASE), walled off by setup_room
-	var best_mask := N|E|S|W
-	for m in room_by_mask.keys():
-		if (m & required_mask) == required_mask and get_door_count(m) < get_door_count(best_mask):
-			best_mask = m
-	return {"scene": room_by_mask[best_mask], "rotation": 0.0, "type": "AUTO", "mask": required_mask}
-
-# get_door_count
-# get the number of doors in a room
-func get_door_count(mask: int) -> int:
-	var count = 0
-	for i in range(4):
-		if (mask & (1 << i)) != 0:
-			count += 1
-	return count
+func make_room(mask: int, kind: String) -> Dictionary:
+	var scene: PackedScene
+	match kind:
+		"BOSS":  scene = BOSS_SCENE
+		"VAULT": scene = VAULT_SCENE
+		_:       scene = room_by_mask.get(mask, BASE_SCENE)
+	return {"scene": scene, "rotation": 0.0, "type": kind, "mask": mask}
 
 # transition_to_room
 func transition_to_room(new_coords: Vector2i) -> void:
@@ -208,7 +177,7 @@ func transition_to_room(new_coords: Vector2i) -> void:
 			# optional: trigger dialogue warning if DialogueUI exists
 			var dialogue_ui = get_node_or_null("/root/DialogueUI")
 			if dialogue_ui and not dialogue_ui.is_active:
-				dialogue_ui.start_dialogue("Protagonist", ["The door is sealed. I need the Dungeon Key and must defeat at least 50 corrupted entities first!"])
+				dialogue_ui.start_dialogue("Protagonist", ["The door is sealed. The Chaotic energy is too strong..."])
 			return
 
 	is_transitioning = true
@@ -225,7 +194,10 @@ func transition_to_room(new_coords: Vector2i) -> void:
 		screen_fader.fade_in(0.3)
 
 func load_room(coords: Vector2i) -> void:
+	is_transitioning = true
+	
 	if current_room_instance:
+		remove_child(current_room_instance)
 		current_room_instance.queue_free()
 		current_room_instance = null
 		
@@ -256,6 +228,8 @@ func load_room(coords: Vector2i) -> void:
 	room_changed.emit(coords)
 	
 	get_tree().create_timer(0.1).timeout.connect(func(): is_transitioning = false)
+	
+	print("room ", coords, " mask=", room_data["mask"], " scene=", room_data["scene"].resource_path)
 
 func update_camera_limits() -> void:
 	if not player_instance or not current_room_instance:
@@ -275,7 +249,7 @@ func update_camera_limits() -> void:
 
 func add_kill() -> void:
 	enemy_kill_count += 1
-	print("Enemies defeated: ", enemy_kill_count, "/", REQUIRED_KILLS)
+	print("add_kill -> ", enemy_kill_count)
 	kill_count_changed.emit(enemy_kill_count, REQUIRED_KILLS)
 
 func clear_active_projectiles() -> void:

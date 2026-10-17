@@ -11,10 +11,13 @@ extends CanvasLayer
 
 
 func _ready() -> void:
-	# 1. Connect DungeonManager signals
+	# 1. connect DungeonManager signals
 	if DungeonManager:
 		DungeonManager.room_changed.connect(_on_room_changed)
+		DungeonManager.kill_count_changed.connect(_on_kill_count_changed)
 		_on_room_changed(DungeonManager.current_room_coords)
+		_on_kill_count_changed(DungeonManager.enemy_kill_count, DungeonManager.REQUIRED_KILLS)
+		
 		
 	# Initially hide key icon
 	if key_icon:
@@ -89,10 +92,15 @@ func _on_key_collected(has_key: bool) -> void:
 	if key_icon:
 		key_icon.visible = has_key
 
-func _on_room_changed(coords: Vector2i) -> void:
+
+func _on_room_changed(_coords: Vector2i) -> void:
 	if room_label and DungeonManager:
-		room_label.text = "Room %d / %d" % [coords.x + 1, DungeonManager.TOTAL_ROOMS]
+		room_label.text = "Rooms: %d / %d" % [
+			DungeonManager.visited_rooms.size(),
+			DungeonManager.grid.size()
+		]
 
 func _on_kill_count_changed(current: int, required: int) -> void:
+	print("Kill added!")
 	if kill_count_label:
 		kill_count_label.text = "Kills: %d / %d" % [current, required]

@@ -20,6 +20,9 @@ var can_attack: bool = true
 var is_attacking: bool = false
 var target_player: Node2D = null
 
+var is_dead := false
+
+
 func _ready() -> void:
 	add_to_group("enemies")
 	current_health = max_health
@@ -105,6 +108,8 @@ func attack_player() -> void:
 		can_attack = true
 
 func take_damage(amount: float, knockback_source_pos: Vector2 = Vector2.ZERO) -> void:
+	if is_dead:
+		return
 	current_health -= amount
 	
 	spawn_damage_number(amount)
@@ -142,7 +147,17 @@ func spawn_damage_number(amount: float) -> void:
 	
 
 func die() -> void:
+	if is_dead:
+		return
+	is_dead = true
+	remove_from_group("enemies")
+	set_physics_process(false)
+	hide()
 	if DungeonManager:
 		DungeonManager.add_kill()
-	
 	queue_free()
+
+
+func _exit_tree() -> void:
+	if not is_dead:
+		print("Enemy removed WITHOUT dying. Called from: ", get_stack())

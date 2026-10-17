@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="1_4sr77"]
 [ext_resource type="FontFile" uid="uid://b4hnjj3j8e5mf" path="res://fonts/enemy_font.ttf" id="1_hen2p"]
+[ext_resource type="Script" uid="uid://djj0ruyybov5m" path="res://screens/LoseScreen.gd" id="1_n2oq1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_aqe1g"]
 font = ExtResource("1_hen2p")
@@ -13,10 +14,7 @@ shadow_size = 10
 shadow_color = Color(0.75643086, 0.18092069, 0.17679027, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=828346399]
-
-[node name="Opener_Container" type="Container" parent="." unique_id=499460885]
-offset_right = 1154.0
-offset_bottom = 647.0
+script = ExtResource("1_n2oq1")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1770106895]
 anchors_preset = 15
