@@ -63,7 +63,7 @@ var hud_instance: CanvasLayer = null
 # @export var boss_room_scene: PackedScene
 @export var screen_fader: CanvasLayer
 
-# grid stores RoomData: { "scene": PackedScene, "rotation": float, "type": String }
+# grid stores RoomData:w		 { "scene": PackedScene, "rotation": float, "type": String }
 var grid: Dictionary = {}
 var current_room_coords: Vector2i = Vector2i.ZERO
 var current_room_instance: Node2D = null
@@ -167,13 +167,13 @@ func transition_to_room(new_coords: Vector2i) -> void:
 		var has_key = player and player.has_dungeon_key
 		var has_enough_kills = enemy_kill_count >= REQUIRED_KILLS
 		
-		if not (has_key and has_enough_kills):
+		if not debug_skip_boss_lock and not (has_key and has_enough_kills):
 			print("Boss door locked! Kills: ", enemy_kill_count, "/", REQUIRED_KILLS, " | Has Key: ", has_key)
 			
 			# optional: trigger dialogue warning if DialogueUI exists
-			var dialogue_ui = get_node_or_null("/root/DialogueUI")
-			if dialogue_ui and not dialogue_ui.is_active:
-				dialogue_ui.start_dialogue("Protagonist", ["The door is sealed. The Chaotic energy is too strong..."])
+			var dlg = get_node_or_null("/root/DialogueLogic")
+			if dlg and not dlg.is_active:
+				dlg.start_dialogue("Protagonist", ["The door is sealed. The Chaotic energy is too strong..."])
 			return
 
 	is_transitioning = true
@@ -239,8 +239,6 @@ func load_room(coords: Vector2i) -> void:
 	
 	get_tree().create_timer(0.1).timeout.connect(func(): is_transitioning = false)
 	
-	print("room ", coords, " mask=", room_data["mask"], " scene=", room_data["scene"].resource_path)
-
 func update_camera_limits() -> void:
 	if not player_instance or not current_room_instance:
 		return

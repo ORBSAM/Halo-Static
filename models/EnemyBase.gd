@@ -149,15 +149,15 @@ func spawn_damage_number(amount: float) -> void:
 func die() -> void:
 	if is_dead:
 		return
+	
 	is_dead = true
+	
 	remove_from_group("enemies")
 	set_physics_process(false)
+	
 	hide()
+	
 	if DungeonManager:
 		DungeonManager.add_kill()
+	
 	queue_free()
-
-
-func _exit_tree() -> void:
-	if not is_dead:
-		print("Enemy removed WITHOUT dying. Called from: ", get_stack())

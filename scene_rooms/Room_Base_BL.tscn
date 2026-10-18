@@ -522,10 +522,10 @@ position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_e270b")
 
 [node name="TopLeftMarker" type="Marker2D" parent="." unique_id=47146424]
-position = Vector2(232, 97)
+position = Vector2(232, 103)
 
 [node name="BottomRightMarker" type="Marker2D" parent="." unique_id=6988005]
-position = Vector2(769, 422)
+position = Vector2(761, 414)
 
 [connection signal="body_entered" from="Doors/DoorEast" to="." method="_on_door_east_body_entered"]
 [connection signal="body_entered" from="Doors/DoorNorth" to="." method="_on_door_north_body_entered"]

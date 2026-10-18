@@ -154,11 +154,13 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="PointLight2D" type="PointLight2D" parent="CharacterBody2D/AnimatedSprite2D" unique_id=266158486]
-scale = Vector2(38.727276, 41.633335)
-color = Color(0.93333334, 0, 0.95686275, 0.60784316)
-energy = 1.9
+position = Vector2(0, -101.80667)
+scale = Vector2(13.615058, 25.207682)
+color = Color(0.93333334, 0, 0.95686275, 0.11764706)
+energy = 5.37
 shadow_color = Color(0.93333334, 0, 0.95686275, 0.8784314)
 texture = ExtResource("7_s8sob")
+offset = Vector2(0, -10)
 texture_scale = 0.05
 
 [node name="WeaponPivot" type="Node2D" parent="CharacterBody2D" unique_id=806644052]

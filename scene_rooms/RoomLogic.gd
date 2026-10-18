@@ -115,13 +115,6 @@ func spawn_random_enemies() -> void:
 		enemy.global_position = markers[i].global_position
 		if i == miniboss_idx and enemy.has_signal("miniboss_defeated"):
 			enemy.miniboss_defeated.connect(func(): DungeonManager.add_kill())
-	
-	for marker in markers:
-		var enemy_scene = enemy_scenes.pick_random()
-		if enemy_scene:
-			var enemy = enemy_scene.instantiate()
-			enemy.global_position = marker.global_position
-			add_child(enemy)
 
 func spawn_random_items() -> void:
 	if item_scenes.is_empty():
@@ -170,6 +163,9 @@ func _on_door_west_body_entered(body: Node2D) -> void:
 		door_west.set_deferred("monitoring", false)
 		if DungeonManager and DungeonManager.has_method("transition_to_room"):
 			DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.LEFT)
+			await get_tree().create_timer(1.5).timeout
+		if is_instance_valid(door_west) and DungeonManager.current_room_instance == self:
+			door_west.monitoring = true
 
 # _on_door_east_body_entered
 # when you enter an eastern door, go up one on the X-axis
@@ -179,6 +175,9 @@ func _on_door_east_body_entered(body: Node2D) -> void:
 		var target_coords = DungeonManager.current_room_coords + Vector2i.RIGHT
 		if DungeonManager and DungeonManager.has_method("transition_to_room"):
 			DungeonManager.transition_to_room(target_coords)
+		await get_tree().create_timer(1.5).timeout
+		if is_instance_valid(door_east) and DungeonManager.current_room_instance == self:
+			door_east.monitoring = true
 			
 # _on_door_north_body_entered
 # when you enter a northern door, go up one on the Y-axis
@@ -186,6 +185,9 @@ func _on_door_north_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		door_north.set_deferred("monitoring", false)
 		DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.UP)
+		await get_tree().create_timer(1.5).timeout
+		if is_instance_valid(door_north) and DungeonManager.current_room_instance == self:
+			door_north.monitoring = true
 
 # _on_door_south_body_entered
 # when you enter a southern door, go down one on the Y-axis
@@ -193,6 +195,9 @@ func _on_door_south_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		door_south.set_deferred("monitoring", false)
 		DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.DOWN)
+		await get_tree().create_timer(1.5).timeout
+		if is_instance_valid(door_south) and DungeonManager.current_room_instance == self:
+			door_south.monitoring = true
 
 # trigger_room_dialogue
 # Trigger a random snippet of dialogue whenever the protagonist enters a room.
