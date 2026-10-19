@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://b53knsq2056rc"]
 
+[ext_resource type="Script" uid="uid://ccbtdaratyvh" path="res://scene_rooms/RoomTutorial.gd" id="1_e60sy"]
 [ext_resource type="Texture2D" uid="uid://bc4ay7ehrss8y" path="res://background_prefabs/dungeon_tiles_folder/walls_floor.png" id="1_n7q4n"]
 [ext_resource type="Texture2D" uid="uid://f10bqi0ts035" path="res://background_prefabs/dungeon_tiles_folder/doors_lever_chest_animation.png" id="2_e60sy"]
 
@@ -440,6 +441,7 @@ size = Vector2(9.999985, 56)
 size = Vector2(20, 10)
 
 [node name="RoomTutorial" type="Node2D" unique_id=1005432862]
+script = ExtResource("1_e60sy")
 
 [node name="Entities" type="Node2D" parent="." unique_id=1322926137]
 position = Vector2(277, 170)

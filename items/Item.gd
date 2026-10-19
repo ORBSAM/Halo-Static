@@ -34,7 +34,11 @@ const TYPE_NAMES = {
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 @onready var light: PointLight2D = get_node_or_null("PointLight2D")
 
+const ITEM_LAYER := 1 << 4   # layer 5; check Project Settings > Layer Names that it's free
+
+
 func _ready() -> void:
+	add_to_group("items")
 	body_entered.connect(_on_body_entered)
 	update_item_appearance()
 	
@@ -42,15 +46,15 @@ func update_item_appearance() -> void:
 	var item_color = TYPE_COLORS.get(item_type, Color.WHITE)
 	item_name = TYPE_NAMES.get(item_type, "Item")
 	
-	# 1. Update ColorRect placeholder (if using ColorRect)
+	# 1. update ColorRect placeholder (if using ColorRect)
 	if color_rect:
 		color_rect.color = item_color
 		
-	# 2. Update Sprite tint (if using Sprite2D)
+	# 2. update Sprite tint (if using Sprite2D)
 	if sprite:
 		sprite.modulate = item_color
 
-	# 3. Update PointLight2D glow color and energy
+	# 3. update PointLight2D glow color and energy
 	if light:
 		light.color = item_color
 		light.energy = 1.5
@@ -86,6 +90,18 @@ func collect(player: Node2D) -> void:
 		player.add_item(item_type)
 	
 	# free item
+	queue_free()
+
+# is_consumable
+# consumable by the enemy?
+func is_consumable() -> bool:
+	return item_type == ItemType.CHAOTIC and not _destroyed
+
+func consume_by_enemy() -> void:
+	if _destroyed:
+		return
+	_destroyed = true
+	set_deferred("monitoring", false)
 	queue_free()
 
 func take_damage(_amount: float, _source_pos: Vector2 = Vector2.ZERO) -> void:

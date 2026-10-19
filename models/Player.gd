@@ -167,31 +167,38 @@ func execute_attack() -> void:
 	if active_hitbox:
 		var hit_enemies = []
 		
-		var check_and_hit = func(body: Node2D):
-			if body.is_in_group("enemies") and body.has_method("take_damage") and not body in hit_enemies:
-				hit_enemies.append(body)
-				body.take_damage(get_scaled_damage(stats["base_damage"]), global_position)
-				add_harmonic_energy(stats["energy_gain"])
+		var check_and_hit = func(target: Node):
+			var is_enemy: bool = target.is_in_group("enemies")
+			if (is_enemy or target.is_in_group("destructible")) \
+					and target.has_method("take_damage") and not target in hit_enemies:
+				hit_enemies.append(target)
+				target.take_damage(get_scaled_damage(stats["base_damage"]), global_position)
+				if is_enemy:
+					add_harmonic_energy(stats["energy_gain"])   # no energy for smashing items
 
-		var connection = active_hitbox.body_entered.connect(check_and_hit)
+		active_hitbox.body_entered.connect(check_and_hit)
+		active_hitbox.area_entered.connect(check_and_hit)
 		active_hitbox.monitoring = true
-		
-		# Play fast animation once
-		if anim_player and anim_player.has_animation("swing_saber"):
-			anim_player.speed_scale = 1.8
+
+		if anim_player and anim_player.has_animation("thrust_saber"):
+			anim_player.speed_scale = 1.8			
 			anim_player.play("swing_saber")
 
 		# Check enemies standing inside on frame 1
 		await get_tree().physics_frame
-		for body in active_hitbox.get_overlapping_bodies():
-			check_and_hit.call(body)
+		for t in active_hitbox.get_overlapping_bodies() + active_hitbox.get_overlapping_areas():
+			check_and_hit.call(t)
 
-		# Active window timing
+		# active window timing
 		await get_tree().create_timer(0.12).timeout
 		
 		active_hitbox.monitoring = false
+		
 		if active_hitbox.body_entered.is_connected(check_and_hit):
 			active_hitbox.body_entered.disconnect(check_and_hit)
+			
+		if active_hitbox.area_entered.is_connected(check_and_hit):
+			active_hitbox.area_entered.disconnect(check_and_hit)
 
 	is_attacking = false
 
@@ -223,46 +230,44 @@ func fire_orb_duplicate() -> void:
 	shape_node.shape = circle
 	projectile.add_child(shape_node)
 
-	# 4. Attach to the current room scene node
-	var current_room = get_tree().current_scene
-	if current_room:
-		current_room.add_child(projectile)
-	else:
-		get_parent().add_child(projectile)
+	# 4. attach to the current room so transitions free it with the room
+	var host: Node = DungeonManager.current_room_instance \
+		if is_instance_valid(DungeonManager.current_room_instance) else get_parent()
+	host.add_child(projectile)
 
 	projectile.global_position = weapon_pivot.global_position
 	projectile.visible = true
 	projectile.monitoring = true
 
-	# Compute direction toward mouse
 	var target_dir = (get_global_mouse_position() - global_position).normalized()
 	var proj_damage = get_scaled_damage(weapon_stats[Weapon.ORB_OF_LIGHT]["base_damage"])
 
-	# 5. connect hit detection
-	var on_hit = func(body: Node2D):
-		if body == self or body.is_in_group("player"):
+	# 5. hit detection
+	var on_hit = func(target: Node):
+		if projectile.has_meta("spent") or target == self or target.is_in_group("player"):
 			return
-
-		if body.is_in_group("enemies") and body.has_method("take_damage"):
-			body.take_damage(proj_damage, projectile.global_position)
-			add_harmonic_energy(weapon_stats[Weapon.ORB_OF_LIGHT]["energy_gain"])
+		var is_enemy: bool = target.is_in_group("enemies")
+		if (is_enemy or target.is_in_group("destructible")) and target.has_method("take_damage"):
+			projectile.set_meta("spent", true)      # no double hits in the same frame
+			target.take_damage(proj_damage, projectile.global_position)
+			if is_enemy:
+				add_harmonic_energy(weapon_stats[Weapon.ORB_OF_LIGHT]["energy_gain"])
 			projectile.queue_free()
-		elif body is TileMap or body is TileMapLayer:
+		elif target is TileMap or target is TileMapLayer:
 			projectile.queue_free()
 
 	projectile.body_entered.connect(on_hit)
+	projectile.area_entered.connect(on_hit)
 
-	# 6. Launch projectile with Tween
-	var travel_distance = 400.0
-	var proj_speed = 450.0
-	var duration = travel_distance / proj_speed
-	var target_pos = projectile.global_position + (target_dir * travel_distance)
+	# 6. launch: the tween is owned by the projectile, so no stale callbacks
+	var travel_distance := 400.0
+	var duration := travel_distance / 450.0
+	var tween := projectile.create_tween()
+	tween.tween_property(projectile, "global_position",
+		projectile.global_position + target_dir * travel_distance, duration)
+	tween.tween_callback(projectile.queue_free)
 
-	var tween = create_tween()
-	tween.tween_property(projectile, "global_position", target_pos, duration)
-	tween.finished.connect(projectile.queue_free)
-
-func add_key(amount: int = 1) -> void:
+func add_key(_amount: int = 1) -> void:
 	has_dungeon_key = true
 	key_collected.emit(true)
 	print("Key added to inventory!")

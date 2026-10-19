@@ -3,7 +3,7 @@
 [ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="1_2wp4o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tsr4x"]
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(1, 0.6862745, 0.9843137, 1)
 border_width_bottom = 5
 border_color = Color(0.9415416, 0.67442095, 0.995886, 1)
 corner_radius_top_left = 10
@@ -25,7 +25,7 @@ corner_detail = 1
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s3sf"]
 bg_color = Color(0.9999997, 0.91746825, 0.99938637, 1)
 border_width_bottom = 5
-border_color = Color(0.9415416, 0.67442095, 0.995886, 1)
+border_color = Color(0.9411765, 0.6745098, 0.99607843, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 5
 corner_radius_bottom_right = 10
@@ -35,7 +35,7 @@ corner_detail = 1
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wp4o"]
 bg_color = Color(1, 1, 1, 1)
 border_width_bottom = 5
-border_color = Color(0.9415416, 0.67442095, 0.995886, 1)
+border_color = Color(0.9411765, 0.6745098, 0.99607843, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 5
 corner_radius_bottom_right = 10
@@ -45,7 +45,7 @@ corner_detail = 1
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1nul"]
 bg_color = Color(1, 1, 1, 1)
 border_width_bottom = 2
-border_color = Color(0.9415416, 0.67442095, 0.995886, 1)
+border_color = Color(0.9411765, 0.6745098, 0.99607843, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 5
 corner_radius_bottom_right = 10
@@ -53,9 +53,9 @@ corner_radius_bottom_left = 5
 corner_detail = 1
 
 [resource]
-Button/colors/font_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
+Button/colors/font_color = Color(0.9615697, 0.27626467, 0.75629455, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.64807296, 0.2438508, 0.47336513, 1)
+Button/colors/font_focus_color = Color(0.730005, 0.029038005, 0.503029, 1)
 Button/colors/font_hover_color = Color(0.8957675, 0.53260887, 0.72015274, 1)
 Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 Button/colors/font_outline_color = Color(0, 0, 0, 1)

@@ -135,7 +135,7 @@ collision_mask = 6
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=127284619 groups=["player"]]
 z_index = 2
 y_sort_enabled = true
-collision_mask = 6
+collision_mask = 14
 script = ExtResource("1_u5ffr")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=867338456]

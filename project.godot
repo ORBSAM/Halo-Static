@@ -33,6 +33,7 @@ player="global player group; makes finding the player easier for enemy ai"
 enemies="global enemy group; makes finding enemies easier"
 projectiles="for the orb projectiles or any other projectiles that may want to be cleared."
 destructible="destructible objects; only chaotic items can be destroyed"
+items="items"
 
 [input]
 

@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="1_4sr77"]
 [ext_resource type="FontFile" uid="uid://b4hnjj3j8e5mf" path="res://fonts/enemy_font.ttf" id="1_hen2p"]
 [ext_resource type="Script" uid="uid://djj0ruyybov5m" path="res://screens/LoseScreen.gd" id="1_n2oq1"]
+[ext_resource type="Theme" uid="uid://baedtmxi3p3cj" path="res://GUI/themes/GUI_UI_theme_BAD.tres" id="4_d0sbi"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_aqe1g"]
 font = ExtResource("1_hen2p")
@@ -53,6 +54,7 @@ alignment = 1
 [node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer" unique_id=263274581]
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
+theme_override_constants/separation = 30
 alignment = 1
 
 [node name="TryAgain" type="Button" parent="BoxContainer/VBoxContainer" unique_id=1463704009]
@@ -64,5 +66,5 @@ text = "TRY AGAIN"
 [node name="Quit" type="Button" parent="BoxContainer/VBoxContainer" unique_id=871433347]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-theme = ExtResource("1_4sr77")
+theme = ExtResource("4_d0sbi")
 text = "QUIT"

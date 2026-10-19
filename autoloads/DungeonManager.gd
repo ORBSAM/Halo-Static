@@ -32,6 +32,9 @@ const W = DoorFlags.WEST
 const BASE_SCENE = preload("res://scene_rooms/Room_Base.tscn")
 const BOSS_SCENE = preload("res://scene_rooms/Room_Boss.tscn")
 const VAULT_SCENE = preload("res://scene_rooms/Room_KeyVault.tscn")
+const TUTORIAL_SCENE = preload("res://scene_rooms/Room_Tutorial.tscn")   # your path
+
+var tutorial_shown: bool = false    # session-only: resets when the game closes
 
 # mask -> scene; add variants as you make them
 var room_by_mask: Dictionary = {
@@ -111,7 +114,11 @@ func start_new_game() -> void:
 
 	# 3. build layout and load starting room (0,0)
 	generate_dungeon_layout()
-	load_room(Vector2i.ZERO)
+	if not tutorial_shown:
+		tutorial_shown = true
+		load_tutorial_room()
+	else:
+		load_room(Vector2i.ZERO)
 
 # generate_dungeon_layout
 # Generate 2D Layout and Match Templates with Rotations
@@ -143,6 +150,47 @@ func generate_dungeon_layout() -> void:
 		if pos == BOSS_POS:    kind = "BOSS"
 		elif pos == vault_pos: kind = "VAULT"
 		grid[pos] = make_room(mask, kind)
+
+# load_tutorial_room
+# load the tutorial room if player has never seen it
+func load_tutorial_room() -> void:
+	is_transitioning = true
+	current_room_coords = Vector2i.ZERO
+	current_room_instance = TUTORIAL_SCENE.instantiate()
+	add_child(current_room_instance)
+	if player_instance == null:
+		player_instance = player_scene.instantiate()
+		add_child(player_instance)
+	current_room_instance.setup_room(Vector2i.ZERO, "TUTORIAL", Vector2i.ZERO)
+	update_camera_limits()
+	get_tree().create_timer(0.1).timeout.connect(func(): is_transitioning = false)
+
+# finish_tutorial
+
+func finish_tutorial() -> void:
+	if is_transitioning:
+		return
+	is_transitioning = true
+	
+	if screen_fader and screen_fader.has_method("fade_out"):
+		await screen_fader.fade_out(0.4)
+	await get_tree().process_frame        # get out of any physics callback before swapping rooms
+
+	# tutorial kills and damage don't carry over
+	enemy_kill_count = 0
+	kill_count_changed.emit(enemy_kill_count, REQUIRED_KILLS)
+	for proj in get_tree().get_nodes_in_group("projectiles"):
+		proj.queue_free()
+	var p = get_tree().get_first_node_in_group("player")
+	if p:
+		p.heal(9999.0)
+		p.harmonic_energy = 0.0
+		p.add_harmonic_energy(0.0)
+
+	last_entry_direction = Vector2i.ZERO
+	load_room(Vector2i.ZERO)              # removes the tutorial room and uses PlayerSpawn
+	if screen_fader and screen_fader.has_method("fade_in"):
+		screen_fader.fade_in(0.4)
 
 func make_room(mask: int, kind: String) -> Dictionary:
 	var scene: PackedScene

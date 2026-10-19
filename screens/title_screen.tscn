@@ -2,7 +2,14 @@
 
 [ext_resource type="Script" uid="uid://cp54yf1ln7i5p" path="res://screens/TitleScreen.gd" id="1_grftj"]
 [ext_resource type="Texture2D" uid="uid://dbja30q4byr12" path="res://screens/screen_images/halo_static_icon.png" id="2_81buc"]
+[ext_resource type="Shader" uid="uid://ci8l2fcvb8byc" path="res://screens/screen_shaders/TitleScreenShader.gdshader" id="2_n8gtu"]
 [ext_resource type="Theme" uid="uid://dk4bu2i5ty13j" path="res://GUI/themes/GUI_UI_theme.tres" id="2_sxlwc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e60sy"]
+shader = ExtResource("2_n8gtu")
+shader_parameter/intensity = 0.3
+shader_parameter/speed = 18.0
+shader_parameter/tint = Color(0.87, 0.63, 0.94, 1)
 
 [node name="TitleScreen" type="Control" unique_id=270575899]
 z_index = 110
@@ -16,6 +23,7 @@ mouse_filter = 2
 script = ExtResource("1_grftj")
 
 [node name="Background" type="ColorRect" parent="." unique_id=305606911]
+material = SubResource("ShaderMaterial_e60sy")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,7 +31,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.051970966, 0.051970966, 0.051970936, 1)
+color = Color(0.13578993, 0.0005617859, 1.8049032e-08, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=374052765]
 layout_mode = 1
@@ -47,11 +55,13 @@ theme_override_constants/margin_bottom = 40
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1530265122]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="MenuContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=155702531]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 20
 
 [node name="Start" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1108843001]
 layout_mode = 2

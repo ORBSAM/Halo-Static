@@ -51,3 +51,12 @@ alignment = 1
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
 alignment = 1
+
+[node name="TotalKills" type="Label" parent="BoxContainer/VBoxContainer" unique_id=2099210593]
+layout_mode = 2
+
+[node name="Exit" type="Button" parent="BoxContainer/VBoxContainer" unique_id=1096906376]
+layout_mode = 2
+
+[node name="Main Menu" type="Button" parent="BoxContainer/VBoxContainer" unique_id=714615791]
+layout_mode = 2

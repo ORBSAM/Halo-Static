@@ -4,12 +4,15 @@ extends CharacterBody2D
 var current_health: float = 30.0
 
 @export var move_speed: float = 80.0
-@export var attack_damage: float = 10.0
-@export var attack_cooldown: float = 1.0
+@export var attack_damage: float = 2
+@export var attack_cooldown: float = 3.0
 
 # movement distances
 @export var stop_distance: float = 32.0       # stop moving when within this range of player
 @export var separation_radius: float = 24.0   # push away from other enemies closer than this
+
+@export var item_seek_radius: float = 240.0
+@export var max_power_stacks: int = 3
 
 # two demon png paths
 @onready var sprite: Sprite2D = $Sprite2D
@@ -19,6 +22,10 @@ var sprite_type_b = preload("res://models/enemy_images/demon_02.png")
 var can_attack: bool = true
 var is_attacking: bool = false
 var target_player: Node2D = null
+
+var power_stacks: int = 0
+var target_item: Node2D = null
+var _scan_timer: float = 0.0
 
 var is_dead := false
 
@@ -49,34 +56,41 @@ func setup_random_variant() -> void:
 		
 	current_health = max_health
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if target_player == null:
 		var players = get_tree().get_nodes_in_group("player")
 		if players.size() > 0:
 			target_player = players[0]
-			
-	if target_player:
-		var dist_to_player = global_position.distance_to(target_player.global_position)
-		var move_dir = Vector2.ZERO
-		
-		# 1. Player tracking force (only if further than stop_distance)
-		if dist_to_player > stop_distance and not is_attacking:
-			move_dir += (target_player.global_position - global_position).normalized()
-			
-		# 2. Separation force (push away from overlapping enemies)
-		var separation_force = get_separation_vector()
-		move_dir += separation_force * 1.2
-		
-		if move_dir != Vector2.ZERO:
-			velocity = move_dir.normalized() * move_speed
+	if target_player == null:
+		return
+
+	# rescan a few times a second, not every frame
+	_scan_timer -= delta
+	if _scan_timer <= 0.0:
+		_scan_timer = 0.4
+		if power_stacks < max_power_stacks and not is_instance_valid(target_item):
+			target_item = _find_item()
+		elif is_instance_valid(target_item) and not target_item.is_consumable():
+			target_item = null
+
+	var dist_to_player = global_position.distance_to(target_player.global_position)
+	var move_dir = Vector2.ZERO
+	var chasing_item := is_instance_valid(target_item) and power_stacks < max_power_stacks
+
+	if chasing_item:
+		if global_position.distance_to(target_item.global_position) < 14.0:
+			_consume_item(target_item)
 		else:
-			velocity = Vector2.ZERO
-			
-		move_and_slide()
-		
-		# 3. Attack check
-		if dist_to_player <= (stop_distance + 8.0) and can_attack:
-			attack_player()
+			move_dir += (target_item.global_position - global_position).normalized()
+	elif dist_to_player > stop_distance and not is_attacking:
+		move_dir += (target_player.global_position - global_position).normalized()
+
+	move_dir += get_separation_vector() * 1.2
+	velocity = move_dir.normalized() * move_speed if move_dir != Vector2.ZERO else Vector2.ZERO
+	move_and_slide()
+
+	if dist_to_player <= (stop_distance + 8.0) and can_attack:
+		attack_player()
 
 # calculates push vector to keep enemies spaced apart
 func get_separation_vector() -> Vector2:
@@ -144,7 +158,29 @@ func spawn_damage_number(amount: float) -> void:
 	tween.tween_property(label, "global_position:y", label.global_position.y - 30.0, 0.7)
 	tween.tween_property(label, "modulate:a", 0.0, 0.6)
 	tween.finished.connect(label.queue_free)
-	
+
+func _find_item() -> Node2D:
+	var best: Node2D = null
+	var best_d := item_seek_radius
+	for it in get_tree().get_nodes_in_group("items"):
+		if is_instance_valid(it) and it.has_method("is_consumable") and it.is_consumable():
+			var d := global_position.distance_to(it.global_position)
+			if d < best_d:
+				best_d = d
+				best = it
+	return best
+
+func _consume_item(item: Node2D) -> void:
+	item.consume_by_enemy()
+	target_item = null
+	power_stacks += 1
+	attack_damage += 1.0
+	move_speed *= 1.08
+	max_health += 8.0
+	current_health = min(max_health, current_health + 10.0)
+	# grow and redden the sprite only (scaling the body would change its collision)
+	sprite.scale *= 1.08
+	sprite.modulate = Color(1.0, 1.0 - 0.2 * power_stacks, 1.0 - 0.2 * power_stacks)
 
 func die() -> void:
 	if is_dead:
