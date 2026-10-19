@@ -3,7 +3,7 @@ extends CanvasLayer
 @onready var health_bar: ProgressBar = $"Control/TopLeft/Panel/VBoxContainer/Health Bar"
 @onready var energy_bar: ProgressBar = $"Control/TopLeft/Panel/VBoxContainer/Harmony Bar"
 @onready var room_label: Label = $"Control/TopRight/Panel/RoomTrack/RoomTrackerLabel"
-@onready var kill_count_label: Label = $"Control/TopRight/Panel/RoomTrack2/KillCountLabel"
+@onready var kill_count_label: Label = $"Control/TopRight/Panel/KillCount/KillCountLabel"
 
 @onready var key_icon: ColorRect = $Key_Icon_Place
 @onready var saber_button: Button = $"Control/BoxContainer/HBoxContainer/E-Icon Weapon"

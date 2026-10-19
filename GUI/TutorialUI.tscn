@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://dql247m3htd5j"]
+
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="1_kx4lr"]
+[ext_resource type="Script" uid="uid://d0tn7b8s823jj" path="res://GUI/TutorialOverlay.gd" id="1_vpdiq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmes5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_60onu"]
+font = ExtResource("1_kx4lr")
+outline_size = 3
+outline_color = Color(1, 0.49711722, 0.641385, 1)
+shadow_color = Color(0.69145715, 0.091008835, 0.38030475, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vpdiq"]
+bg_color = Color(1, 1, 1, 1)
+border_width_bottom = 2
+border_color = Color(0.85834914, 0.43398824, 0.6616008, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="TutorialUI" type="CanvasLayer" unique_id=273815955]
+script = ExtResource("1_vpdiq")
+
+[node name="Left" type="VBoxContainer" parent="." unique_id=672142872]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_right = 248.0
+offset_bottom = 25.0
+grow_vertical = 2
+
+[node name="Tutorial1" type="Panel" parent="Left" unique_id=1004920175]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(250, 250)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xmes5")
+
+[node name="Tutorial1Text" type="Label" parent="Left/Tutorial1" unique_id=2116694010]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.5
+offset_top = -10.5
+offset_right = 66.5
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "TEST"
+label_settings = SubResource("LabelSettings_60onu")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Right" type="VBoxContainer" parent="." unique_id=558765054]
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.772
+anchor_right = 1.0
+anchor_bottom = 0.772
+offset_left = -248.0
+offset_top = -19.256012
+offset_bottom = 30.743988
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Tutorial2" type="Panel" parent="Right" unique_id=818509871]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(250, 250)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vpdiq")
+
+[node name="Tutorial2Text" type="Label" parent="Right/Tutorial2" unique_id=1457574118]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.5
+offset_top = -10.5
+offset_right = 66.5
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "TEST"
+label_settings = SubResource("LabelSettings_60onu")
+horizontal_alignment = 1
+uppercase = true

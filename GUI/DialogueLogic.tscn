@@ -49,6 +49,7 @@ theme_override_fonts/font = ExtResource("3_xmy6g")
 theme_override_font_sizes/font_size = 20
 text = "TEST"
 horizontal_alignment = 1
+uppercase = true
 
 [node name="Portrait" type="TextureRect" parent="Panel" unique_id=1751697838]
 custom_minimum_size = Vector2(60, 50)
@@ -69,3 +70,4 @@ theme_override_colors/font_color = Color(0.8668957, 0.45357233, 0.67391104, 1)
 theme_override_fonts/font = ExtResource("3_xmy6g")
 theme_override_font_sizes/font_size = 25
 text = "TEST"
+uppercase = true

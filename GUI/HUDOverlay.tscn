@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://vw06m5mvrq3e"]
 
-[ext_resource type="Script" uid="uid://clafcwvprt817" path="res://GUI/HUDOverlay.gd" id="1_ssm0s"]
-[ext_resource type="Material" uid="uid://dpec5hjpflmri" path="res://addons/rmsmartshape/examples/edge_shader/material_edge_shader.tres" id="2_3dox3"]
-[ext_resource type="StyleBox" uid="uid://daxrd3upawsbq" path="res://GUI/themes/style_box_theme.tres" id="3_wk7dk"]
-[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="4_3dox3"]
-[ext_resource type="Theme" uid="uid://dk4bu2i5ty13j" path="res://GUI/themes/GUI_UI_theme.tres" id="5_mw6it"]
+[ext_resource type="Script" uid="uid://clafcwvprt817" path="res://GUI/HUDOverlay.gd" id="1_0g3lp"]
+[ext_resource type="Material" uid="uid://dpec5hjpflmri" path="res://addons/rmsmartshape/examples/edge_shader/material_edge_shader.tres" id="2_x4yve"]
+[ext_resource type="StyleBox" uid="uid://daxrd3upawsbq" path="res://GUI/themes/style_box_theme.tres" id="3_4q7ft"]
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="4_e3mb0"]
+[ext_resource type="Theme" uid="uid://dk4bu2i5ty13j" path="res://GUI/themes/GUI_UI_theme.tres" id="5_a7flc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mw6it"]
 bg_color = Color(0.36862746, 0.6901961, 0.28627452, 0.5647059)
@@ -60,13 +60,13 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 8
 
 [sub_resource type="LabelSettings" id="LabelSettings_6s3sf"]
-font = ExtResource("4_3dox3")
+font = ExtResource("4_e3mb0")
 outline_size = 3
 outline_color = Color(1, 0.49711722, 0.641385, 1)
 shadow_color = Color(0.69145715, 0.091008835, 0.38030475, 0)
 
 [node name="HUD" type="CanvasLayer" unique_id=300666281]
-script = ExtResource("1_ssm0s")
+script = ExtResource("1_0g3lp")
 
 [node name="Control" type="Control" parent="." unique_id=1919899376]
 layout_mode = 3
@@ -87,9 +87,9 @@ offset_right = 301.0
 offset_bottom = 91.448
 
 [node name="Panel" type="Panel" parent="Control/TopLeft" unique_id=1825627825]
-material = ExtResource("2_3dox3")
+material = ExtResource("2_x4yve")
 layout_mode = 2
-theme_override_styles/panel = ExtResource("3_wk7dk")
+theme_override_styles/panel = ExtResource("3_4q7ft")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/TopLeft/Panel" unique_id=334316637]
 custom_minimum_size = Vector2(100, 100)
@@ -115,7 +115,7 @@ offset_top = -4.0
 offset_right = 83.0
 offset_bottom = 25.0
 theme_override_colors/font_shadow_color = Color(0.36862746, 0.6901961, 0.28627452, 0.7647059)
-theme_override_fonts/font = ExtResource("4_3dox3")
+theme_override_fonts/font = ExtResource("4_e3mb0")
 theme_override_font_sizes/font_size = 22
 text = "HEALTH"
 
@@ -135,7 +135,7 @@ offset_top = -3.0
 offset_right = 189.0
 offset_bottom = 22.0
 theme_override_colors/font_shadow_color = Color(0.9764706, 0.28627452, 0.7490196, 0.90588236)
-theme_override_fonts/font = ExtResource("4_3dox3")
+theme_override_fonts/font = ExtResource("4_e3mb0")
 theme_override_font_sizes/font_size = 19
 text = "HARMONY"
 
@@ -185,7 +185,7 @@ text = "TEST"
 label_settings = SubResource("LabelSettings_6s3sf")
 horizontal_alignment = 1
 
-[node name="RoomTrack2" type="Panel" parent="Control/TopRight/Panel" unique_id=2033773526]
+[node name="KillCount" type="Panel" parent="Control/TopRight/Panel" unique_id=2033773526]
 custom_minimum_size = Vector2(100, 25)
 custom_maximum_size = Vector2(100, 50)
 layout_mode = 1
@@ -195,7 +195,7 @@ offset_right = 116.0
 offset_bottom = 112.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_wk7dk")
 
-[node name="KillCountLabel" type="Label" parent="Control/TopRight/Panel/RoomTrack2" unique_id=1803631200]
+[node name="KillCountLabel" type="Label" parent="Control/TopRight/Panel/KillCount" unique_id=1803631200]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -233,14 +233,14 @@ layout_mode = 2
 [node name="E-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=170196428]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
-theme = ExtResource("5_mw6it")
+theme = ExtResource("5_a7flc")
 toggle_mode = true
 text = "E"
 
 [node name="Q-Icon Weapon" type="Button" parent="Control/BoxContainer/HBoxContainer" unique_id=756833691]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
-theme = ExtResource("5_mw6it")
+theme = ExtResource("5_a7flc")
 toggle_mode = true
 text = "Q"
 icon_alignment = 1
