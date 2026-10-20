@@ -18,3 +18,6 @@ charge_min_range = 60.0
 charge_max_range = 280.0
 hit_radius = 26.0
 recover_damage_multiplier = 1.5
+
+[node name="PointLight2D" parent="Sprite2D" parent_id_path=PackedInt32Array(1826838139) index="0" unique_id=149174226]
+energy = 5.0

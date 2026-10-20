@@ -66,7 +66,7 @@ outline_color = Color(1, 0.49711722, 0.641385, 1)
 shadow_color = Color(0.69145715, 0.091008835, 0.38030475, 0)
 
 [node name="HUD" type="CanvasLayer" unique_id=300666281]
-layer = 200
+layer = 199
 script = ExtResource("1_0g3lp")
 
 [node name="Control" type="Control" parent="." unique_id=1919899376]

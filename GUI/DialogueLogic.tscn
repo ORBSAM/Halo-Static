@@ -17,7 +17,7 @@ corner_radius_bottom_left = 10
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vlcmw"]
 
 [node name="text_box_control" type="CanvasLayer" unique_id=1794601379]
-layer = 200
+layer = 199
 script = ExtResource("1_qmici")
 
 [node name="Panel" type="Panel" parent="." unique_id=1890717189]

@@ -7,7 +7,7 @@
 bg_color = Color(0.9529412, 0.9529412, 0.9529412, 0.63529414)
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1651142144]
-layer = 100
+layer = 200
 script = ExtResource("1_jxgud")
 
 [node name="Control" type="Control" parent="." unique_id=201243455]

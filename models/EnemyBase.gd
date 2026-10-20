@@ -4,11 +4,11 @@ extends CharacterBody2D
 var current_health: float = 30.0
 
 @export var move_speed: float = 80.0
-@export var attack_damage: float = 2
+@export var attack_damage: float = 5
 @export var attack_cooldown: float = 3.0
 
 # movement distances
-@export var stop_distance: float = 32.0       # stop moving when within this range of player
+@export var stop_distance: float = 45.0       # stop moving when within this range of player
 @export var separation_radius: float = 24.0   # push away from other enemies closer than this
 
 @export var item_seek_radius: float = 240.0
