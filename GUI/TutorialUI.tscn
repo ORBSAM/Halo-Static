@@ -28,78 +28,79 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="TutorialUI" type="CanvasLayer" unique_id=273815955 node_paths=PackedStringArray("steps")]
+[node name="TutorialUI" type="CanvasLayer" unique_id=273815955]
+layer = 200
 script = ExtResource("1_vpdiq")
-steps = []
 
-[node name="1" type="Control" parent="." unique_id=1773807859]
+[node name="Step1" type="Control" parent="." unique_id=1773807859]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Left" type="VBoxContainer" parent="1" unique_id=672142872]
+[node name="Left" type="VBoxContainer" parent="Step1" unique_id=672142872]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = 279.0
-offset_right = 248.0
-offset_bottom = 329.0
+offset_top = -12.5
+offset_right = 296.0
+offset_bottom = 62.5
 grow_vertical = 2
 
-[node name="Tutorial1" type="Panel" parent="1/Left" unique_id=1004920175]
-custom_minimum_size = Vector2(50, 50)
-custom_maximum_size = Vector2(250, 250)
+[node name="Tutorial1" type="Panel" parent="Step1/Left" unique_id=1004920175]
+custom_minimum_size = Vector2(25, 75)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_xmes5")
 
-[node name="Tutorial1Text" type="Label" parent="1/Left/Tutorial1" unique_id=2116694010]
+[node name="Tutorial1Text" type="Label" parent="Step1/Left/Tutorial1" unique_id=2116694010]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = -1
+anchor_left = 0.517
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 0.517
 anchor_bottom = 0.5
-offset_left = -66.5
-offset_top = -10.5
-offset_right = 66.5
-offset_bottom = 10.5
+offset_left = -153.03201
+offset_top = -11.0
+offset_right = 136.512
+offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "TEST"
+text = "Health is green. Do not get hit!"
 label_settings = SubResource("LabelSettings_60onu")
 horizontal_alignment = 1
 uppercase = true
 
-[node name="2" type="Control" parent="." unique_id=390220953]
+[node name="Step2" type="Control" parent="." unique_id=390220953]
 layout_mode = 3
-anchors_preset = 0
-offset_top = 351.0
-offset_right = 248.0
-offset_bottom = 351.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Right" type="VBoxContainer" parent="2" unique_id=558765054]
+[node name="Right" type="VBoxContainer" parent="Step2" unique_id=558765054]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 0.772
 anchor_right = 1.0
 anchor_bottom = 0.772
-offset_left = 656.0
-offset_top = 130.0
-offset_right = 904.0
-offset_bottom = 180.0
+offset_left = -251.0
+offset_top = -0.25601196
+offset_bottom = 49.743988
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Tutorial2" type="Panel" parent="2/Right" unique_id=818509871]
+[node name="Tutorial2" type="Panel" parent="Step2/Right" unique_id=818509871]
 custom_minimum_size = Vector2(50, 50)
 custom_maximum_size = Vector2(250, 250)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vpdiq")
 
-[node name="Tutorial2Text" type="Label" parent="2/Right/Tutorial2" unique_id=1457574118]
+[node name="Tutorial2Text" type="Label" parent="Step2/Right/Tutorial2" unique_id=1457574118]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -112,7 +113,53 @@ offset_right = 66.5
 offset_bottom = 10.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "TEST"
+text = "Press E or Q to fight!"
+label_settings = SubResource("LabelSettings_60onu")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Step3" type="Control" parent="." unique_id=919708529]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Right" type="VBoxContainer" parent="Step3" unique_id=246017394]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.49400002
+anchor_top = 0.998
+anchor_right = 0.49400002
+anchor_bottom = 0.998
+offset_left = -125.08801
+offset_top = -49.70404
+offset_right = 124.91199
+offset_bottom = 1.2959595
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Tutorial4" type="Panel" parent="Step3/Right" unique_id=1954580751]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(250, 250)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vpdiq")
+
+[node name="Tutorial4Text" type="Label" parent="Step3/Right/Tutorial4" unique_id=358625001]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.5
+offset_top = -10.5
+offset_right = 66.5
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "GOOD LUCK!"
 label_settings = SubResource("LabelSettings_60onu")
 horizontal_alignment = 1
 uppercase = true

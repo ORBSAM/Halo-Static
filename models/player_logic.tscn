@@ -154,10 +154,10 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="PointLight2D" type="PointLight2D" parent="CharacterBody2D/AnimatedSprite2D" unique_id=266158486]
-position = Vector2(0, -101.80667)
-scale = Vector2(13.615058, 25.207682)
+position = Vector2(0, -72.858376)
+scale = Vector2(13.615058, 26.020834)
 color = Color(0.93333334, 0, 0.95686275, 0.11764706)
-energy = 5.37
+energy = 11.12
 shadow_color = Color(0.93333334, 0, 0.95686275, 0.8784314)
 texture = ExtResource("7_s8sob")
 offset = Vector2(0, -10)

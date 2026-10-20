@@ -1,18 +1,23 @@
 extends RoomLogic
 
-@export var practice_fight: bool = true   # false = leave right after the overlays
-@onready var overlay = get_node_or_null("TutorialOverlay")
-
+@export var overlay_scene: PackedScene   # optional if the overlay is already a child
+var overlay: Node = null
 var _enemies: Array = []
 
 func _ready() -> void:
-	# runs after RoomLogic._ready. Doors do nothing in the tutorial.
+	super()    # RoomLogic._ready builds the boundary walls
+
 	var doors := get_node_or_null("Doors")
 	if doors:
 		for d in doors.get_children():
 			if d is Area2D:
 				d.set_deferred("monitoring", false)
 				d.hide()
+
+	overlay = get_node_or_null("TutorialUI")
+	if overlay == null and overlay_scene:
+		overlay = overlay_scene.instantiate()
+		add_child(overlay)
 
 func setup_room(_coords: Vector2i, _room_type: String, _entry: Vector2i = Vector2i.ZERO) -> void:
 	var player = get_tree().get_first_node_in_group("player")
@@ -23,18 +28,23 @@ func setup_room(_coords: Vector2i, _room_type: String, _entry: Vector2i = Vector
 		print("tutorial spawn at ", player_spawn.global_position)
 
 	_spawn_tutorial_enemies()
-	spawn_random_items()                  # overridden below: good items only
+	spawn_random_items()   # overridden below: good items only
 
 	await get_tree().create_timer(0.6).timeout
-	if overlay:
-		overlay.play()
-		await overlay.finished
 
-	for e in _enemies:
+	if overlay:
+		await overlay.play()          # walkthrough; player can move, enemies frozen
+	else:
+		push_error("TutorialRoom: no TutorialOverlay found (add it as a child or set overlay_scene)")
+
+	for e in _enemies:                # the practice fight starts now
 		if is_instance_valid(e):
-			e.set_physics_process(true)   # the fight starts now
-	if practice_fight:
-		await _wait_for_enemies_dead()
+			e.set_physics_process(true)
+
+	if overlay:
+		await overlay.leave_requested  # player presses Esc when ready
+	else:
+		await get_tree().create_timer(3.0).timeout
 
 	DungeonManager.finish_tutorial()
 
@@ -43,22 +53,16 @@ func _spawn_tutorial_enemies() -> void:
 		return
 	var markers: Array = enemy_spawns.get_children() if enemy_spawns else []
 	var center := (top_left_marker.global_position + bottom_right_marker.global_position) / 2.0
-	for i in range(2):                    # exactly two
+	for i in range(2):
 		var e = enemy_scenes[0].instantiate()
+		e.set("max_power_stacks", 0)   # tutorial enemies never eat items
 		add_child(e)
 		e.global_position = markers[i].global_position if i < markers.size() \
 			else center + Vector2(80.0 * (i * 2 - 1), 0.0)
-		e.set_physics_process(false)      # frozen, but the player can still move
+		e.set_physics_process(false)   # frozen; the player can still move
 		_enemies.append(e)
 
-func _wait_for_enemies_dead() -> void:
-	while true:
-		_enemies = _enemies.filter(func(e): return is_instance_valid(e) and e.get("is_dead") != true)
-		if _enemies.is_empty():
-			return
-		await get_tree().create_timer(0.25).timeout
-
-# good items only, one at every item marker
+# good items only, one per item marker
 func spawn_random_items() -> void:
 	if item_scenes.is_empty() or not item_spawns:
 		return

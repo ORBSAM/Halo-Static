@@ -13,7 +13,9 @@ func _ready() -> void:
 # _unhandled_input
 # toggles pause when pressing escape
 func _unhandled_input(event: InputEvent) -> void:
-	# toggle pause when pressing Escape (ui_cancel)
+	# if the tutorial is currently happening, do not trigger this pause menu
+	if DungeonManager.in_tutorial:
+		return                      # Esc belongs to the tutorial overlay here
 	if event.is_action_pressed("ui_cancel"):
 		toggle_pause()
 

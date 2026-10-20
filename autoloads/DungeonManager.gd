@@ -35,6 +35,8 @@ const VAULT_SCENE = preload("res://scene_rooms/Room_KeyVault.tscn")
 const TUTORIAL_SCENE = preload("res://scene_rooms/Room_Tutorial.tscn")   # your path
 
 var tutorial_shown: bool = false    # session-only: resets when the game closes
+var in_tutorial: bool = false
+
 
 # mask -> scene; add variants as you make them
 var room_by_mask: Dictionary = {
@@ -66,6 +68,14 @@ var hud_instance: CanvasLayer = null
 # @export var boss_room_scene: PackedScene
 @export var screen_fader: CanvasLayer
 
+# shader logic
+const DARK_SHADER = preload("res://screens/screen_shaders/dungeon_dark.gdshader")
+const AMBIENT_DEFAULT := Color(0.28, 0.26, 0.38)   # lower = darker
+
+var ambient: CanvasModulate
+var dark_layer: CanvasLayer
+var dark_rect: ColorRect
+
 # grid stores RoomData:w		 { "scene": PackedScene, "rotation": float, "type": String }
 var grid: Dictionary = {}
 var current_room_coords: Vector2i = Vector2i.ZERO
@@ -83,7 +93,7 @@ signal kill_count_changed(current: int, required: int)
 # _ready
 # let the main menu handle this with start_new_game
 func _ready() -> void:
-	pass	
+	_build_atmosphere()	
 	
 # start_new_game
 func start_new_game() -> void:
@@ -112,7 +122,10 @@ func start_new_game() -> void:
 	elif has_node("/root/HUD_overlay"):
 		get_node("/root/HUD_overlay").show()
 
+	set_atmosphere(true)
+
 	# 3. build layout and load starting room (0,0)
+	# but first, go to the tutorial room if we have not already
 	generate_dungeon_layout()
 	if not tutorial_shown:
 		tutorial_shown = true
@@ -154,6 +167,8 @@ func generate_dungeon_layout() -> void:
 # load_tutorial_room
 # load the tutorial room if player has never seen it
 func load_tutorial_room() -> void:
+	in_tutorial = true
+
 	is_transitioning = true
 	current_room_coords = Vector2i.ZERO
 	current_room_instance = TUTORIAL_SCENE.instantiate()
@@ -168,6 +183,8 @@ func load_tutorial_room() -> void:
 # finish_tutorial
 
 func finish_tutorial() -> void:
+	in_tutorial = false
+	
 	if is_transitioning:
 		return
 	is_transitioning = true
@@ -317,6 +334,9 @@ func clear_active_projectiles() -> void:
 		screen_fader.fade_in(0.3)
 
 func clear_current_dungeon() -> void:
+	in_tutorial = false
+	set_atmosphere(false)
+	
 	if current_room_instance:
 		current_room_instance.queue_free()
 		current_room_instance = null
@@ -324,3 +344,38 @@ func clear_current_dungeon() -> void:
 		if player_instance:
 			player_instance.queue_free()
 			player_instance = null
+
+func _build_atmosphere() -> void:
+	ambient = CanvasModulate.new()
+	ambient.color = AMBIENT_DEFAULT
+	add_child(ambient)
+
+	dark_layer = CanvasLayer.new()
+	dark_layer.layer = 5                       # keep this BELOW your HUD and dialogue layers
+	add_child(dark_layer)
+
+	dark_rect = ColorRect.new()
+	dark_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dark_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var mat := ShaderMaterial.new()
+	mat.shader = DARK_SHADER
+	dark_rect.material = mat
+	dark_layer.add_child(dark_rect)
+
+	set_atmosphere(false)                      # off for the main menu
+
+func set_atmosphere(on: bool) -> void:
+	ambient.visible = on
+	dark_layer.visible = on
+
+func set_ambient(color: Color, time: float = 0.8) -> void:
+	create_tween().tween_property(ambient, "color", color, time)
+
+func _process(_delta: float) -> void:
+	if dark_layer == null or not dark_layer.visible:
+		return
+	# var p := get_tree().get_first_node_in_group("player") as Node2D
+	#if p:
+	#	var vp := get_viewport().get_visible_rect().size
+	#	var c: Vector2 = p.get_global_transform_with_canvas().origin / vp
+	#	(dark_rect.material as ShaderMaterial).set_shader_parameter("light_center", c)
