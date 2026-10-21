@@ -2,8 +2,23 @@
 
 [ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="1_4sr77"]
 [ext_resource type="FontFile" uid="uid://b4hnjj3j8e5mf" path="res://fonts/enemy_font.ttf" id="1_hen2p"]
-[ext_resource type="Script" uid="uid://djj0ruyybov5m" path="res://screens/LoseScreen.gd" id="1_n2oq1"]
+[ext_resource type="Script" uid="uid://djj0ruyybov5m" path="res://screens/WinLoseScreen.gd" id="1_n2oq1"]
+[ext_resource type="Shader" uid="uid://jwjgdqebukj0" path="res://screens/screen_shaders/StaticBGShader.gdshader" id="2_vvyq0"]
+[ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="3_jij2u"]
 [ext_resource type="Theme" uid="uid://baedtmxi3p3cj" path="res://GUI/themes/GUI_UI_theme_BAD.tres" id="4_d0sbi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0d0ds"]
+shader = ExtResource("2_vvyq0")
+shader_parameter/base_color = Color(0.28, 0.28, 0.3, 1)
+shader_parameter/speck_color = Color(0.7, 0.7, 0.72, 1)
+shader_parameter/base_alpha = 0.88
+shader_parameter/noise_alpha = 0.12
+shader_parameter/noise_strength = 0.8
+shader_parameter/speed = 20.0
+shader_parameter/grid = Vector2(240, 135)
+shader_parameter/scanlines = 0.12
+shader_parameter/glitch = 0.6
+shader_parameter/vignette = 0.6
 
 [sub_resource type="LabelSettings" id="LabelSettings_aqe1g"]
 font = ExtResource("1_hen2p")
@@ -14,10 +29,18 @@ outline_color = Color(0.36512128, 2.4877581e-06, 0.005799611, 1)
 shadow_size = 10
 shadow_color = Color(0.75643086, 0.18092069, 0.17679027, 0)
 
-[node name="CanvasLayer" type="CanvasLayer" unique_id=828346399]
+[node name="CanvasLayer" type="Control" unique_id=1006666236]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_n2oq1")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1770106895]
+material = SubResource("ShaderMaterial_0d0ds")
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -25,46 +48,56 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0.1148968, 0.11489681, 0.1148968, 1)
+script = ExtResource("3_jij2u")
+look = 2
 
-[node name="Label" type="Label" parent="Background" unique_id=1799906474]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=263274581]
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.47400004
-anchor_right = 0.47400004
-offset_left = -545.04803
-offset_top = 132.0
-offset_right = 600.95197
-offset_bottom = 215.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -167.5
+offset_top = -173.5
+offset_right = 167.5
+offset_bottom = 173.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=1799906474]
+layout_mode = 2
 text = "PURGED"
 label_settings = SubResource("LabelSettings_aqe1g")
 horizontal_alignment = 1
 
-[node name="BoxContainer" type="BoxContainer" parent="." unique_id=1811177378]
-anchors_preset = -1
-anchor_left = 0.52000004
-anchor_top = 1.0
-anchor_right = 0.52000004
-anchor_bottom = 1.0
-offset_left = -552.04004
-offset_top = -358.0
-offset_right = 500.95996
-offset_bottom = -135.0
-alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer" unique_id=263274581]
-custom_minimum_size = Vector2(300, 200)
+[node name="Subtitle" type="Label" parent="VBoxContainer" unique_id=1533636099]
 layout_mode = 2
-theme_override_constants/separation = 30
-alignment = 1
 
-[node name="TryAgain" type="Button" parent="BoxContainer/VBoxContainer" unique_id=1463704009]
+[node name="Stats" type="Label" parent="VBoxContainer" unique_id=1476859337]
+layout_mode = 2
+
+[node name="RetryButton" type="Button" parent="VBoxContainer" unique_id=1373707650]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 theme = ExtResource("1_4sr77")
-text = "TRY AGAIN"
+theme_override_font_sizes/font_size = 20
+text = "CONTINUE"
 
-[node name="Quit" type="Button" parent="BoxContainer/VBoxContainer" unique_id=871433347]
+[node name="MainMenuButton" type="Button" parent="VBoxContainer" unique_id=871433347]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 theme = ExtResource("4_d0sbi")
+theme_override_font_sizes/font_size = 50
+text = "MAIN MENU
+"
+
+[node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=1804113840]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme = ExtResource("4_d0sbi")
+theme_override_font_sizes/font_size = 50
 text = "QUIT"

@@ -49,6 +49,8 @@ var weapon_stats = {
 	}
 }
 
+
+
 # preload weapon textures
 var saber_texture = preload("res://weapons/saber_weapon.png")
 var orb_texture = preload("res://weapons/orb_of_light_weapon.png")
@@ -67,6 +69,8 @@ var orb_texture = preload("res://weapons/orb_of_light_weapon.png")
 var is_blasting: bool = false
 var is_attacking: bool = false
 var last_facing_direction: Vector2 = Vector2.DOWN
+var is_dead := false
+
 
 enum AttackType { SWING, THRUST }
 var current_attack: AttackType = AttackType.SWING
@@ -332,6 +336,8 @@ func trigger_harmonic_blast() -> void:
 	
 # take_damage
 func take_damage(amount: float) -> void:
+	if is_dead:
+		return
 	current_health = max(0.0, current_health - amount)
 	health_changed.emit(current_health, max_health)
 	play_hit_flash()
@@ -344,10 +350,15 @@ func heal(amount: float) -> void:
 	health_changed.emit(current_health, max_health)
 
 func die() -> void:
-	print("Player defeated!")
-	# works, but the lose splash has no logic as of now
-	# get_tree().change_scene_to_file("res://screens/lose_splash.tscn")
-	# signal to DungeonManager or handle game over
+	if is_dead:
+		return
+	is_dead = true
+	set_physics_process(false)
+	set_process_input(false)
+	await get_tree().create_timer(0.8).timeout     # let the last hit land
+	
+	DungeonManager.game_over()
+	
 
 # update_animation
 # update the animation as the player moves

@@ -23,163 +23,25 @@ shadow_color = Color(0.69145715, 0.091008835, 0.38030475, 0)
 layer = 200
 script = ExtResource("1_vpdiq")
 
-[node name="Step1" type="Control" parent="." unique_id=1773807859]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+[node name="Bottom" type="VBoxContainer" parent="." unique_id=246017394]
+anchors_preset = -1
+anchor_left = 0.51500005
+anchor_top = 1.0
+anchor_right = 0.51500005
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Left" type="VBoxContainer" parent="Step1" unique_id=672142872]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.317
-anchor_bottom = 0.317
-offset_top = -37.416
-offset_right = 296.0
-offset_bottom = 37.584
-grow_vertical = 2
-
-[node name="Tutorial1" type="Panel" parent="Step1/Left" unique_id=1004920175]
-custom_minimum_size = Vector2(25, 75)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_vpdiq")
-
-[node name="Tutorial1Text" type="Label" parent="Step1/Left/Tutorial1" unique_id=2116694010]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.517
-anchor_top = 0.5
-anchor_right = 0.517
-anchor_bottom = 0.5
-offset_left = -153.03201
-offset_top = -11.0
-offset_right = 136.512
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Health is green. Do not get hit!"
-label_settings = SubResource("LabelSettings_60onu")
-horizontal_alignment = 1
-uppercase = true
-
-[node name="Step2" type="Control" parent="." unique_id=2091298194]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Left" type="VBoxContainer" parent="Step2" unique_id=1687836081]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.317
-anchor_bottom = 0.317
-offset_top = -37.416
-offset_right = 296.0
-offset_bottom = 37.584
-grow_vertical = 2
-
-[node name="Tutorial1" type="Panel" parent="Step2/Left" unique_id=1641296063]
-custom_minimum_size = Vector2(25, 75)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_vpdiq")
-
-[node name="Tutorial1Text" type="Label" parent="Step2/Left/Tutorial1" unique_id=1122557143]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.517
-anchor_top = 0.5
-anchor_right = 0.517
-anchor_bottom = 0.5
-offset_left = -200.26001
-offset_top = -11.0
-offset_right = 183.73999
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Your harmony 
-keeps your strength flowing!"
-label_settings = SubResource("LabelSettings_60onu")
-horizontal_alignment = 1
-uppercase = true
-
-[node name="Step5" type="Control" parent="." unique_id=390220953]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Right" type="VBoxContainer" parent="Step5" unique_id=558765054]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 0.772
-anchor_right = 1.0
-anchor_bottom = 0.772
-offset_left = -251.0
-offset_top = -0.25601196
-offset_bottom = 49.743988
+offset_left = -250.28003
+offset_top = -100.0
+offset_right = 249.71997
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Tutorial2" type="Panel" parent="Step5/Right" unique_id=818509871]
-custom_minimum_size = Vector2(50, 50)
-custom_maximum_size = Vector2(250, 250)
+[node name="TutorialBox" type="Panel" parent="Bottom" unique_id=1954580751]
+custom_minimum_size = Vector2(500, 70)
+custom_maximum_size = Vector2(1000, 250)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vpdiq")
 
-[node name="Tutorial2Text" type="Label" parent="Step5/Right/Tutorial2" unique_id=1457574118]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -66.5
-offset_top = -10.5
-offset_right = 66.5
-offset_bottom = 10.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Press E or Q to fight!"
-label_settings = SubResource("LabelSettings_60onu")
-horizontal_alignment = 1
-uppercase = true
-
-[node name="Step4" type="Control" parent="." unique_id=919708529]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Bottom" type="VBoxContainer" parent="Step4" unique_id=246017394]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.49400002
-anchor_top = 0.998
-anchor_right = 0.49400002
-anchor_bottom = 0.998
-offset_left = -111.08801
-offset_top = -98.70404
-offset_right = 164.91199
-offset_bottom = 1.2959595
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="Tutorial4" type="Panel" parent="Step4/Bottom" unique_id=1954580751]
-custom_minimum_size = Vector2(300, 100)
-custom_maximum_size = Vector2(300, 250)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_vpdiq")
-
-[node name="Tutorial4Text" type="Label" parent="Step4/Bottom/Tutorial4" unique_id=358625001]
+[node name="TutorialText" type="Label" parent="Bottom/TutorialBox" unique_id=358625001]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.49300003
@@ -192,7 +54,41 @@ offset_right = 133.09999
 offset_bottom = 18.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "GOOD LUCK! PRESS ESC TO ENTER!"
+text = "TEST"
+label_settings = SubResource("LabelSettings_60onu")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="ContinueHint" type="Label" parent="." unique_id=851985907]
+anchors_preset = -1
+anchor_left = 0.49300003
+anchor_top = 0.846
+anchor_right = 0.5
+anchor_bottom = 0.846
+offset_left = -110.936035
+offset_top = -41.208008
+offset_right = 147.0
+offset_bottom = -14.208008
+grow_horizontal = 2
+grow_vertical = 2
+text = "PRESS SPACE TO CONTINUE	"
+label_settings = SubResource("LabelSettings_60onu")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="ReadyPrompt" type="Label" parent="." unique_id=304170672]
+anchors_preset = -1
+anchor_left = 0.49300003
+anchor_top = 0.846
+anchor_right = 0.5
+anchor_bottom = 0.846
+offset_left = -110.936035
+offset_top = -41.208008
+offset_right = 147.0
+offset_bottom = -14.208008
+grow_horizontal = 2
+grow_vertical = 2
+text = "(PRESS ESC TO CONTINUE)"
 label_settings = SubResource("LabelSettings_60onu")
 horizontal_alignment = 1
 uppercase = true

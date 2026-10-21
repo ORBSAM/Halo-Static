@@ -5,7 +5,7 @@ var current_health: float = 30.0
 
 @export var move_speed: float = 80.0
 @export var attack_damage: float = 5
-@export var attack_cooldown: float = 3.0
+@export var attack_cooldown: float = 1.0
 
 # movement distances
 @export var stop_distance: float = 45.0       # stop moving when within this range of player

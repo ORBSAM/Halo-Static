@@ -1,81 +1,81 @@
 extends CanvasLayer
 
 signal leave_requested
+signal _advance
 
 @export var fade_time: float = 0.25
+@export var lines: Array[String] = [
+	"Welcome, Sentinel. Your health is the top bar...",
+	"...and your harmony is the bar below it. Fill it to unleash a blast.",
+	"Press E for the saber, Q for the orb of light.",
+	"Corrupted entities will hunt you. Pink shards help you; red essence hurts.",
+	"Good luck."
+]
 
-@onready var ready_prompt: Control = get_node_or_null("ReadyPrompt")
-@onready var continue_hint: Control = get_node_or_null("ContinueHint")  # optional "Press Enter" label
-
-signal _advance                      # emitted when the player presses Enter/Space
+@onready var box: Control = $Bottom/TutorialBox
+@onready var text: Label = $Bottom/TutorialBox/TutorialText
+@onready var hint: Label = $ContinueHint
+@onready var ready_prompt: Label = $ReadyPrompt
 
 enum State { IDLE, PAGES, READY }
 var _state: State = State.IDLE
 
 func _ready() -> void:
 	layer = 110
-	_ignore_mouse(self)
-	for step in _steps():
-		step.hide()
-		for page in _pages(step):
-			page.hide()
-	if ready_prompt:
-		ready_prompt.hide()
-	if continue_hint:
-		continue_hint.hide()
+	for c in [box, text, hint, ready_prompt]:
+		c.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.hide()
+	hint.hide()
+	ready_prompt.hide()
+	_bob(hint)
 
-func _ignore_mouse(n: Node) -> void:
-	if n is Control:
-		n.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	for c in n.get_children():
-		_ignore_mouse(c)
+# floating hint: loops forever, tied to the node
+func _bob(n: Control) -> void:
+	var y := n.position.y
+	var tw := n.create_tween().set_loops()
+	tw.tween_property(n, "position:y", y - 6.0, 0.7).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(n, "position:y", y, 0.7).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-func _steps() -> Array:
-	return get_children().filter(func(c): return c is Control and c != ready_prompt and c != continue_hint)
-
-func _pages(step: Control) -> Array:
-	var kids := step.get_children().filter(func(c): return c is Control)
-	return kids if not kids.is_empty() else [step]
+func _pulse(n: Control) -> void:
+	var tw := n.create_tween().set_loops()
+	tw.tween_property(n, "modulate:a", 0.3, 1.2).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(n, "modulate:a", 1.0, 1.2).set_trans(Tween.TRANS_SINE)
 
 func play() -> void:
 	_state = State.PAGES
-	for step in _steps():
-		step.show()
-		for page in _pages(step):
-			await _show_page(page)
-		step.hide()
+	box.modulate.a = 0.0
+	box.show()
+	create_tween().tween_property(box, "modulate:a", 1.0, fade_time)
 
-	# every page has been seen: now Esc is allowed to leave
-	if continue_hint:
-		continue_hint.hide()
+	for line in lines:
+		text.text = line
+		text.modulate.a = 0.0
+		var tin := create_tween()
+		tin.tween_property(text, "modulate:a", 1.0, fade_time)
+		await tin.finished
+
+		hint.show()
+		await _advance
+		hint.hide()
+
+		var tout := create_tween()
+		tout.tween_property(text, "modulate:a", 0.0, fade_time)
+		await tout.finished
+
+	var bout := create_tween()
+	bout.tween_property(box, "modulate:a", 0.0, fade_time)
+	await bout.finished
+	box.hide()
+
+	# tutorial finished: only now can Esc leave
 	_state = State.READY
-	if ready_prompt:
-		ready_prompt.show()
-
-func _show_page(page: Control) -> void:
-	page.modulate.a = 0.0
-	page.show()
-
-	var tin := create_tween()
-	tin.tween_property(page, "modulate:a", 1.0, fade_time)
-	await tin.finished
-
-	if continue_hint:
-		continue_hint.show()
-	await _advance                      # waits for a key press, no timer
-
-	if continue_hint:
-		continue_hint.hide()
-	var tout := create_tween()
-	tout.tween_property(page, "modulate:a", 0.0, fade_time)
-	await tout.finished
-	page.hide()
+	ready_prompt.show()
+	_pulse(ready_prompt)
 
 func _unhandled_input(event: InputEvent) -> void:
 	match _state:
 		State.PAGES:
-			# Enter/Space advances. Esc is deliberately ignored here.
-			if event.is_action_pressed("ui_accept"):
+			if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
 				_advance.emit()
 				get_viewport().set_input_as_handled()
 		State.READY:

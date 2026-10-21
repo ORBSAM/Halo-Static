@@ -32,7 +32,12 @@ const W = DoorFlags.WEST
 const BASE_SCENE = preload("res://scene_rooms/Room_Base.tscn")
 const BOSS_SCENE = preload("res://scene_rooms/Room_Boss.tscn")
 const VAULT_SCENE = preload("res://scene_rooms/Room_KeyVault.tscn")
-const TUTORIAL_SCENE = preload("res://scene_rooms/Room_Tutorial.tscn")   # your path
+const TUTORIAL_SCENE = preload("res://scene_rooms/Room_Tutorial.tscn")
+
+# three primary cutscenes; all here for debug
+const DEFEAT_SCENE := "res://screens/lose_splash.tscn"
+const WIN_SCENE := "res://screens/win_splash.tscn"
+const CLIFFHANGER_SCENE := "res://screens/cliffhanger.tscn" 
 
 var tutorial_shown: bool = false    # session-only: resets when the game closes
 var in_tutorial: bool = false
@@ -257,16 +262,29 @@ func transition_to_room(new_coords: Vector2i) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not OS.is_debug_build() or not (event is InputEventKey and event.pressed and not event.echo):
 		return
+
+	var p = get_tree().get_first_node_in_group("player")
+
 	match event.keycode:
-		KEY_BRACKETLEFT:   # give the kills
+		KEY_BRACKETLEFT:   # [  give the kills
 			enemy_kill_count = REQUIRED_KILLS
 			kill_count_changed.emit(enemy_kill_count, REQUIRED_KILLS)
-		KEY_BRACKETRIGHT:  # give the key
-			var p = get_tree().get_first_node_in_group("player")
+		KEY_BRACKETRIGHT:  # ]  give the key
 			if p and p.has_method("add_key"):
 				p.add_key(1)
-		KEY_BACKSLASH:  # jump straight to the boss room
-			transition_to_room(BOSS_POS)
+		KEY_BACKSLASH:     # \  jump to the boss room
+			if p:
+				transition_to_room(BOSS_POS)
+		KEY_6:             # full heal + full harmony
+			if p:
+				p.heal(9999.0)
+				p.add_harmonic_energy(100.0)
+		KEY_7:             # defeat screen
+			game_over()
+		KEY_8:             # win screen
+			game_won()
+		KEY_9:             # cliffhanger screen
+			get_tree().change_scene_to_file(CLIFFHANGER_SCENE)
 
 func load_room(coords: Vector2i) -> void:
 	is_transitioning = true
@@ -344,6 +362,27 @@ func clear_current_dungeon() -> void:
 		if player_instance:
 			player_instance.queue_free()
 			player_instance = null
+
+func game_over() -> void:
+	_end_run(DEFEAT_SCENE)
+
+func game_won() -> void:
+	_end_run(WIN_SCENE)
+
+func _end_run(path: String) -> void:
+	if screen_fader and screen_fader.has_method("fade_out"):
+		await screen_fader.fade_out(0.5)
+	clear_current_dungeon()          # frees the room and player so they don't draw behind the screen
+	
+	for hud_name in ["HUD", "HUD_overlay"]:
+		if has_node("/root/" + hud_name):
+			get_node("/root/" + hud_name).hide()
+	
+	get_tree().change_scene_to_file(path)
+	
+	if screen_fader and screen_fader.has_method("fade_in"):
+		screen_fader.fade_in(0.5)
+
 
 func _build_atmosphere() -> void:
 	ambient = CanvasModulate.new()

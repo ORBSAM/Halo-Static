@@ -1,8 +1,23 @@
 [gd_scene format=3 uid="uid://oelk6ei5cy6k"]
 
-[ext_resource type="Script" uid="uid://cstcs52x3hta2" path="res://screens/IntroCutscene.gd" id="1_3wdwh"]
+[ext_resource type="Script" uid="uid://b0fqil7fullm2" path="res://screens/IntroScroll.gd" id="1_ckdar"]
 [ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="1_j6yrn"]
 [ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="2_ckdar"]
+[ext_resource type="Shader" uid="uid://jwjgdqebukj0" path="res://screens/screen_shaders/StaticBGShader.gdshader" id="2_hpvf2"]
+[ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="3_75q07"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jo8vt"]
+shader = ExtResource("2_hpvf2")
+shader_parameter/base_color = Color(0.02, 0.02, 0.04, 1)
+shader_parameter/speck_color = Color(0.35, 0.35, 0.42, 1)
+shader_parameter/base_alpha = 0.9
+shader_parameter/noise_alpha = 0.05
+shader_parameter/noise_strength = 0.35
+shader_parameter/speed = 10.0
+shader_parameter/grid = Vector2(400, 225)
+shader_parameter/scanlines = 0.05
+shader_parameter/glitch = 0.0
+shader_parameter/vignette = 0.5
 
 [node name="Control" type="Control" unique_id=1106766824]
 layout_mode = 3
@@ -11,9 +26,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_3wdwh")
+script = ExtResource("1_ckdar")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1646459958]
+material = SubResource("ShaderMaterial_jo8vt")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,6 +37,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.055978335, 0.05620656, 1)
+script = ExtResource("3_75q07")
+look = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=2041181189]
 layout_mode = 1

@@ -1,62 +1,94 @@
 [gd_scene format=3 uid="uid://cyoihnlxukx7q"]
 
 [ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="1_5ruwd"]
+[ext_resource type="Script" uid="uid://djj0ruyybov5m" path="res://screens/WinLoseScreen.gd" id="1_41edo"]
+[ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="2_41edo"]
+[ext_resource type="Shader" uid="uid://jwjgdqebukj0" path="res://screens/screen_shaders/StaticBGShader.gdshader" id="2_kn2tl"]
+[ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="4_3y6vg"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_aqe1g"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3y6vg"]
+shader = ExtResource("2_kn2tl")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/speck_color = Color(0.55, 0.55, 0.6, 1)
+shader_parameter/base_alpha = 0.5
+shader_parameter/noise_alpha = 0.2
+shader_parameter/noise_strength = 0.7
+shader_parameter/speed = 12.0
+shader_parameter/grid = Vector2(320, 180)
+shader_parameter/scanlines = 0.04
+shader_parameter/glitch = 0.2
+shader_parameter/vignette = 0.25
+
+[sub_resource type="LabelSettings" id="LabelSettings_l88di"]
 font = ExtResource("1_5ruwd")
-font_size = 60
-font_color = Color(1, 0.15686275, 1, 1)
-outline_size = 5
-shadow_size = 5
-shadow_color = Color(0.9336802, 0.6377482, 0.82769537, 0)
-shadow_offset = Vector2(5, 5)
+font_size = 150
+font_color = Color(0.9607843, 0.27450982, 0.75686276, 1)
+outline_size = 10
+outline_color = Color(0.9419018, 0.20383862, 0.7346585, 0.72156864)
+shadow_size = 10
+shadow_color = Color(1, 0.6959126, 0.8791158, 0.99607843)
 
-[node name="CanvasLayer" type="CanvasLayer" unique_id=828346399]
+[node name="CanvasLayer" type="Control" unique_id=1006666236]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_41edo")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1770106895]
+material = SubResource("ShaderMaterial_3y6vg")
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.1148968, 0.11489681, 0.1148968, 1)
+script = ExtResource("2_41edo")
+look = 1
 
-[node name="PURIFIED" type="Label" parent="Background" unique_id=1799906474]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=263274581]
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.47400004
-anchor_right = 0.47400004
-offset_left = -545.04803
-offset_top = 132.0
-offset_right = 600.95197
-offset_bottom = 215.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -381.0
+offset_top = -229.5
+offset_right = 381.0
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=1799906474]
+layout_mode = 2
 text = "PURIFIED"
-label_settings = SubResource("LabelSettings_aqe1g")
+label_settings = SubResource("LabelSettings_l88di")
 horizontal_alignment = 1
 
-[node name="BoxContainer" type="BoxContainer" parent="." unique_id=1811177378]
-anchors_preset = -1
-anchor_left = 0.52000004
-anchor_top = 1.0
-anchor_right = 0.52000004
-anchor_bottom = 1.0
-offset_left = -552.04004
-offset_top = -358.0
-offset_right = 500.95996
-offset_bottom = -135.0
-alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer" unique_id=263274581]
-custom_minimum_size = Vector2(300, 200)
-layout_mode = 2
-alignment = 1
-
-[node name="TotalKills" type="Label" parent="BoxContainer/VBoxContainer" unique_id=2099210593]
+[node name="Subtitle" type="Label" parent="VBoxContainer" unique_id=1533636099]
 layout_mode = 2
 
-[node name="Exit" type="Button" parent="BoxContainer/VBoxContainer" unique_id=1096906376]
+[node name="Stats" type="Label" parent="VBoxContainer" unique_id=1476859337]
 layout_mode = 2
 
-[node name="Main Menu" type="Button" parent="BoxContainer/VBoxContainer" unique_id=714615791]
+[node name="ContinueButton" type="Button" parent="VBoxContainer" unique_id=1463704009]
+custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+theme = ExtResource("4_3y6vg")
+theme_override_font_sizes/font_size = 20
+text = "CONTINUE"
+
+[node name="MainMenuButton" type="Button" parent="VBoxContainer" unique_id=1373707650]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+theme = ExtResource("4_3y6vg")
+theme_override_font_sizes/font_size = 20
+text = "MAIN MENU
+"

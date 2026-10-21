@@ -42,6 +42,7 @@ offset_bottom = 61.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/separation = 20
 
 [node name="ResumeButton" type="Button" parent="Control/VBoxContainer" unique_id=191262440]
 custom_minimum_size = Vector2(50, 50)
