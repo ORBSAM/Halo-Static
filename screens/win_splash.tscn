@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://djj0ruyybov5m" path="res://screens/WinLoseScreen.gd" id="1_41edo"]
 [ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="2_41edo"]
 [ext_resource type="Shader" uid="uid://jwjgdqebukj0" path="res://screens/screen_shaders/StaticBGShader.gdshader" id="2_kn2tl"]
+[ext_resource type="LabelSettings" uid="uid://duk1pk5fgobrj" path="res://screens/text_themes/GOOD_text_theme.tres" id="4_kn2tl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kn2tl"]
 shader = ExtResource("2_kn2tl")
@@ -25,10 +26,21 @@ shader_parameter/line_thickness = 0.04
 shader_parameter/margin_color = Color(0.85, 0.25, 0.3, 1)
 shader_parameter/margin_x = 0.1
 shader_parameter/margin_alpha = 0.4
+shader_parameter/calm = 0.6
+shader_parameter/calm_size = Vector2(0.45, 0.35)
 
-[sub_resource type="LabelSettings" id="LabelSettings_l88di"]
+[sub_resource type="LabelSettings" id="LabelSettings_3y6vg"]
 font = ExtResource("1_5ruwd")
-font_size = 150
+font_size = 30
+font_color = Color(0.9607843, 0.27450982, 0.75686276, 1)
+outline_size = 10
+outline_color = Color(0.9419018, 0.20383862, 0.7346585, 0.72156864)
+shadow_size = 10
+shadow_color = Color(1, 0.6959126, 0.8791158, 0.99607843)
+
+[sub_resource type="LabelSettings" id="LabelSettings_kn2tl"]
+font = ExtResource("1_5ruwd")
+font_size = 30
 font_color = Color(0.9607843, 0.27450982, 0.75686276, 1)
 outline_size = 10
 outline_color = Color(0.9419018, 0.20383862, 0.7346585, 0.72156864)
@@ -76,24 +88,33 @@ alignment = 1
 [node name="Title" type="Label" parent="VBoxContainer" unique_id=1799906474]
 layout_mode = 2
 text = "PURIFIED"
-label_settings = SubResource("LabelSettings_l88di")
+label_settings = ExtResource("4_kn2tl")
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="VBoxContainer" unique_id=1533636099]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("1_5ruwd")
+text = "YOU WIN! Or...?"
+label_settings = SubResource("LabelSettings_3y6vg")
+horizontal_alignment = 1
 
 [node name="StatsLabel" type="Label" parent="VBoxContainer" unique_id=1476859337]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("1_5ruwd")
+label_settings = SubResource("LabelSettings_kn2tl")
+horizontal_alignment = 1
 
 [node name="ContinueButton" type="Button" parent="VBoxContainer" unique_id=1463704009]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("1_5ruwd")
 theme_override_font_sizes/font_size = 20
 text = "CONTINUE"
 
 [node name="MainMenuButton" type="Button" parent="VBoxContainer" unique_id=1373707650]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("1_5ruwd")
 theme_override_font_sizes/font_size = 20
 text = "MAIN MENU
 "

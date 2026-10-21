@@ -21,11 +21,16 @@ uniform vec4 margin_color : source_color = vec4(0.85, 0.25, 0.3, 1.0);
 uniform float margin_x : hint_range(0.0, 0.5) = 0.1;
 uniform float margin_alpha : hint_range(0.0, 1.0) = 0.4;
 
+uniform float calm : hint_range(0.0, 1.0) = 0.6;
+uniform vec2 calm_size = vec2(0.45, 0.35);
+
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
 void fragment() {
+	float m = 1.0 - calm * (1.0 - smoothstep(0.0, 1.0, length((UV - 0.5) / calm_size)));
+	
 	float t = floor(TIME * speed);
 	vec2 uv = UV;
 
@@ -35,13 +40,13 @@ void fragment() {
 	// ruled lines, drifting and slightly wobbly
 	float y = (uv.y + TIME * line_scroll) * line_count + sin(uv.x * 9.0 + TIME * 0.4) * 0.06;
 	float cell = fract(y);
-	float line = smoothstep(line_thickness, 0.0, cell) * line_alpha;
+	float line = smoothstep(line_thickness, 0.0, cell) * line_alpha * m;
 
 	// vertical margin line, jittering with the glitch bands
 	float margin = smoothstep(0.0015, 0.0, abs(uv.x - margin_x)) * margin_alpha;
 
 	// static
-	float n = hash(floor(uv * grid) + t);
+	float n = hash(floor(uv * grid) + t) * m;	
 	vec3 col = mix(base_color.rgb, speck_color.rgb, n * noise_strength);
 	col = mix(col, line_color.rgb, line);
 	col = mix(col, margin_color.rgb, margin);

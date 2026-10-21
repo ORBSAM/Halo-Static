@@ -11,6 +11,8 @@ static func build(dark: bool = false) -> Theme:
 	# panels
 	th.set_stylebox("panel", "Panel", _box(paper, ink, accent, 2, 0, Vector2(4, 4), 0.35, 4))
 	th.set_stylebox("panel", "PanelContainer", _box(paper, ink, accent, 2, 0, Vector2(4, 4), 0.35, 4))
+	th.set_color("font_outline_color", "Label", paper)
+	th.set_constant("outline_size", "Label", 6)
 
 	# buttons
 	th.set_stylebox("normal", "Button", _box(paper_dim, ink, accent, 2, 3, Vector2(3, 3), 0.35, 4))

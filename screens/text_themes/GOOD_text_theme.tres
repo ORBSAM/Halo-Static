@@ -1,0 +1,12 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://duk1pk5fgobrj"]
+
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="1_51ddi"]
+
+[resource]
+font = ExtResource("1_51ddi")
+font_size = 150
+font_color = Color(0.9607843, 0.27450982, 0.75686276, 1)
+outline_size = 10
+outline_color = Color(0.9419018, 0.20383862, 0.7346585, 0.72156864)
+shadow_size = 10
+shadow_color = Color(1, 0.6959126, 0.8791158, 0.99607843)
