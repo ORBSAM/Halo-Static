@@ -33,13 +33,21 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 	boss.process_mode = Node.PROCESS_MODE_INHERIT
 	_start_fight_loops()
 
+# _boss_intro
+# logic for handling the boss introduction; mainly focuses on the camera logic
+# and the dialogue that plays
 func _boss_intro(player: Node) -> void:
 	var cam: Camera2D = player.get_node_or_null("Camera2D") if player else null
 	await get_tree().create_timer(0.4).timeout
 
+	var base_zoom := cam.zoom if cam else Vector2.ONE
 	if cam:
-		var tw := create_tween()
-		tw.tween_property(cam, "offset", boss.global_position - player.global_position, 0.8) \
+		var focus_zoom := base_zoom * 1.35
+		var tw := create_tween().set_parallel(true)
+		tw.tween_property(cam, "zoom", focus_zoom, 0.8) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tw.tween_property(cam, "offset",
+			_focus_offset(player, boss.global_position, focus_zoom.x), 0.8) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		await tw.finished
 
@@ -50,10 +58,22 @@ func _boss_intro(player: Node) -> void:
 		await dlg.dialogue_finished
 
 	if cam:
-		var back := create_tween()
-		back.tween_property(cam, "offset", Vector2.ZERO, 0.6) \
-			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		var back := create_tween().set_parallel(true)
+		back.tween_property(cam, "zoom", base_zoom, 0.6)
+		back.tween_property(cam, "offset", Vector2.ZERO, 0.6)
 		await back.finished
+
+# _focus_offset
+# offset that centers the view on target_pos without the view leaving the room
+func _focus_offset(player: Node2D, target_pos: Vector2, zoom_level: float) -> Vector2:
+	var b := get_bounds()
+	var half := get_viewport_rect().size / zoom_level / 2.0
+	var lo := b.position + half
+	var hi := b.end - half
+	var c := target_pos
+	c.x = (b.position.x + b.end.x) / 2.0 if lo.x > hi.x else clampf(c.x, lo.x, hi.x)
+	c.y = (b.position.y + b.end.y) / 2.0 if lo.y > hi.y else clampf(c.y, lo.y, hi.y)
+	return c - player.global_position
 
 func _start_fight_loops() -> void:
 	_fighting = true
@@ -88,6 +108,7 @@ func _loop_items() -> void:
 		item.global_position = _random_point(64.0)
 		if item.has_method("update_item_appearance"):
 			item.update_item_appearance()
+
 
 func _random_point(inset: float) -> Vector2:
 	var a := top_left_marker.global_position

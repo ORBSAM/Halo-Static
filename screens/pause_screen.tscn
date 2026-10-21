@@ -1,10 +1,8 @@
 [gd_scene format=3 uid="uid://eqqs5m1a53r7"]
 
 [ext_resource type="Script" uid="uid://b7s68u26s3e6x" path="res://screens/PauseMenu.gd" id="1_jxgud"]
-[ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="2_ow6ec"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nisxu"]
-bg_color = Color(0.9529412, 0.9529412, 0.9529412, 0.63529414)
+[ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="2_6oru5"]
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="2_ow6ec"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1651142144]
 layer = 200
@@ -19,14 +17,15 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Panel" type="Panel" parent="Control" unique_id=780204906]
+[node name="Background" type="ColorRect" parent="Control" unique_id=1904691173]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_nisxu")
+color = Color(1, 1, 1, 0.38431373)
+script = ExtResource("2_6oru5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1507021379]
 layout_mode = 1
@@ -47,19 +46,19 @@ theme_override_constants/separation = 20
 [node name="ResumeButton" type="Button" parent="Control/VBoxContainer" unique_id=191262440]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-theme = ExtResource("2_ow6ec")
+theme_override_fonts/font = ExtResource("2_ow6ec")
 text = "RESUME"
 
 [node name="RestartButton" type="Button" parent="Control/VBoxContainer" unique_id=614609933]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-theme = ExtResource("2_ow6ec")
+theme_override_fonts/font = ExtResource("2_ow6ec")
 text = "RESTART"
 
 [node name="MainMenuButton" type="Button" parent="Control/VBoxContainer" unique_id=311535387]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-theme = ExtResource("2_ow6ec")
+theme_override_fonts/font = ExtResource("2_ow6ec")
 text = "MAIN MENU"
 
 [connection signal="pressed" from="Control/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]

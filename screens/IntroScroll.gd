@@ -1,6 +1,8 @@
 extends StoryScroll
 
 func _ready() -> void:
+	theme = PaperTheme.build(true)        # dark paper (pause menu, win screen)
+
 	story_text = """In a realm fractured by chaotic frequencies,
 the balance of harmony was shattered...
 

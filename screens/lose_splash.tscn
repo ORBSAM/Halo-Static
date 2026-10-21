@@ -1,13 +1,11 @@
 [gd_scene format=3 uid="uid://d2wxr5ji864mt"]
 
-[ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="1_4sr77"]
 [ext_resource type="FontFile" uid="uid://b4hnjj3j8e5mf" path="res://fonts/enemy_font.ttf" id="1_hen2p"]
 [ext_resource type="Script" uid="uid://djj0ruyybov5m" path="res://screens/WinLoseScreen.gd" id="1_n2oq1"]
 [ext_resource type="Shader" uid="uid://jwjgdqebukj0" path="res://screens/screen_shaders/StaticBGShader.gdshader" id="2_vvyq0"]
 [ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="3_jij2u"]
-[ext_resource type="Theme" uid="uid://baedtmxi3p3cj" path="res://GUI/themes/GUI_UI_theme_BAD.tres" id="4_d0sbi"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0d0ds"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vvyq0"]
 shader = ExtResource("2_vvyq0")
 shader_parameter/base_color = Color(0.28, 0.28, 0.3, 1)
 shader_parameter/speck_color = Color(0.7, 0.7, 0.72, 1)
@@ -19,6 +17,14 @@ shader_parameter/grid = Vector2(240, 135)
 shader_parameter/scanlines = 0.12
 shader_parameter/glitch = 0.6
 shader_parameter/vignette = 0.6
+shader_parameter/line_color = Color(0.35, 0.45, 0.75, 1)
+shader_parameter/line_alpha = 0.35
+shader_parameter/line_count = 16.0
+shader_parameter/line_scroll = 0.03
+shader_parameter/line_thickness = 0.04
+shader_parameter/margin_color = Color(0.85, 0.25, 0.3, 1)
+shader_parameter/margin_x = 0.1
+shader_parameter/margin_alpha = 0.4
 
 [sub_resource type="LabelSettings" id="LabelSettings_aqe1g"]
 font = ExtResource("1_hen2p")
@@ -39,7 +45,7 @@ grow_vertical = 2
 script = ExtResource("1_n2oq1")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1770106895]
-material = SubResource("ShaderMaterial_0d0ds")
+material = SubResource("ShaderMaterial_vvyq0")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,9 +66,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -167.5
-offset_top = -173.5
+offset_top = -267.0
 offset_right = 167.5
-offset_bottom = 173.5
+offset_bottom = 267.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 30
@@ -77,20 +83,19 @@ horizontal_alignment = 1
 [node name="Subtitle" type="Label" parent="VBoxContainer" unique_id=1533636099]
 layout_mode = 2
 
-[node name="Stats" type="Label" parent="VBoxContainer" unique_id=1476859337]
+[node name="StatsLabel" type="Label" parent="VBoxContainer" unique_id=1476859337]
 layout_mode = 2
 
 [node name="RetryButton" type="Button" parent="VBoxContainer" unique_id=1373707650]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
-theme = ExtResource("1_4sr77")
 theme_override_font_sizes/font_size = 20
-text = "CONTINUE"
+text = "RETRY"
 
 [node name="MainMenuButton" type="Button" parent="VBoxContainer" unique_id=871433347]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-theme = ExtResource("4_d0sbi")
+theme_override_fonts/font = ExtResource("1_hen2p")
 theme_override_font_sizes/font_size = 50
 text = "MAIN MENU
 "
@@ -98,6 +103,6 @@ text = "MAIN MENU
 [node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=1804113840]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-theme = ExtResource("4_d0sbi")
+theme_override_fonts/font = ExtResource("1_hen2p")
 theme_override_font_sizes/font_size = 50
 text = "QUIT"

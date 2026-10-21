@@ -11,6 +11,8 @@ const TITLE_SCENE := "res://screens/title_screen.tscn"
 func _ready() -> void:
 	get_tree().paused = false
 
+	theme = PaperTheme.build()
+
 	var stats := find_child("StatsLabel", true, false) as Label
 	if stats and DungeonManager:
 		stats.text = "Rooms explored: %d     Entities defeated: %d" % [

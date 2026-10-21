@@ -1,6 +1,8 @@
 extends StoryScroll
 
 func _ready() -> void:
+	theme = PaperTheme.build()
+	
 	story_text = """The Sentinel stands victorious...
 
 but the silence that follows is wrong.

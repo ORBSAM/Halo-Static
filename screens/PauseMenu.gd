@@ -6,6 +6,8 @@ func _ready() -> void:
 	# hide pause menu initially
 	hide()
 	
+	container.theme = PaperTheme.build()
+
 	# CRITICAL: This ensures the pause menu can still process input 
 	# and button clicks even when get_tree().paused is true!
 	process_mode = Node.PROCESS_MODE_ALWAYS

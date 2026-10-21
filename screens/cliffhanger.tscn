@@ -4,9 +4,8 @@
 [ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="2_3lgyv"]
 [ext_resource type="Shader" uid="uid://jwjgdqebukj0" path="res://screens/screen_shaders/StaticBGShader.gdshader" id="2_kkvb4"]
 [ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="3_dr3ny"]
-[ext_resource type="Theme" uid="uid://bbhrga8hinx4m" path="res://themes/GUI_UI_theme.tres" id="3_kkvb4"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0n3yu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kkvb4"]
 shader = ExtResource("2_kkvb4")
 shader_parameter/base_color = Color(0.02, 0.02, 0.04, 1)
 shader_parameter/speck_color = Color(0.35, 0.35, 0.42, 1)
@@ -18,6 +17,14 @@ shader_parameter/grid = Vector2(400, 225)
 shader_parameter/scanlines = 0.05
 shader_parameter/glitch = 0.0
 shader_parameter/vignette = 0.5
+shader_parameter/line_color = Color(0.35, 0.45, 0.75, 1)
+shader_parameter/line_alpha = 0.35
+shader_parameter/line_count = 16.0
+shader_parameter/line_scroll = 0.03
+shader_parameter/line_thickness = 0.04
+shader_parameter/margin_color = Color(0.85, 0.25, 0.3, 1)
+shader_parameter/margin_x = 0.1
+shader_parameter/margin_alpha = 0.4
 
 [node name="Control" type="Control" unique_id=1106766824]
 layout_mode = 3
@@ -29,13 +36,14 @@ grow_vertical = 2
 script = ExtResource("1_asb5u")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1646459958]
-material = SubResource("ShaderMaterial_0n3yu")
+material = SubResource("ShaderMaterial_kkvb4")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0, 0.055978335, 0.05620656, 1)
 script = ExtResource("3_dr3ny")
 look = 3
@@ -67,5 +75,5 @@ offset_left = 1038.0
 offset_top = 573.0
 offset_right = 1116.0
 offset_bottom = 613.0
-theme = ExtResource("3_kkvb4")
+theme_override_fonts/font = ExtResource("2_3lgyv")
 text = "SKIP"

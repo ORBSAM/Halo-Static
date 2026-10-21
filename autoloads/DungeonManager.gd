@@ -74,7 +74,7 @@ var hud_instance: CanvasLayer = null
 @export var screen_fader: CanvasLayer
 
 # shader logic
-const DARK_SHADER = preload("res://screens/screen_shaders/dungeon_dark.gdshader")
+const DARK_SHADER = preload("res://screens/screen_shaders/DungeonDark.gdshader")
 const AMBIENT_DEFAULT := Color(0.28, 0.26, 0.38)   # lower = darker
 
 var ambient: CanvasModulate

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cp54yf1ln7i5p" path="res://screens/TitleScreen.gd" id="1_grftj"]
 [ext_resource type="Texture2D" uid="uid://dbja30q4byr12" path="res://screens/screen_images/halo_static_icon.png" id="2_81buc"]
 [ext_resource type="Shader" uid="uid://ci8l2fcvb8byc" path="res://screens/screen_shaders/TitleScreenShader.gdshader" id="2_n8gtu"]
-[ext_resource type="Theme" uid="uid://dk4bu2i5ty13j" path="res://GUI/themes/GUI_UI_theme.tres" id="2_sxlwc"]
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="3_n8gtu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e60sy"]
 shader = ExtResource("2_n8gtu")
@@ -11,18 +11,16 @@ shader_parameter/intensity = 0.3
 shader_parameter/speed = 18.0
 shader_parameter/tint = Color(0.87, 0.63, 0.94, 1)
 
-[node name="TitleScreen" type="Control" unique_id=270575899]
-z_index = 110
+[node name="Control" type="Control" unique_id=201109166]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("1_grftj")
 
-[node name="Background" type="ColorRect" parent="." unique_id=305606911]
+[node name="Background" type="ColorRect" parent="." unique_id=585799567]
 material = SubResource("ShaderMaterial_e60sy")
 layout_mode = 1
 anchors_preset = 15
@@ -33,49 +31,48 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.13578993, 0.0005617859, 1.8049032e-08, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=374052765]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1005950568]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 offset_left = -221.5
-offset_top = -103.0
+offset_top = -427.0
 offset_right = 221.5
-offset_bottom = 324.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
 mouse_filter = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1530265122]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1294401952]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="MenuContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=155702531]
+[node name="MenuContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=31105928]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
 
-[node name="Start" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1108843001]
+[node name="Start" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1641299058]
 layout_mode = 2
-theme = ExtResource("2_sxlwc")
+theme_override_fonts/font = ExtResource("3_n8gtu")
 action_mode = 0
 text = "START"
 
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1784414090]
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1167327285]
 layout_mode = 2
-theme = ExtResource("2_sxlwc")
+theme_override_fonts/font = ExtResource("3_n8gtu")
 action_mode = 0
 text = "QUIT"
 
-[node name="Logo" type="TextureRect" parent="." unique_id=1638262792]
+[node name="Logo" type="TextureRect" parent="." unique_id=1166009111]
 light_mask = 0
 custom_minimum_size = Vector2(40, 40)
 custom_maximum_size = Vector2(500, 500)
@@ -89,6 +86,3 @@ size_flags_stretch_ratio = 0.0
 mouse_filter = 2
 texture = ExtResource("2_81buc")
 expand_mode = 5
-
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MenuContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MenuContainer/Quit" to="." method="_on_quit_pressed"]
