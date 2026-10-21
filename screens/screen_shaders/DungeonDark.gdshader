@@ -1,53 +1,50 @@
 shader_type canvas_item;
 
-uniform vec2 light_center = vec2(0.5, 0.5);        // set from script (player position)
-uniform float radius : hint_range(0.05, 1.0) = 0.28;
-uniform float softness : hint_range(0.05, 1.0) = 0.5;
-uniform float darkness : hint_range(0.0, 1.0) = 0.8;
-uniform vec4 fog_color : source_color = vec4(0.10, 0.08, 0.18, 1.0);
-uniform float fog_amount : hint_range(0.0, 1.0) = 0.3;
+uniform vec2 light_center = vec2(0.5, 0.5);        // still set from DungeonManager
+uniform float radius : hint_range(0.05, 1.5) = 0.55;
+uniform float softness : hint_range(0.05, 1.5) = 0.8;
+uniform float darkness : hint_range(0.0, 1.0) = 0.55;
+uniform float ragged : hint_range(0.0, 0.3) = 0.1;     // inky, uneven edge
+uniform vec4 ink_color : source_color = vec4(0.09, 0.07, 0.07, 1.0);
+uniform vec4 paper_color : source_color = vec4(0.86, 0.79, 0.63, 1.0);
+uniform float paper_tint : hint_range(0.0, 0.4) = 0.07; // warm wash over everything
+uniform float fog_amount : hint_range(0.0, 1.0) = 0.18;
 uniform float grain : hint_range(0.0, 0.2) = 0.05;
+uniform float fiber : hint_range(0.0, 0.2) = 0.06;
 
-float hash(vec2 p) {
-	return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
-}
-
+float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
 float vnoise(vec2 p) {
-	vec2 i = floor(p);
-	vec2 f = fract(p);
+	vec2 i = floor(p); vec2 f = fract(p);
 	f = f * f * (3.0 - 2.0 * f);
 	return mix(mix(hash(i), hash(i + vec2(1, 0)), f.x),
 			   mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), f.x), f.y);
 }
-
 float fbm(vec2 p) {
-	float v = 0.0;
-	float a = 0.5;
-	for (int i = 0; i < 4; i++) {
-		v += vnoise(p) * a;
-		p *= 2.0;
-		a *= 0.5;
-	}
+	float v = 0.0; float a = 0.5;
+	for (int i = 0; i < 4; i++) { v += vnoise(p) * a; p *= 2.0; a *= 0.5; }
 	return v;
 }
 
 void fragment() {
 	vec2 aspect = vec2(SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x, 1.0);
-	float dist = length((UV - light_center) * aspect);
+	vec2 q = UV * aspect;
 
-	// slow "breathing" so the dark feels alive
-	float r = radius * (1.0 + 0.04 * sin(TIME * 1.1) + 0.02 * sin(TIME * 3.7));
+	// ragged, slowly shifting edge so the dark looks like ink soaking into paper
+	float edge = (fbm(q * 3.0 + vec2(TIME * 0.02, 0.0)) - 0.5) * ragged;
+	float dist = length((UV - light_center) * aspect) + edge;
+	float r = radius * (1.0 + 0.03 * sin(TIME * 1.1));
 	float vig = smoothstep(r, r + softness, dist);
 
-	// two layers of mist drifting in different directions
-	vec2 p = UV * aspect * 3.0;
-	float fog = fbm(p + vec2(TIME * 0.03, TIME * 0.015));
-	fog += fbm(p * 1.7 - vec2(TIME * 0.02, 0.0)) * 0.5;
-	fog = smoothstep(0.45, 1.0, fog) * fog_amount;
+	float fog = fbm(q * 2.5 + vec2(TIME * 0.025, TIME * 0.012));
+	fog = smoothstep(0.5, 1.0, fog) * fog_amount;
 
-	float g = (hash(UV / SCREEN_PIXEL_SIZE + floor(TIME * 24.0)) - 0.5) * grain;
+	// paper surface: pixel grain plus horizontal fibers and soft stains
+	vec2 p = FRAGCOORD.xy;
+	float tex = (hash(floor(p)) - 0.5) * grain
+			  + (vnoise(vec2(p.x * 0.5, p.y * 0.03)) - 0.5) * fiber
+			  + (vnoise(p * 0.01) - 0.5) * 0.06;
 
-	vec3 col = mix(fog_color.rgb, vec3(0.0), vig);
-	float a = clamp(vig * darkness + fog * (0.4 + 0.6 * vig) + g, 0.0, 1.0);
-	COLOR = vec4(col, a);
+	vec3 col = mix(paper_color.rgb, ink_color.rgb, vig) + tex;
+	float a = max(paper_tint, vig * darkness) + fog * (0.3 + 0.7 * vig);
+	COLOR = vec4(col, clamp(a, 0.0, 0.92));
 }
