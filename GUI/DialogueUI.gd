@@ -29,13 +29,15 @@ func _ready() -> void:
 func start_dialogue(speaker: String, lines: Array, pause_player: bool=true) -> void:	
 	if is_active:
 		return # prevent interrupting active dialogue
-		
+	
 	is_active = true
 	current_speaker = speaker
 	current_lines = lines
 	line_index = 0
 	
-	# freeze player
+	AudioManager.play_sfx("dialogue_open")
+	
+	# freeze player ONLY if the room calls for it
 	if blocks_player:
 		var player = get_tree().get_first_node_in_group("player")
 		if player:
@@ -77,6 +79,7 @@ func type_text(target_text: String) -> void:
 		text_label.text += target_text[i]
 		await get_tree().create_timer(0.03).timeout
 		
+		if i % 2 == 0: AudioManager.play_sfx("dialogue_blip", -8.0, 0.12, 0.03)
 	is_typing = false
 
 func _unhandled_input(event: InputEvent) -> void:

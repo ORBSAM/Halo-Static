@@ -164,6 +164,7 @@ func _on_door_west_body_entered(body: Node2D) -> void:
 		if DungeonManager and DungeonManager.has_method("transition_to_room"):
 			DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.LEFT)
 			await get_tree().create_timer(1.5).timeout
+			AudioManager.play_sfx("door")
 		if is_instance_valid(door_west) and DungeonManager.current_room_instance == self:
 			door_west.monitoring = true
 
@@ -176,6 +177,7 @@ func _on_door_east_body_entered(body: Node2D) -> void:
 		if DungeonManager and DungeonManager.has_method("transition_to_room"):
 			DungeonManager.transition_to_room(target_coords)
 		await get_tree().create_timer(1.5).timeout
+		AudioManager.play_sfx("door")
 		if is_instance_valid(door_east) and DungeonManager.current_room_instance == self:
 			door_east.monitoring = true
 			
@@ -186,6 +188,7 @@ func _on_door_north_body_entered(body: Node2D) -> void:
 		door_north.set_deferred("monitoring", false)
 		DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.UP)
 		await get_tree().create_timer(1.5).timeout
+		AudioManager.play_sfx("door")
 		if is_instance_valid(door_north) and DungeonManager.current_room_instance == self:
 			door_north.monitoring = true
 
@@ -196,6 +199,7 @@ func _on_door_south_body_entered(body: Node2D) -> void:
 		door_south.set_deferred("monitoring", false)
 		DungeonManager.transition_to_room(DungeonManager.current_room_coords + Vector2i.DOWN)
 		await get_tree().create_timer(1.5).timeout
+		AudioManager.play_sfx("door")
 		if is_instance_valid(door_south) and DungeonManager.current_room_instance == self:
 			door_south.monitoring = true
 

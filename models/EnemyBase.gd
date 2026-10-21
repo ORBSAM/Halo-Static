@@ -112,8 +112,7 @@ func attack_player() -> void:
 		can_attack = false
 		is_attacking = true
 		
-		target_player.take_damage(attack_damage)
-		
+		target_player.take_damage(attack_damage)		
 		# pause briefly during attack swing
 		await get_tree().create_timer(0.6).timeout
 		is_attacking = false
@@ -126,6 +125,7 @@ func take_damage(amount: float, knockback_source_pos: Vector2 = Vector2.ZERO) ->
 		return
 	current_health -= amount
 	
+	AudioManager.play_sfx("enemy_hit")
 	spawn_damage_number(amount)
 	
 	# apply noticeable knockback pulse away from attack source
@@ -185,7 +185,7 @@ func _consume_item(item: Node2D) -> void:
 func die() -> void:
 	if is_dead:
 		return
-	
+	AudioManager.play_sfx("enemy_die")
 	is_dead = true
 	
 	remove_from_group("enemies")

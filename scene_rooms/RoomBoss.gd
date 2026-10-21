@@ -12,6 +12,9 @@ var boss: Node = null
 var _adds: Array = []
 var _fighting: bool = false
 
+# setup_room
+# set up the room logic for the bosss; ensure the player enters correctly
+# and the phases are executed correctly
 func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i = Vector2i.ZERO) -> void:
 	update_doors(coords)
 
@@ -30,6 +33,9 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 
 	await _boss_intro(player)
 
+	# play the boss music after the dialogue
+	AudioManager.play_music("boss")
+	
 	boss.process_mode = Node.PROCESS_MODE_INHERIT
 	_start_fight_loops()
 
@@ -98,7 +104,7 @@ func _loop_items() -> void:
 		await get_tree().create_timer(item_interval).timeout
 		if not _fighting or not is_inside_tree() or item_scenes.is_empty():
 			continue
-		var floor_items := get_tree().get_nodes_in_group("items").filter(
+		var floor_items := get_tree().get_nodes_in_group("Items").filter(
 			func(i): return is_instance_valid(i) and i.item_type == Item.ItemType.HARMONIC)
 		if floor_items.size() >= max_floor_items:
 			continue
@@ -119,6 +125,6 @@ func _on_boss_defeated() -> void:
 	_fighting = false
 	get_tree().change_scene_to_file("res://screens/win_splash.tscn")
 
-func spawn_random_enemies() -> void: pass
+# let it spawn random enemies; but otherwise just skip it
 func spawn_random_items() -> void: pass
 func spawn_test_entities() -> void: pass

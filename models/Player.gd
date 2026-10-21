@@ -156,7 +156,8 @@ func execute_attack() -> void:
 		return
 		
 	is_attacking = true
-
+	
+	# orb attack logic
 	if current_weapon == Weapon.ORB_OF_LIGHT:
 		fire_orb_duplicate()
 		# add brief cooldown so orb isn't spammed instantly
@@ -164,7 +165,7 @@ func execute_attack() -> void:
 		is_attacking = false
 		return
 
-	# Saber Attack Logic
+	# saber attack logic
 	var stats = weapon_stats[Weapon.SABER]
 	var active_hitbox: Area2D = stats["hitbox"]
 
@@ -183,6 +184,9 @@ func execute_attack() -> void:
 		active_hitbox.body_entered.connect(check_and_hit)
 		active_hitbox.area_entered.connect(check_and_hit)
 		active_hitbox.monitoring = true
+		
+		AudioManager.play_sfx("saber_swing")
+
 
 		if anim_player and anim_player.has_animation("thrust_saber"):
 			anim_player.speed_scale = 1.8			
@@ -262,6 +266,8 @@ func fire_orb_duplicate() -> void:
 
 	projectile.body_entered.connect(on_hit)
 	projectile.area_entered.connect(on_hit)
+	
+	AudioManager.play_sfx("orb_fire")
 
 	# 6. launch: the tween is owned by the projectile, so no stale callbacks
 	var travel_distance := 400.0
@@ -341,6 +347,8 @@ func take_damage(amount: float) -> void:
 	current_health = max(0.0, current_health - amount)
 	health_changed.emit(current_health, max_health)
 	play_hit_flash()
+	
+	AudioManager.play_sfx("player_hurt")
 	
 	if current_health <= 0:
 		die()

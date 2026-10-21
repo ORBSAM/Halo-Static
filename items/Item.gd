@@ -75,14 +75,17 @@ func collect(player: Node2D) -> void:
 			if player.has_method("add_harmonic_energy") and player.has_method("heal"):
 				player.add_harmonic_energy(value)
 				player.heal(value)
+				AudioManager.play_sfx("pickup_good")
 				print("Picked up Harmonic Shard (+", value, " energy & health)")
 		ItemType.CHAOTIC:
 			if player.has_method("take_damage"):
 				player.take_damage(value)
+				AudioManager.play_sfx("pickup_bad")
 				print("Picked up Chaotic Essence (-", value, " HP)")
 		ItemType.KEY:
 			if player.has_method("add_key"):
 				player.add_key(1)
+				AudioManager.play_sfx("key")
 				print("Picked up Dungeon Key!")
 	
 	# general inventory tracking call if used

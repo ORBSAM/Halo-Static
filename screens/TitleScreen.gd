@@ -13,6 +13,9 @@ extends Control
 # _ready
 # hide HUD, build the theme, and make sure the buttons are connected properly
 func _ready() -> void:
+	# stop all music and play menu theme
+	AudioManager.play_music("menu")
+	
 	theme = PaperTheme.build(true)
 	
 	# hide HUD overlay on title screen

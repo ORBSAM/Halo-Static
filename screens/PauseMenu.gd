@@ -24,8 +24,11 @@ func _unhandled_input(event: InputEvent) -> void:
 # toggle_pause
 func toggle_pause() -> void:
 	var new_pause_state = not get_tree().paused
+	
 	get_tree().paused = new_pause_state
 	visible = new_pause_state
+	
+	AudioManager.play_sfx("pause_open" if new_pause_state else "pause_close")
 	
 	# optional: release mouse capture if your game uses mouse aiming
 	if new_pause_state:

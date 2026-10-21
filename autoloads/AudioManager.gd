@@ -1,27 +1,27 @@
 extends Node
 
 const SFX := {
-	"ui_click":     "res://audio/sfx/ui_click.ogg",
-	"ui_hover":     "res://audio/sfx/ui_hover.ogg",
-	"pause_open":   "res://audio/sfx/pause_open.ogg",
-	"pause_close":  "res://audio/sfx/pause_close.ogg",
-	"dialogue_open":"res://audio/sfx/dialogue_open.ogg",
+	"ui_click":   "res://audio/sfx/universfield-menu-button-click-147349.mp3" ,
+	"ui_hover":    "res://audio/sfx/universfield-menu-button-click-hover.mp3" ,
+	"pause_open":   "res://audio/sfx/soundshelfstudio-ui-holographic-menu-open-537622.mp3",
+	"pause_close":  "res://audio/sfx/litupsubway-ui-close-sfx-513359.mp3",
+	"dialogue_open": "res://audio/sfx/dialogue_open.ogg",
 	"dialogue_blip":"res://audio/sfx/dialogue_blip.ogg",
-	"saber_swing":  "res://audio/sfx/saber_swing.ogg",
-	"orb_fire":     "res://audio/sfx/orb_fire.ogg",
-	"enemy_hit":    "res://audio/sfx/enemy_hit.ogg",
-	"enemy_die":    "res://audio/sfx/enemy_die.ogg",
-	"enemy_growl":  "res://audio/sfx/enemy_growl.ogg",
-	"player_hurt":  "res://audio/sfx/player_hurt.ogg",
+	"saber_swing":  "res://audio/sfx/xpmonster-quick-swing-sound-419581.mp3",
+	"orb_fire":     "res://audio/sfx/freesound_community-steam_burst-6822.mp3",
+	"enemy_hit":    "res://audio/sfx/freesound_community-monster-attack-47786.mp3",
+	"enemy_die":    "res://audio/sfx/666herohero-monster-death-grunt-131480.mp3",
+	"enemy_growl":  "res://audio/sfx/dragon-studio-beast-growl-sound-376873.mp3",
+	"player_hurt":  "res://audio/sfx/freesound_community-jump-climb-or-damage-sound-f-95942.mp3",
 	"pickup_good":  "res://audio/sfx/pickup_good.ogg",
 	"pickup_bad":   "res://audio/sfx/pickup_bad.ogg",
-	"key":          "res://audio/sfx/key.ogg",
-	"door":         "res://audio/sfx/door.ogg",
+	"key":          "res://audio/sfx/litupsubway-key-collect-sfx-522219.mp3",
+	"door":         "res://audio/sfx/freesound_community-creepysound1-cave_entrance.mp3",
 }
 const MUSIC := {
-	"boss":    "res://audio/music/boss.ogg",
-	"dungeon": "res://audio/music/dungeon_ambience.ogg",
-	"menu":    "res://audio/music/menu.ogg",
+	"boss":    "res://audio/music/john_evil_boss_battle_music.mp3",
+	"dungeon": "res://audio/music/dueslower_dungeon_ambient_piano.mp3",
+	"menu":    "res://audio/music/freesound_community-resonating-very-far-away-56773.mp3",
 }
 
 var _cache := {}

@@ -102,6 +102,7 @@ func _ready() -> void:
 	
 # start_new_game
 func start_new_game() -> void:
+	AudioManager.play_music("dungeon")
 	enemy_kill_count = 0
 	visited_rooms.clear()
 	last_entry_direction = Vector2i.ZERO # ensures starting room uses PlayerSpawn!
