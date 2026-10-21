@@ -33,7 +33,7 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 
 	await _boss_intro(player)
 
-	# play the boss music after the dialogue
+	# play the boss music after the dialogue	
 	AudioManager.play_music("boss")
 	
 	boss.process_mode = Node.PROCESS_MODE_INHERIT

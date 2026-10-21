@@ -88,7 +88,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("ui_accept") or event is InputEventMouseButton and event.pressed:
 		if is_typing:
-			# Skip typewriter animation
+			# skip typewriter animation
 			is_typing = false
 		else:
 			show_next_line()
@@ -97,6 +97,7 @@ func close_dialogue() -> void:
 	is_active = false
 	hide()
 	
+	AudioManager.play_sfx("dialogue_close")
 	# unfreeze player
 	if blocks_player:
 		var player = get_tree().get_first_node_in_group("player")
