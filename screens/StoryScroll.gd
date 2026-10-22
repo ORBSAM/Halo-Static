@@ -63,7 +63,7 @@ func _setup_skip_button() -> void:
 	if not b.pressed.is_connected(_finish):
 		b.pressed.connect(_finish)
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	var clicked: bool = event is InputEventMouseButton and event.pressed \
 			and event.button_index == MOUSE_BUTTON_LEFT
 	if event.is_action_pressed("ui_accept") or clicked:

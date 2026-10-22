@@ -11,6 +11,7 @@ extends Control
 
 @onready var start_button: Button = $MarginContainer/VBoxContainer/MenuContainer/Start
 @onready var quit_button: Button = $MarginContainer/VBoxContainer/MenuContainer/Quit
+@onready var credits_button: Button = $MarginContainer/VBoxContainer/MenuContainer/Credits
 
 # _ready
 # hide HUD, build the theme, and make sure the buttons are connected properly
@@ -25,6 +26,26 @@ func _ready() -> void:
 		get_node("/root/HUD").hide()
 	elif has_node("/root/HUD_overlay"):
 		get_node("/root/HUD_overlay").hide()
+
+	start_button.grab_focus()
+
+
+func _input(event: InputEvent) -> void:
+	if not (event is InputEventMouseButton):
+		return
+	if event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
+		return
+
+	# Keep the menu clickable inside Godot's embedded game window.
+	if start_button.get_global_rect().has_point(event.position):
+		get_viewport().set_input_as_handled()
+		_on_start_pressed()
+	elif quit_button.get_global_rect().has_point(event.position):
+		get_viewport().set_input_as_handled()
+		_on_quit_pressed()
+	elif credits_button.get_global_rect().has_point(event.position):
+		get_viewport().set_input_as_handled()
+		_on_credits_pressed()
 
 # _on_start_pressed
 # go to the introduction scene
