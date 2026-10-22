@@ -6,6 +6,8 @@ extends Control
 # ===========
 
 @export var intro_scene_path: String = "res://screens/intro_scene.tscn"
+@export var credits_scene_path: String = "res://screens/credits.tscn"
+
 
 @onready var start_button: Button = $MarginContainer/VBoxContainer/MenuContainer/Start
 @onready var quit_button: Button = $MarginContainer/VBoxContainer/MenuContainer/Quit
@@ -24,13 +26,6 @@ func _ready() -> void:
 	elif has_node("/root/HUD_overlay"):
 		get_node("/root/HUD_overlay").hide()
 
-	# connect with print debug
-	if start_button and not start_button.pressed.is_connected(_on_start_pressed):
-		start_button.pressed.connect(_on_start_pressed)
-			
-	if quit_button and not quit_button.pressed.is_connected(_on_quit_pressed):
-		quit_button.pressed.connect(_on_quit_pressed)
-
 # _on_start_pressed
 # go to the introduction scene
 func _on_start_pressed() -> void:
@@ -40,3 +35,7 @@ func _on_start_pressed() -> void:
 # just quit the game
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+
+# on_credits_pressed
+func _on_credits_pressed() -> void:
+	get_tree().change_scene_to_file(credits_scene_path)

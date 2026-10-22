@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://dq6w76yyt0e2l"]
+
+[ext_resource type="Script" uid="uid://dbbl6jr50ik8t" path="res://screens/CreditsScroll.gd" id="1_w0rrl"]
+[ext_resource type="Shader" uid="uid://jwjgdqebukj0" path="res://screens/screen_shaders/StaticBGShader.gdshader" id="2_b3bfq"]
+[ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="3_t626m"]
+[ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="4_yxtnb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b3bfq"]
+shader = ExtResource("2_b3bfq")
+shader_parameter/base_color = Color(0.02, 0.02, 0.04, 1)
+shader_parameter/speck_color = Color(0.35, 0.35, 0.42, 1)
+shader_parameter/base_alpha = 0.9
+shader_parameter/noise_alpha = 0.05
+shader_parameter/noise_strength = 0.35
+shader_parameter/speed = 10.0
+shader_parameter/grid = Vector2(400, 225)
+shader_parameter/scanlines = 0.05
+shader_parameter/glitch = 0.0
+shader_parameter/vignette = 0.5
+shader_parameter/line_color = Color(0.35, 0.45, 0.75, 1)
+shader_parameter/line_alpha = 0.35
+shader_parameter/line_count = 16.0
+shader_parameter/line_scroll = 0.03
+shader_parameter/line_thickness = 0.04
+shader_parameter/margin_color = Color(0.85, 0.25, 0.3, 1)
+shader_parameter/margin_x = 0.1
+shader_parameter/margin_alpha = 0.4
+shader_parameter/calm = 0.6
+shader_parameter/calm_size = Vector2(0.45, 0.35)
+
+[node name="Control" type="Control" unique_id=1106766824]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w0rrl")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1646459958]
+material = SubResource("ShaderMaterial_b3bfq")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0.055978335, 0.05620656, 1)
+script = ExtResource("3_t626m")
+look = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=2041181189]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=1659091340]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="StoryLabel" type="Label" parent="ScrollContainer/VBoxContainer" unique_id=1273457685]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_yxtnb")
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+
+[node name="SkipButton" type="Button" parent="." unique_id=690380475]
+layout_mode = 0
+offset_left = 1038.0
+offset_top = 573.0
+offset_right = 1116.0
+offset_bottom = 613.0
+theme_override_fonts/font = ExtResource("4_yxtnb")
+text = "SKIP"

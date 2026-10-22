@@ -72,6 +72,12 @@ theme_override_fonts/font = ExtResource("3_n8gtu")
 action_mode = 0
 text = "QUIT"
 
+[node name="Credits" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1694329912]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_n8gtu")
+action_mode = 0
+text = "CREDITS"
+
 [node name="Logo" type="TextureRect" parent="." unique_id=1166009111]
 light_mask = 0
 custom_minimum_size = Vector2(40, 40)
@@ -86,3 +92,7 @@ size_flags_stretch_ratio = 0.0
 mouse_filter = 2
 texture = ExtResource("2_81buc")
 expand_mode = 5
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MenuContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MenuContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MenuContainer/Credits" to="." method="_on_credits_pressed"]

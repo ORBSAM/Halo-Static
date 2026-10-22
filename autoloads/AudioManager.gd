@@ -25,6 +25,28 @@ const MUSIC := {
 	"menu":    "res://audio/music/freesound_community-resonating-very-far-away-56773.mp3",
 }
 
+# negative = quieter. Tune by ear.
+const SFX_DB := {
+	"ui_click": -6.0,
+	"ui_hover": -4.0,
+	"saber_swing": -3.0,
+	"enemy_hit": -5.0,
+	"enemy_die": -4.0,
+	"enemy_growl": -6.0,
+	"player_hurt": -2.0,
+	"door": -4.0,
+}
+
+const CREDIT_INFO := {
+	"boss":    {"title": "Boss track name",      "by": "Artist", "license": "CC BY 4.0", "url": "opengameart.org"},
+	"dungeon": {"title": "Dungeon ambience",     "by": "Artist", "license": "CC0",       "url": "freesound.org"},
+	"menu":    {"title": "Menu theme",           "by": "Artist", "license": "CC0",       "url": ""},
+	"ui_click":    {"title": "UI click",  "by": "Kenney", "license": "CC0", "url": "kenney.nl"},
+	"ui_hover":    {"title": "UI hover",  "by": "Kenney", "license": "CC0", "url": "kenney.nl"},
+	"saber_swing": {"title": "Saber swing", "by": "jsfxr",  "license": "Generated", "url": "sfxr.me"},
+	# add one entry per key as you add the file
+}
+
 var _cache := {}
 var _music: Array[AudioStreamPlayer] = []
 var _active := 0
@@ -80,7 +102,7 @@ func _stream(table: Dictionary, key: String) -> AudioStream:
 		_cache[key] = load(path) if ResourceLoader.exists(path) else null
 	return _cache[key]
 
-func play_sfx(key: String, volume_db := 0.0, pitch_var := 0.06, cooldown := 0.04) -> void:
+func play_sfx(key: String, volume_db := -2.0, pitch_var := 0.06, cooldown := 0.04) -> void:
 	var s := _stream(SFX, key)
 	if s == null:
 		return
@@ -91,7 +113,7 @@ func play_sfx(key: String, volume_db := 0.0, pitch_var := 0.06, cooldown := 0.04
 	for p in _pool:
 		if not p.playing:
 			p.stream = s
-			p.volume_db = volume_db
+			p.volume_db = volume_db + float(SFX_DB.get(key, 0.0))
 			p.pitch_scale = 1.0 + randf_range(-pitch_var, pitch_var)
 			p.play()
 			return
@@ -118,3 +140,48 @@ func play_music(key: String, fade := 1.2) -> void:
 
 func stop_music(fade := 1.0) -> void:
 	play_music("", fade)
+	
+# =======
+# CREDIT LOGIC
+# Handles the credits, dynamically.
+# =========
+
+func _exists(table: Dictionary, key: String) -> bool:
+	return table.has(key) and ResourceLoader.exists(table[key])
+
+# music: one line per track
+func music_credit_lines() -> Array[String]:
+	var out: Array[String] = []
+	for key in MUSIC:
+		if _exists(MUSIC, key) and CREDIT_INFO.has(key):
+			out.append(_fmt(CREDIT_INFO[key], true))
+	return out
+
+# sfx: grouped by author so "Kenney" appears once, not 10 times
+func sfx_credit_lines() -> Array[String]:
+	var groups := {}   # "by|license|url" -> [titles]
+	for key in SFX:
+		if not (_exists(SFX, key) and CREDIT_INFO.has(key)):
+			continue
+		var c: Dictionary = CREDIT_INFO[key]
+		var gk := "%s|%s|%s" % [c.by, c.license, c.get("url", "")]
+		if not groups.has(gk):
+			groups[gk] = []
+		if not c.title in groups[gk]:
+			groups[gk].append(c.title)
+
+	var out: Array[String] = []
+	for gk in groups:
+		var parts: PackedStringArray = gk.split("|")
+		var line := "%s (%s)" % [parts[0], parts[1]]
+		if parts[2] != "":
+			line += " - " + parts[2]
+		out.append(line)
+		out.append(", ".join(groups[gk]))
+	return out
+
+func _fmt(c: Dictionary, with_url: bool) -> String:
+	var s := "\"%s\" by %s (%s)" % [c.title, c.by, c.license]
+	if with_url and c.get("url", "") != "":
+		s += " - " + c.url
+	return s
