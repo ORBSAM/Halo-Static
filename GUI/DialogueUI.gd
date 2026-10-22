@@ -7,11 +7,18 @@ extends CanvasLayer
 
 @onready var panel: Panel = $Panel
 @onready var portrait: TextureRect = $Panel/Portrait
+@onready var name_panel: Panel = $Panel/NamePanel
 @onready var name_label: Label = $Panel/NamePanel/NameLabel
 @onready var text_label: Label = $Panel/TextLabel
 
 @export var protagonist_portrait: Texture2D
 @export var boss_portrait: Texture2D
+
+const PROTAGONIST_BOX := preload("res://GUI/themes/style_box_theme.tres")
+const BOSS_BOX := preload("res://GUI/themes/boss_dialogue_box.tres")
+const PROTAGONIST_TEXT_COLOR := Color(0.8668957, 0.45357233, 0.67391104, 1.0)
+const BOSS_TEXT_COLOR := Color(1.0, 0.82, 0.76, 1.0)
+const BOSS_NAME_COLOR := Color(0.92, 0.22, 0.28, 1.0)
 
 var current_lines: Array = []
 var current_speaker: String = ""
@@ -49,15 +56,28 @@ func start_dialogue(speaker: String, lines: Array, pause_player: bool=true) -> v
 			player.velocity = Vector2.ZERO
 			player.set_physics_process(false)
 
-	# setup portrait and name
-	name_label.text = speaker
-	if speaker.to_lower() == "boss" and boss_portrait:
+	# setup the speaker-specific textbox, portrait, and optional name
+	var is_boss := speaker.to_lower() == "boss"
+	_apply_speaker_style(is_boss)
+	if is_boss and boss_portrait:
 		portrait.texture = boss_portrait
 	elif protagonist_portrait:
 		portrait.texture = protagonist_portrait
 		
 	show()
 	show_next_line()
+
+# _apply_speaker_style
+# Give the boss a distinct textbox while keeping the protagonist unnamed.
+func _apply_speaker_style(is_boss: bool) -> void:
+	panel.add_theme_stylebox_override("panel", BOSS_BOX if is_boss else PROTAGONIST_BOX)
+	text_label.add_theme_color_override(
+		"font_color", BOSS_TEXT_COLOR if is_boss else PROTAGONIST_TEXT_COLOR)
+	name_panel.visible = is_boss
+	name_label.text = "BOSS" if is_boss else ""
+	if is_boss:
+		name_panel.add_theme_stylebox_override("panel", BOSS_BOX)
+		name_label.add_theme_color_override("font_color", BOSS_NAME_COLOR)
 
 # show_next_line
 # show the next line if the current line is finished
