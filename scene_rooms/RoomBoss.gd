@@ -32,6 +32,9 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 	if boss.has_signal("boss_defeated"):
 		boss.boss_defeated.connect(_on_boss_defeated)
 
+	var p = get_tree().get_first_node_in_group("player")
+	print("player layer=", p.collision_layer, " mask=", p.collision_mask,
+		" boss layer=", boss.collision_layer, " mask=", boss.collision_mask)
 	
 	await _boss_intro(player)
 
@@ -39,6 +42,10 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 	AudioManager.play_music("boss")
 	
 	boss.process_mode = Node.PROCESS_MODE_INHERIT
+	
+	# set player physics so things work
+	player.set_physics_process(true)
+	
 	_start_fight_loops()
 
 # _boss_intro
