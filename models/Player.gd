@@ -192,7 +192,7 @@ func execute_attack() -> void:
 			anim_player.speed_scale = 1.8			
 			anim_player.play("swing_saber")
 
-		# Check enemies standing inside on frame 1
+		# check enemies standing inside on frame 1
 		await get_tree().physics_frame
 		for t in active_hitbox.get_overlapping_bodies() + active_hitbox.get_overlapping_areas():
 			check_and_hit.call(t)

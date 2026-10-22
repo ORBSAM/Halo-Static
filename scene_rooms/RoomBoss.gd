@@ -109,7 +109,7 @@ func _loop_items() -> void:
 		await get_tree().create_timer(item_interval).timeout
 		if not _fighting or not is_inside_tree() or item_scenes.is_empty():
 			continue
-		var floor_items := get_tree().get_nodes_in_group("Items").filter(
+		var floor_items := get_tree().get_nodes_in_group("items").filter(
 			func(i): return is_instance_valid(i) and i.item_type == Item.ItemType.HARMONIC)
 		if floor_items.size() >= max_floor_items:
 			continue
@@ -128,6 +128,15 @@ func _random_point(inset: float) -> Vector2:
 
 func _on_boss_defeated() -> void:
 	_fighting = false
+	
+	# halt the music
+	AudioManager.stop_music()
+	
+	# kill all enemies so you do not die a fruitless death
+	var enemiesLeft = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemiesLeft:
+		enemy.die()
+	
 	DungeonManager.game_won()
 
 # let it spawn random enemies; but otherwise just skip it
