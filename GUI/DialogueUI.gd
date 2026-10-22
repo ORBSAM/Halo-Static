@@ -16,6 +16,8 @@ extends CanvasLayer
 
 const PROTAGONIST_BOX := preload("res://GUI/themes/style_box_theme.tres")
 const BOSS_BOX := preload("res://GUI/themes/boss_dialogue_box.tres")
+const ANTAG_FONT := preload("res://fonts/enemy_font.ttf")
+const PROTAG_FONT := preload("res://fonts/Protagfont-Regular.ttf")
 const PROTAGONIST_TEXT_COLOR := Color(0.8668957, 0.45357233, 0.67391104, 1.0)
 const BOSS_TEXT_COLOR := Color(1.0, 0.82, 0.76, 1.0)
 const BOSS_NAME_COLOR := Color(0.92, 0.22, 0.28, 1.0)
@@ -68,16 +70,38 @@ func start_dialogue(speaker: String, lines: Array, pause_player: bool=true) -> v
 	show_next_line()
 
 # _apply_speaker_style
-# Give the boss a distinct textbox while keeping the protagonist unnamed.
+# explicitly style each of the two dialogue options. set portraits later.
 func _apply_speaker_style(is_boss: bool) -> void:
-	panel.add_theme_stylebox_override("panel", BOSS_BOX if is_boss else PROTAGONIST_BOX)
-	text_label.add_theme_color_override(
-		"font_color", BOSS_TEXT_COLOR if is_boss else PROTAGONIST_TEXT_COLOR)
-	name_panel.visible = is_boss
-	name_label.text = "BOSS" if is_boss else ""
 	if is_boss:
+		# --- BOSS STYLE ---
+		panel.add_theme_stylebox_override("panel", BOSS_BOX)
+		text_label.add_theme_color_override("font_color", BOSS_TEXT_COLOR)
+		text_label.add_theme_font_override("font", ANTAG_FONT)
+		text_label.add_theme_font_size_override("font_size", 50)
+		
+		name_panel.visible = true
 		name_panel.add_theme_stylebox_override("panel", BOSS_BOX)
+		name_label.text = "BOSS"
+		name_label.add_theme_font_override("font", ANTAG_FONT)
+		name_label.add_theme_font_size_override("font_size", 60)
 		name_label.add_theme_color_override("font_color", BOSS_NAME_COLOR)
+		
+	else:
+		# --- PROTAGONIST STYLE ---
+		panel.add_theme_stylebox_override("panel", PROTAGONIST_BOX)
+		text_label.add_theme_color_override("font_color", PROTAGONIST_TEXT_COLOR)
+		
+		text_label.add_theme_font_override("font", PROTAG_FONT) 
+		text_label.add_theme_font_size_override("font_size", 20)
+		
+		name_panel.visible = true
+		name_panel.add_theme_stylebox_override("panel", PROTAGONIST_BOX)
+		name_label.text = "PROTAG"
+		name_label.add_theme_font_override("font", PROTAG_FONT)
+		name_label.add_theme_font_size_override("font_size", 40)
+		name_label.add_theme_color_override("font_color", PROTAGONIST_TEXT_COLOR)
+		
+		# portrait.textu
 
 # show_next_line
 # show the next line if the current line is finished

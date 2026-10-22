@@ -28,9 +28,11 @@ func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i =
 	boss.process_mode = Node.PROCESS_MODE_DISABLED     # frozen until the intro ends
 	add_child(boss)
 	boss.global_position = boss_spawn.global_position
+	
 	if boss.has_signal("boss_defeated"):
 		boss.boss_defeated.connect(_on_boss_defeated)
 
+	
 	await _boss_intro(player)
 
 	# play the boss music after the dialogue	
@@ -59,7 +61,10 @@ func _boss_intro(player: Node) -> void:
 
 	var dlg = get_node_or_null("/root/DialogueLogic")
 	if dlg:
+		# terminate all dialogues
+		dlg.reset()
 		var lines: Array = ["Ah... the intruder arrives.", "Your journey ends here!"]
+		# and then start enemy dialogues
 		dlg.start_dialogue("Boss", lines, true)
 		await dlg.dialogue_finished
 
