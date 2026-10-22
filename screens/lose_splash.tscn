@@ -55,7 +55,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 color = Color(0.1148968, 0.11489681, 0.1148968, 1)
 script = ExtResource("3_jij2u")
 look = 2
@@ -102,6 +102,8 @@ horizontal_alignment = 1
 [node name="RetryButton" type="Button" parent="VBoxContainer" unique_id=1373707650]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+mouse_behavior_recursive = 2
+focus_behavior_recursive = 2
 theme_override_fonts/font = ExtResource("5_s6i5b")
 theme_override_font_sizes/font_size = 20
 text = "RETRY"
@@ -109,6 +111,8 @@ text = "RETRY"
 [node name="MainMenuButton" type="Button" parent="VBoxContainer" unique_id=871433347]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
+mouse_behavior_recursive = 2
+focus_behavior_recursive = 2
 theme_override_fonts/font = ExtResource("1_hen2p")
 theme_override_font_sizes/font_size = 50
 text = "MAIN MENU
@@ -117,6 +121,8 @@ text = "MAIN MENU
 [node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=1804113840]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
+mouse_behavior_recursive = 2
+focus_behavior_recursive = 2
 theme_override_fonts/font = ExtResource("1_hen2p")
 theme_override_font_sizes/font_size = 50
 text = "QUIT"

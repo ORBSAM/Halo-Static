@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://8rccthygq72x" path="res://screens/screen_shaders/BackgroundShader.gd" id="3_t626m"]
 [ext_resource type="FontFile" uid="uid://de8lp4uwii07n" path="res://fonts/Protagfont-Regular.ttf" id="4_yxtnb"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b3bfq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w0rrl"]
 shader = ExtResource("2_b3bfq")
 shader_parameter/base_color = Color(0.02, 0.02, 0.04, 1)
 shader_parameter/speck_color = Color(0.35, 0.35, 0.42, 1)
@@ -38,7 +38,7 @@ grow_vertical = 2
 script = ExtResource("1_w0rrl")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1646459958]
-material = SubResource("ShaderMaterial_b3bfq")
+material = SubResource("ShaderMaterial_w0rrl")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -77,5 +77,9 @@ offset_left = 1038.0
 offset_top = 573.0
 offset_right = 1116.0
 offset_bottom = 613.0
+focus_behavior_recursive = 2
+mouse_behavior_recursive = 2
 theme_override_fonts/font = ExtResource("4_yxtnb")
 text = "SKIP"
+
+[connection signal="pressed" from="SkipButton" to="." method="_on_skip_button_pressed"]

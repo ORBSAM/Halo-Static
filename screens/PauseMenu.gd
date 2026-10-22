@@ -1,7 +1,16 @@
 extends CanvasLayer
 
+# =========
+# PAUSE MENU
+# Pause menu logic. An autoload that overrides everything unless input is 
+# handled otherwise.
+# =========
+
 @onready var container: Control = $Control
 
+# _ready
+# hide the menu until further notice. build the thtme.
+# and make sure it's always processed
 func _ready() -> void:
 	# hide pause menu initially
 	hide()
@@ -13,15 +22,17 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 # _unhandled_input
-# toggles pause when pressing escape
+# prevents the pause menu in the tutorial. later should also prevent
+# pause menu from overlaying in the other menus.
 func _unhandled_input(event: InputEvent) -> void:
 	# if the tutorial is currently happening, do not trigger this pause menu
 	if DungeonManager.in_tutorial:
-		return                      # Esc belongs to the tutorial overlay here
+		return                      # esc belongs to the tutorial overlay here
 	if event.is_action_pressed("ui_cancel"):
 		toggle_pause()
 
 # toggle_pause
+# handles the pause, and makes sure that pauses cannot overlay with each other
 func toggle_pause() -> void:
 	var new_pause_state = not get_tree().paused
 	

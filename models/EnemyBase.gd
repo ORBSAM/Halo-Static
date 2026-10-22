@@ -1,5 +1,10 @@
 extends CharacterBody2D
 
+# ==========================================
+# ENEMY BASE
+# Base enemy. Chases player or finds item to absorb and power up.
+# ==========================================
+
 @export var max_health: float = 30.0
 var current_health: float = 30.0
 
@@ -30,12 +35,16 @@ var _scan_timer: float = 0.0
 var is_dead := false
 
 
+# _ready
+# add enemy to the enemy group and set health before spawning it
 func _ready() -> void:
 	add_to_group("enemies")
 	current_health = max_health
 	
 	setup_random_variant()
 
+# setup_random_variant
+# handles the randomness of the base enemy
 func setup_random_variant() -> void:
 	if sprite == null:
 		return
@@ -56,6 +65,8 @@ func setup_random_variant() -> void:
 		
 	current_health = max_health
 
+# _physics_Process
+# target the player and items. make sure it's within a certain distance.
 func _physics_process(delta: float) -> void:
 	if target_player == null:
 		var players = get_tree().get_nodes_in_group("player")
@@ -92,6 +103,7 @@ func _physics_process(delta: float) -> void:
 	if dist_to_player <= (stop_distance + 8.0) and can_attack:
 		attack_player()
 
+# get_separation_vector
 # calculates push vector to keep enemies spaced apart
 func get_separation_vector() -> Vector2:
 	var push_vector = Vector2.ZERO
@@ -107,6 +119,8 @@ func get_separation_vector() -> Vector2:
 				
 	return push_vector
 
+# attack_player
+# attacks the player; subtracts health from the player
 func attack_player() -> void:
 	if target_player and target_player.has_method("take_damage"):
 		can_attack = false
@@ -120,6 +134,8 @@ func attack_player() -> void:
 		await get_tree().create_timer(attack_cooldown - 0.6).timeout
 		can_attack = true
 
+# take_damage
+# enemy takes damage based on player attack input
 func take_damage(amount: float, knockback_source_pos: Vector2 = Vector2.ZERO) -> void:
 	if is_dead:
 		return
@@ -137,12 +153,15 @@ func take_damage(amount: float, knockback_source_pos: Vector2 = Vector2.ZERO) ->
 	if current_health <= 0:
 		die()
 
+# spawn_damage_number
+# for debugging initially but looks cool. displays the damage that an 
+# enemy takes
 func spawn_damage_number(amount: float) -> void:
 	var template_label = $DamageLabel
 	if not is_instance_valid(template_label):
 		return
 
-	# Duplicate the template label so the original on the enemy isn't destroyed
+	# duplicate the template label so the original on the enemy isn't destroyed
 	var label: Label = template_label.duplicate()
 	label.text = str(round(amount))
 	label.z_index = 100
@@ -159,6 +178,8 @@ func spawn_damage_number(amount: float) -> void:
 	tween.tween_property(label, "modulate:a", 0.0, 0.6)
 	tween.finished.connect(label.queue_free)
 
+# _find_item
+# find an item and absorb it
 func _find_item() -> Node2D:
 	var best: Node2D = null
 	var best_d := item_seek_radius
@@ -170,6 +191,8 @@ func _find_item() -> Node2D:
 				best = it
 	return best
 
+# _consume_item
+# enemy consumes item and stacks power. when it's powered up, the redness increases.
 func _consume_item(item: Node2D) -> void:
 	item.consume_by_enemy()
 	target_item = null
@@ -182,6 +205,8 @@ func _consume_item(item: Node2D) -> void:
 	sprite.scale *= 1.08
 	sprite.modulate = Color(1.0, 1.0 - 0.2 * power_stacks, 1.0 - 0.2 * power_stacks)
 
+# die
+# enemy dies, is removed, and plays SFX
 func die() -> void:
 	if is_dead:
 		return

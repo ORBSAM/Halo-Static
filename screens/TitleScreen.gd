@@ -11,6 +11,7 @@ extends Control
 
 @onready var start_button: Button = $MarginContainer/VBoxContainer/MenuContainer/Start
 @onready var quit_button: Button = $MarginContainer/VBoxContainer/MenuContainer/Quit
+@onready var credits_button: Button = $MarginContainer/VBoxContainer/MenuContainer/Credits
 
 # _ready
 # hide HUD, build the theme, and make sure the buttons are connected properly
@@ -25,6 +26,16 @@ func _ready() -> void:
 		get_node("/root/HUD").hide()
 	elif has_node("/root/HUD_overlay"):
 		get_node("/root/HUD_overlay").hide()
+
+	start_button.grab_focus()
+
+# _input
+# handle all input for the title screen
+func _input(event: InputEvent) -> void:
+	if not (event is InputEventMouseButton):
+		return
+	if event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
+		return
 
 # _on_start_pressed
 # go to the introduction scene

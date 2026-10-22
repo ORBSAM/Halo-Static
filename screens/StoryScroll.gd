@@ -1,6 +1,12 @@
 extends Control
 class_name StoryScroll
 
+
+# ===============
+# STORY SCROLL
+# Handles logic for the three scrolls: intro, cliffhanger, and credits.
+# =========
+
 @export var story_text: String = ""
 @export var scroll_duration: float = 30.0
 @export var font_size: int = 28
@@ -13,6 +19,8 @@ class_name StoryScroll
 var _done := false
 var _tween: Tween
 
+# _ready
+# set up the scroll container so it works properly
 func _ready() -> void:
 	# the scroll container should be Full Rect; margins keep the text off the edges
 	scroll.offset_left = side_margin
@@ -63,16 +71,21 @@ func _setup_skip_button() -> void:
 	if not b.pressed.is_connected(_finish):
 		b.pressed.connect(_finish)
 
-func _unhandled_input(event: InputEvent) -> void:
+# _input
+# handles input for the skip button. later will fix the pause menu overlaying
+func _input(event: InputEvent) -> void:
 	var clicked: bool = event is InputEventMouseButton and event.pressed \
 			and event.button_index == MOUSE_BUTTON_LEFT
 	if event.is_action_pressed("ui_accept") or clicked:
 		_finish()
 
+# _on_skip_button_pressed
 # kept so an existing signal connection in your intro scene still works
 func _on_skip_button_pressed() -> void:
 	_finish()
 
+# _finish
+# when done, kill the tween animation and pass
 func _finish() -> void:
 	if _done:
 		return
@@ -84,6 +97,7 @@ func _finish() -> void:
 	await out.finished
 	_on_done()
 
-# override in the subclass
+# _on_done
+# override in the subclass; subclasses have different ways of finishing
 func _on_done() -> void:
 	pass

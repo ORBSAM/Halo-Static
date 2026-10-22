@@ -47,6 +47,26 @@ func _bind(node_name: String, action: Callable) -> void:
 	if b:
 		b.pressed.connect(action)
 
+
+func _input(event: InputEvent) -> void:
+	if not (event is InputEventMouseButton):
+		return
+	if event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
+		return
+
+	var actions := {
+		"RetryButton": func(): DungeonManager.start_new_game(),
+		"ContinueButton": func(): get_tree().change_scene_to_file(continue_scene),
+		"MainMenuButton": _to_menu,
+		"ExitButton": func(): get_tree().quit(),
+	}
+	for node_name: String in actions:
+		var button := find_child(node_name, true, false) as Button
+		if button and button.get_global_rect().has_point(event.position):
+			get_viewport().set_input_as_handled()
+			actions[node_name].call()
+			return
+
 func _to_menu() -> void:
 	DungeonManager.clear_current_dungeon()
 	get_tree().change_scene_to_file(TITLE_SCENE)

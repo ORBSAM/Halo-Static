@@ -6,6 +6,8 @@ extends RoomLogic
 # Specialized room for key drops, high-value loot, and custom dialogue.
 # ==========================================
 
+# setup_room
+# handle the room logic here. spawn only key item
 func setup_room(coords: Vector2i, room_type: String, entry_direction: Vector2i = Vector2i.ZERO) -> void:
 	update_doors(coords)
 

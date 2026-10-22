@@ -18,6 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_grftj")
 
 [node name="Background" type="ColorRect" parent="." unique_id=585799567]
@@ -43,7 +44,6 @@ offset_top = -427.0
 offset_right = 221.5
 grow_horizontal = 2
 grow_vertical = 0
-mouse_filter = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
@@ -51,29 +51,33 @@ theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1294401952]
 layout_mode = 2
-mouse_filter = 2
 theme_override_constants/separation = 20
 alignment = 1
 
 [node name="MenuContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=31105928]
 layout_mode = 2
-mouse_filter = 2
 theme_override_constants/separation = 20
 
 [node name="Start" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1641299058]
 layout_mode = 2
+focus_behavior_recursive = 2
+mouse_behavior_recursive = 2
 theme_override_fonts/font = ExtResource("3_n8gtu")
 action_mode = 0
 text = "START"
 
 [node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1167327285]
 layout_mode = 2
+focus_behavior_recursive = 2
+mouse_behavior_recursive = 2
 theme_override_fonts/font = ExtResource("3_n8gtu")
 action_mode = 0
 text = "QUIT"
 
 [node name="Credits" type="Button" parent="MarginContainer/VBoxContainer/MenuContainer" unique_id=1694329912]
 layout_mode = 2
+focus_behavior_recursive = 2
+mouse_behavior_recursive = 2
 theme_override_fonts/font = ExtResource("3_n8gtu")
 action_mode = 0
 text = "CREDITS"
