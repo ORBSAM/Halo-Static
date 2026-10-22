@@ -123,7 +123,7 @@ func _random_point(inset: float) -> Vector2:
 
 func _on_boss_defeated() -> void:
 	_fighting = false
-	get_tree().change_scene_to_file("res://screens/win_splash.tscn")
+	DungeonManager.game_won()
 
 # let it spawn random enemies; but otherwise just skip it
 func spawn_random_items() -> void: pass
