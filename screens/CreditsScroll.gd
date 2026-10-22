@@ -17,6 +17,8 @@ const AFTER := [
 	["THANK YOU FOR PLAYING", []],
 ]
 
+# _ready
+# handle the theming, and handle SFXs
 func _ready() -> void:
 	theme = PaperTheme.build(true)
 	scroll_duration = 35.0
@@ -42,5 +44,7 @@ func _ready() -> void:
 	story_text = s
 	super()
 
+# _on_done
+# when done with credits, go to main menu
 func _on_done() -> void:
 	get_tree().change_scene_to_file("res://screens/title_screen.tscn")

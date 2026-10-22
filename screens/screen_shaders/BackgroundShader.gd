@@ -2,6 +2,12 @@
 extends ColorRect
 class_name StaticBG
 
+# =========
+# BACKGROUND SHADER
+# handles the logic for the screen backgrounds. dungeon ambience is another
+# file/shader.
+# =========
+
 enum Look { PAUSE_WHITE, WIN_WHITE, DEFEAT_GREY, SCROLL_DARK }
 @export var look: Look = Look.PAUSE_WHITE:
 	set(v):
@@ -11,6 +17,11 @@ enum Look { PAUSE_WHITE, WIN_WHITE, DEFEAT_GREY, SCROLL_DARK }
 
 const SHADER := preload("res://screens/screen_shaders/StaticBGShader.gdshader")
 
+# PRESETS
+# pause_white is for the pause menu
+# win_white is for the win menu
+# defeat_grey is for the defeat menu
+# scroll_dark is for the scrolling menus
 const PRESETS := {
 	Look.PAUSE_WHITE: {
 		"base_color": Color(0.93, 0.93, 0.96), "speck_color": Color(0.45, 0.45, 0.5),
@@ -34,11 +45,15 @@ const PRESETS := {
 	},
 }
 
+# _ready
+# handle the application here
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_apply()
 
+# _apply
+# apply the theme here based on the desired look
 func _apply() -> void:
 	var mat := ShaderMaterial.new()
 	mat.shader = SHADER

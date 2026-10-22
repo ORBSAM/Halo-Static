@@ -1,6 +1,11 @@
 class_name Item
 extends Area2D
 
+# ==========================================
+# ITEM
+# Handles all item logic. Harmonic, chaotic, and key.
+# ==========================================
+
 enum ItemType { HARMONIC, CHAOTIC, KEY }
 
 @export var item_type: ItemType = ItemType.HARMONIC:
@@ -16,8 +21,7 @@ enum ItemType { HARMONIC, CHAOTIC, KEY }
 # for any item that can be destroyed; this checks if it is destroyed
 var _destroyed := false
 
-
-# Color mapping for placeholders and glow
+# color mapping for placeholders and glow
 const TYPE_COLORS = {
 	ItemType.HARMONIC: Color(0.869, 0.626, 0.938, 1.0), # Pink
 	ItemType.CHAOTIC: Color(0.9, 0.2, 0.2),  # Red
@@ -37,11 +41,15 @@ const TYPE_NAMES = {
 const ITEM_LAYER := 1 << 4   # layer 5; check Project Settings > Layer Names that it's free
 
 
+# _ready
+# add the items to the item group, and update item based on a roll of the die
 func _ready() -> void:
 	add_to_group("items")
 	body_entered.connect(_on_body_entered)
 	update_item_appearance()
-	
+
+# update_item_appearance
+# update appearance of items based on their type
 func update_item_appearance() -> void:
 	var item_color = TYPE_COLORS.get(item_type, Color.WHITE)
 	item_name = TYPE_NAMES.get(item_type, "Item")
@@ -65,10 +73,14 @@ func update_item_appearance() -> void:
 	else:
 		remove_from_group("destructible")
 
+# _on_body_entered
+# only player collects items
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		collect(body)
 
+# collect
+# handle all collection logic.
 func collect(player: Node2D) -> void:
 	match item_type:
 		ItemType.HARMONIC:
@@ -100,6 +112,8 @@ func collect(player: Node2D) -> void:
 func is_consumable() -> bool:
 	return item_type == ItemType.CHAOTIC and not _destroyed
 
+# consume_by_enemy
+# let the enemy consume the chaotic items
 func consume_by_enemy() -> void:
 	if _destroyed:
 		return
@@ -107,6 +121,8 @@ func consume_by_enemy() -> void:
 	set_deferred("monitoring", false)
 	queue_free()
 
+# take_damage
+# make sure that it can take damage as a chaotic item
 func take_damage(_amount: float, _source_pos: Vector2 = Vector2.ZERO) -> void:
 	if item_type != ItemType.CHAOTIC or _destroyed:
 		return

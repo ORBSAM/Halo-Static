@@ -29,23 +29,13 @@ func _ready() -> void:
 
 	start_button.grab_focus()
 
-
+# _input
+# handle all input for the title screen
 func _input(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton):
 		return
 	if event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
 		return
-
-	# Keep the menu clickable inside Godot's embedded game window.
-	if start_button.get_global_rect().has_point(event.position):
-		get_viewport().set_input_as_handled()
-		_on_start_pressed()
-	elif quit_button.get_global_rect().has_point(event.position):
-		get_viewport().set_input_as_handled()
-		_on_quit_pressed()
-	elif credits_button.get_global_rect().has_point(event.position):
-		get_viewport().set_input_as_handled()
-		_on_credits_pressed()
 
 # _on_start_pressed
 # go to the introduction scene

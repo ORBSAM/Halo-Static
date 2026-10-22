@@ -23,9 +23,14 @@ var blocks_player: bool = false
 
 signal dialogue_finished
 
+# _ready
+# hide the dialogue initially
 func _ready() -> void:
 	hide()
 
+# start_dialogue
+# prevent dialogue from plastering itself over another. freeze if in a boss room.
+# otherwise, setup portrait and name based on the speaker
 func start_dialogue(speaker: String, lines: Array, pause_player: bool=true) -> void:	
 	if is_active:
 		return # prevent interrupting active dialogue
@@ -54,6 +59,8 @@ func start_dialogue(speaker: String, lines: Array, pause_player: bool=true) -> v
 	show()
 	show_next_line()
 
+# show_next_line
+# show the next line if the current line is finished
 func show_next_line() -> void:
 	if line_index >= current_lines.size():
 		close_dialogue()
@@ -68,6 +75,8 @@ func show_next_line() -> void:
 		if is_active:   # may have been closed by a new room load
 			show_next_line()
 
+# type_text
+# typewriter movement
 func type_text(target_text: String) -> void:
 	is_typing = true
 	text_label.text = ""
@@ -82,6 +91,9 @@ func type_text(target_text: String) -> void:
 		if i % 2 == 0: AudioManager.play_sfx("dialogue_blip", -8.0, 0.12, 0.03)
 	is_typing = false
 
+# _unhandled_input
+# if the player pressed a button or skip... the text finished with no typewriter
+# animation
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_active or not blocks_player:
 		return
@@ -93,6 +105,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			show_next_line()
 
+# close_dialogu3
+# unfreeze player, change boolean, and play SFX
 func close_dialogue() -> void:
 	is_active = false
 	hide()

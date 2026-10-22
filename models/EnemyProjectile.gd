@@ -14,6 +14,7 @@ var radius: float = 6.0
 var color: Color = Color(0.95, 0.15, 0.45)
 
 # _ready
+# projectile is labelled as a projectile, and is shaped properly
 func _ready() -> void:
 	# tagged so the DungeonManager can clear it on room transitions
 	add_to_group("projectiles")
@@ -33,6 +34,7 @@ func _ready() -> void:
 	queue_redraw()
 
 # _physics_process
+# handle its position and speed
 func _physics_process(delta: float) -> void:
 	global_position += direction * speed * delta
 
@@ -47,6 +49,7 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, radius, color)
 
 # _on_body_entered
+# make sure that it doesn't damage enemies, only the player
 func _on_body_entered(body: Node2D) -> void:
 	# boss projectiles pass through other enemies
 	if body.is_in_group("enemies"):
