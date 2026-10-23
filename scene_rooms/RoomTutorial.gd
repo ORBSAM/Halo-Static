@@ -30,12 +30,20 @@ func setup_room(_coords: Vector2i, _room_type: String, _entry: Vector2i = Vector
 	_spawn_tutorial_enemies()
 	spawn_random_items()   # overridden below: good items only
 
+	# Keep movement available, but prevent Space from attacking while it is
+	# being used to advance the tutorial pages.
+	if player:
+		player.set_process_input(false)
+
 	await get_tree().create_timer(0.6).timeout
 
 	if overlay:
 		await overlay.play()          # walkthrough; player can move, enemies frozen
 	else:
 		push_error("TutorialRoom: no TutorialOverlay found (add it as a child or set overlay_scene)")
+
+	if player:
+		player.set_process_input(true)
 
 	for e in _enemies:                # the practice fight starts now
 		if is_instance_valid(e):
