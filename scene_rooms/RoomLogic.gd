@@ -26,6 +26,7 @@ class_name RoomLogic
 
 # @export var spawn_inset: float = 64.0
 @export var wall_thickness: float = 64.0
+@export var door_spawn_clearance: float = 48.0
 @export_flags_2d_physics var wall_layer: int = 1
 
 @export_range(0.0, 1.0) var miniboss_chance: float = 0.05
@@ -89,7 +90,10 @@ func get_spawn_position_for_entry(entry_dir: Vector2i) -> Vector2:
 	if spawn_name != "":
 		var marker := get_node_or_null("Spawns/" + spawn_name) as Node2D
 		if marker:
-			return marker.global_position
+			# Move farther into the destination room so the player is no longer
+			# overlapping the doorway when its Area2D becomes active again.
+			var inward_direction := Vector2(entry_dir.x, entry_dir.y)
+			return marker.global_position + inward_direction * door_spawn_clearance
 		push_warning(name + " is missing Spawns/" + spawn_name + ", using PlayerSpawn")
 
 	return player_spawn.global_position if player_spawn else global_position
