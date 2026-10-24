@@ -38,12 +38,12 @@ and too far from the earth to stop him.
 So one of them did something desperate.
 
 In a forgotten toy shop,
-there sat a doll, cracked and patient,
+there sat a doll, tattered and patient,
 waiting for someone to love it.
 
 The angel entered her,
 and gave her a shard of light
-set upon her brow.
+set upon a flimsy strand of string.
 
 It woke her.
 It armed her.

@@ -10,11 +10,11 @@ const BEFORE := [
 	["DEMONIC BOSS", ["Design, art and code: Sam Urgo and Tre"]],
 	["ART", [
 		"Enemy sprites: Preston",
-		"",
+		"Item sprites: Sam Urgo",
 	]],
 ]
 const AFTER := [
-	["TOOLS", ["Godot Engine"]],
+	["TOOLS", ["Godot Engine", "IbisPaintX"]],
 	["THANK YOU FOR PLAYING", []],
 ]
 

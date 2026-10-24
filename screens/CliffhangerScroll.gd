@@ -34,7 +34,7 @@ into a place the heavens never speak of.
 
 Hell.
 
-The shard on your brow flickers,
+The shard on your flimsy string flickers,
 then goes dark.
 
 Far below, something answers.
@@ -46,7 +46,7 @@ to open the door.
 
 You step to the edge of the pit.
 
-The doll's cracked hands shake.
+The doll's torn hands shake.
 The angel within her is silent.
 
 There is no one left to tell you what to do.

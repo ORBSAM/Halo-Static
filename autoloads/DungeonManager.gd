@@ -11,7 +11,7 @@ var vault_pos: Vector2i = Vector2i(1, 1)   # replaces the VAULT_POS const
 
 # kill tracking & Boss requirements
 var enemy_kill_count: int = 0
-const REQUIRED_KILLS: int = 50
+const REQUIRED_KILLS: int = 30 # lower this to thirty for the sake of the player
 
 # store visited rooms
 var visited_rooms: Array[Vector2i] = []

@@ -70,6 +70,7 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("4_yxtnb")
 theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
+uppercase = true
 
 [node name="SkipButton" type="Button" parent="." unique_id=690380475]
 layout_mode = 0

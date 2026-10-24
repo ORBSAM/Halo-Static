@@ -106,7 +106,7 @@ func _apply_speaker_style(is_boss: bool) -> void:
 		
 		name_panel.visible = true
 		name_panel.add_theme_stylebox_override("panel", PROTAGONIST_BOX)
-		name_label.text = "PROTAG"
+		name_label.text = "SENTINEL"
 		name_label.add_theme_font_override("font", PROTAG_FONT)
 		name_label.add_theme_font_size_override("font_size", 40)
 		name_label.add_theme_color_override("font_color", PROTAGONIST_TEXT_COLOR)
