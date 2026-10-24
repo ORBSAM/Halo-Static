@@ -31,7 +31,7 @@ shader_parameter/calm_size = Vector2(0.45, 0.35)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3y6vg"]
 font = ExtResource("1_5ruwd")
-font_size = 30
+font_size = 40
 font_color = Color(0.9607843, 0.27450982, 0.75686276, 1)
 outline_size = 5
 outline_color = Color(0.9419018, 0.20383862, 0.7346585, 0.72156864)
@@ -40,9 +40,9 @@ shadow_color = Color(1, 0.6959126, 0.8791158, 0.99607843)
 
 [sub_resource type="LabelSettings" id="LabelSettings_kn2tl"]
 font = ExtResource("1_5ruwd")
-font_size = 30
+font_size = 38
 font_color = Color(0.9607843, 0.27450982, 0.75686276, 1)
-outline_size = 2
+outline_size = 5
 outline_color = Color(0.9419018, 0.20383862, 0.7346585, 0.72156864)
 shadow_size = 10
 shadow_color = Color(1, 0.6959126, 0.8791158, 0.99607843)
