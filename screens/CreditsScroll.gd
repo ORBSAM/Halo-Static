@@ -6,9 +6,15 @@ extends StoryScroll
 
 # heading lines
 const BEFORE := [
-	["HARMONIC SENTINEL", ["Design, art and code: your name"]],
+	["HARMONIC SENTINEL", [
+		"Design, art and code: The Mediators",
+		"Samantha Urgo, Tre Smith, Preston Willis",
+	]],
 	["ART", [
-		"Enemy sprites: ...",
+		"Protagonist sprites, boss sprite and protagonist font: Samantha Urgo",
+		"Enemy sprites (demons 1-2) and enemy font: Preston Willis",
+		"Enemy sprite (demon 3) and mini-boss sprite: Tre Smith",
+		"Dungeon tiles: Free 2D Top-Down Pixel Dungeon Asset Pack (CraftPix)",
 		"Fire animation: ...",
 	]],
 ]
