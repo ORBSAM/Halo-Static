@@ -72,6 +72,8 @@ func connect_player_signals(player: Node) -> void:
 	# initialize initial values immediately
 	update_health(player.current_health, player.max_health)
 	update_energy(player.harmonic_energy, player.MAX_HARMONIC)
+	
+	_on_key_collected(false)    # new player, no key yet
 
 # update_health
 # when player loses health or gains it, change meter here.

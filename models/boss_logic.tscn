@@ -1,11 +1,46 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c2a38qlkgxhf0"]
 
-[ext_resource type="PackedScene" path="res://models/enemy_logic.tscn" id="1_base"]
-[ext_resource type="Script" path="res://models/EnemyBoss.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://cwpfrjyy6bkwk" path="res://models/enemy_logic.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://bmwnrsf4ydse7" path="res://models/EnemyBoss.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://dlphcn6aso6y2" path="res://models/enemy_images/boss_sprite.png" id="3_eau3d"]
 
-; Inherits enemy_logic.tscn (sprite, collision, damage label) and swaps in the
-; boss script. Scaled 2x per the GDD. Spawned by RoomBoss.gd.
-[node name="EnemyBoss" instance=ExtResource("1_base")]
+[sub_resource type="Gradient" id="Gradient_eau3d"]
+offsets = PackedFloat32Array(0, 0.99038464)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eau3d"]
+gradient = SubResource("Gradient_eau3d")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="EnemyBoss" unique_id=117168725 instance=ExtResource("1_base")]
 scale = Vector2(2, 2)
 collision_mask = 3
 script = ExtResource("2_script")
+boss_texture = ExtResource("3_eau3d")
+boss_max_health = 300.0
+intro_time = 1.5
+transition_time = 1.2
+charge_speed = 380.0
+charge_time = 0.55
+charge_damage = 30.0
+recover_time = 1.2
+hit_radius = 26.0
+near_radius = 100.0
+far_radius = 300.0
+near_limit = 1.0
+far_limit = 2.0
+slam_radius = 130.0
+slam_damage = 20.0
+projectile_speed = 190.0
+projectile_damage = 12.0
+
+[node name="Sprite2D" parent="." index="2" unique_id=1826838139]
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("3_eau3d")
+
+[node name="PointLight2D" parent="Sprite2D" index="0" unique_id=149174226]
+position = Vector2(50.00003, -674.99994)
+scale = Vector2(312.5, 296.87503)
+texture = SubResource("GradientTexture2D_eau3d")

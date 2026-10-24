@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bc4ay7ehrss8y" path="res://background_prefabs/dungeon_tiles_folder/walls_floor.png" id="1_rprbw"]
 [ext_resource type="Texture2D" uid="uid://f10bqi0ts035" path="res://background_prefabs/dungeon_tiles_folder/doors_lever_chest_animation.png" id="2_x3dby"]
 [ext_resource type="Texture2D" uid="uid://bemdet5uqc64k" path="res://background_prefabs/dungeon_tiles_folder/Objects.png" id="4_2txce"]
+[ext_resource type="PackedScene" uid="uid://5ayvj7pl7uo2" path="res://scene_rooms/Light_Scene.tscn" id="5_3jxxb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_flvv0"]
 texture = ExtResource("1_rprbw")
@@ -626,6 +627,17 @@ size = Vector2(36, 27)
 y_sort_enabled = true
 script = ExtResource("1_flvv0")
 
+[node name="Lights" type="Node2D" parent="." unique_id=217209827]
+position = Vector2(351, 314)
+
+[node name="LightScene" parent="Lights" unique_id=968041125 instance=ExtResource("5_3jxxb")]
+
+[node name="LightScene2" parent="Lights" unique_id=1836884012 instance=ExtResource("5_3jxxb")]
+position = Vector2(197, 2)
+
+[node name="LightScene3" parent="Lights" unique_id=137843659 instance=ExtResource("5_3jxxb")]
+position = Vector2(225, -160)
+
 [node name="Entities" type="Node2D" parent="." unique_id=1647710192]
 position = Vector2(277, 170)
 
@@ -665,7 +677,7 @@ position = Vector2(498, 245)
 position = Vector2(277, 170)
 
 [node name="EnemyMarker2" type="Marker2D" parent="Spawns/EnemySpawns" unique_id=751475977]
-position = Vector2(587, 164)
+position = Vector2(671, 306)
 
 [node name="ItemSpawns" type="Node2D" parent="Spawns" unique_id=633899705]
 

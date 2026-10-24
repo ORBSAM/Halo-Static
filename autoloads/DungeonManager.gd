@@ -42,6 +42,8 @@ const CLIFFHANGER_SCENE := "res://screens/cliffhanger.tscn"
 var tutorial_shown: bool = false    # session-only: resets when the game closes
 var in_tutorial: bool = false
 
+var can_pause: bool = false   # true only while a real run is in progress
+
 
 # mask -> scene; add variants as you make them
 var room_by_mask: Dictionary = {
@@ -104,6 +106,7 @@ func _ready() -> void:
 func start_new_game() -> void:
 	AudioManager.play_music("dungeon")
 	enemy_kill_count = 0
+	
 	visited_rooms.clear()
 	last_entry_direction = Vector2i.ZERO # ensures starting room uses PlayerSpawn!
 	# make sure any transitioning logic is disabled
@@ -138,7 +141,8 @@ func start_new_game() -> void:
 		load_tutorial_room()
 	else:
 		load_room(Vector2i.ZERO)
-
+	can_pause = true
+	
 # generate_dungeon_layout
 # Generate 2D Layout and Match Templates with Rotations
 func generate_dungeon_layout() -> void:
@@ -187,7 +191,7 @@ func load_tutorial_room() -> void:
 	get_tree().create_timer(0.1).timeout.connect(func(): is_transitioning = false)
 
 # finish_tutorial
-
+# finish tutorial and transition to the first base room
 func finish_tutorial() -> void:
 	in_tutorial = false
 	
@@ -214,6 +218,10 @@ func finish_tutorial() -> void:
 	load_room(Vector2i.ZERO)              # removes the tutorial room and uses PlayerSpawn
 	if screen_fader and screen_fader.has_method("fade_in"):
 		screen_fader.fade_in(0.4)
+	
+	# NOW we can pause; here also just in case the unhandled input in the 
+	# tutorial script doesn't work
+	can_pause = true
 
 func make_room(mask: int, kind: String) -> Dictionary:
 	var scene: PackedScene
@@ -239,7 +247,7 @@ func transition_to_room(new_coords: Vector2i) -> void:
 		var has_enough_kills = enemy_kill_count >= REQUIRED_KILLS
 		
 		if not debug_skip_boss_lock and not (has_key and has_enough_kills):
-			print("Boss door locked! Kills: ", enemy_kill_count, "/", REQUIRED_KILLS, " | Has Key: ", has_key)
+			# print("Boss door locked! Kills: ", enemy_kill_count, "/", REQUIRED_KILLS, " | Has Key: ", has_key)
 			
 			# optional: trigger dialogue warning if DialogueUI exists
 			var dlg = get_node_or_null("/root/DialogueLogic")
@@ -353,6 +361,8 @@ func clear_active_projectiles() -> void:
 		screen_fader.fade_in(0.3)
 
 func clear_current_dungeon() -> void:
+	can_pause = false
+
 	in_tutorial = false
 	set_atmosphere(false)
 	
@@ -364,13 +374,19 @@ func clear_current_dungeon() -> void:
 			player_instance.queue_free()
 			player_instance = null
 
+# game_over
+# game is over!
 func game_over() -> void:
 	_end_run(DEFEAT_SCENE)
 
+# game_won
+# game has been won
 func game_won() -> void:
 	_end_run(WIN_SCENE)
 
 func _end_run(path: String) -> void:
+	can_pause = false # cannot pause
+	
 	if screen_fader and screen_fader.has_method("fade_out"):
 		await screen_fader.fade_out(0.5)
 	clear_current_dungeon()          # frees the room and player so they don't draw behind the screen

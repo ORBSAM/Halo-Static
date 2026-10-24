@@ -6,10 +6,11 @@ extends StoryScroll
 
 # heading lines
 const BEFORE := [
-	["HARMONIC SENTINEL", ["Design, art and code: your name"]],
+	["HARMONIC SENTINEL", ["Design, art and code: Sam Urgo"]],
+	["DEMONIC BOSS", ["Design, art and code: Sam Urgo and Tre"]],
 	["ART", [
-		"Enemy sprites: ...",
-		"Fire animation: ...",
+		"Enemy sprites: Preston",
+		"",
 	]],
 ]
 const AFTER := [

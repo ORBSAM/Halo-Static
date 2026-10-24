@@ -23,6 +23,7 @@ const BLAST_THRESHOLD: float = 100.0
 # base Combat Stats
 @export var base_weapon_damage: float = 10.0
 @export var speed: float = 160.0
+var _swing_id := 0
 
 # key variables
 var has_dungeon_key: bool = false
@@ -154,7 +155,6 @@ func equip_weapon(weapon: Weapon) -> void:
 func execute_attack() -> void:
 	if is_attacking:
 		return
-		
 	is_attacking = true
 	
 	# orb attack logic
@@ -168,8 +168,9 @@ func execute_attack() -> void:
 	# saber attack logic
 	var stats = weapon_stats[Weapon.SABER]
 	var active_hitbox: Area2D = stats["hitbox"]
-
 	if active_hitbox:
+		_swing_id += 1
+		var my_id := _swing_id
 		var hit_enemies = []
 		
 		var check_and_hit = func(target: Node):
@@ -194,19 +195,21 @@ func execute_attack() -> void:
 
 		# check enemies standing inside on frame 1
 		await get_tree().physics_frame
-		for t in active_hitbox.get_overlapping_bodies() + active_hitbox.get_overlapping_areas():
-			check_and_hit.call(t)
+		if active_hitbox.monitoring:      # a newer swing may have closed it
+			for t in active_hitbox.get_overlapping_bodies() + active_hitbox.get_overlapping_areas():
+				check_and_hit.call(t)
 
 		# active window timing
 		await get_tree().create_timer(0.12).timeout
-		
-		active_hitbox.monitoring = false
-		
+			
 		if active_hitbox.body_entered.is_connected(check_and_hit):
 			active_hitbox.body_entered.disconnect(check_and_hit)
 			
 		if active_hitbox.area_entered.is_connected(check_and_hit):
 			active_hitbox.area_entered.disconnect(check_and_hit)
+		
+		if my_id == _swing_id:            # only the latest swing turns it off
+			active_hitbox.monitoring = false
 
 	is_attacking = false
 
@@ -383,9 +386,8 @@ func update_animation(dir: Vector2) -> void:
 	else:
 		sprite.play("move_down")
 
-func _on_animation_finished(anim_name: StringName) -> void:
-	if anim_name == "swing_saber" or anim_name == "thrust_saber":
-		is_attacking = false
+func _on_animation_finished(_anim_name: StringName) -> void:
+	pass   # execute_attack owns is_attacking
 
 # play_hit_flash
 # plays red flash

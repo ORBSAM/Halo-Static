@@ -219,8 +219,8 @@ func trigger_room_dialogue(is_boss_room: bool = false) -> void:
 		var boss_lines: Array[String] = ["You made it far, hero...", "This room will be your grave!"]
 		dialogue_ui.start_dialogue("Boss", boss_lines)
 	else:
-		# slim chance on entering a regular room
-		if randf() < 0.9:
+		# 50/50 chance
+		if randf() < 0.5:
 			var random_quotes: Array[String] = [
 				"Something feels off in this sector...",
 				"The harmonic energy here is unstable.",

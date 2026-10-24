@@ -22,6 +22,16 @@ const PROTAGONIST_TEXT_COLOR := Color(0.8668957, 0.45357233, 0.67391104, 1.0)
 const BOSS_TEXT_COLOR := Color(1.0, 0.82, 0.76, 1.0)
 const BOSS_NAME_COLOR := Color(0.92, 0.22, 0.28, 1.0)
 
+const PORTRAITS := {
+	"protagonist": {
+		"default": preload("res://models/player_images/protag_portrait.png"),
+	},
+	"boss": {
+		"default": preload("res://models/enemy_images/boss_portrait.png"),
+	},
+}
+
+
 var current_lines: Array = []
 var current_speaker: String = ""
 var line_index: int = 0
@@ -101,7 +111,17 @@ func _apply_speaker_style(is_boss: bool) -> void:
 		name_label.add_theme_font_size_override("font_size", 40)
 		name_label.add_theme_color_override("font_color", PROTAGONIST_TEXT_COLOR)
 		
-		# portrait.textu
+	set_portrait(is_boss)
+		
+# set_portrait
+# set the portrait of both the protagonist and the boss
+func set_portrait(is_boss: bool, mood: String = "default") -> void:
+	var set_: Dictionary = PORTRAITS["boss" if is_boss else "protagonist"]
+	# moods; never had them but they were a possibility.
+	var tex: Texture2D = set_.get(mood, set_.get("default"))
+	portrait.texture = tex
+	portrait.visible = tex != null
+	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST   # crisp pixel art
 
 # show_next_line
 # show the next line if the current line is finished

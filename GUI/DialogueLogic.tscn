@@ -14,8 +14,6 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 60
 corner_radius_bottom_left = 10
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vlcmw"]
-
 [node name="text_box_control" type="CanvasLayer" unique_id=1794601379]
 layer = 199
 script = ExtResource("1_qmici")
@@ -54,12 +52,18 @@ uppercase = true
 
 [node name="Portrait" type="TextureRect" parent="Panel" unique_id=1751697838]
 custom_minimum_size = Vector2(60, 50)
-layout_mode = 0
-offset_left = -21.0
-offset_top = -31.0
-offset_right = 200.0
-offset_bottom = 177.0
-texture = SubResource("PlaceholderTexture2D_vlcmw")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.10300001
+anchor_top = 0.5
+anchor_right = 0.10300001
+anchor_bottom = 0.5
+offset_left = -131.73401
+offset_top = -164.0
+offset_right = 117.26599
+offset_bottom = 113.0
+expand_mode = 1
+stretch_mode = 5
 
 [node name="TextLabel" type="Label" parent="Panel" unique_id=1599640531]
 layout_mode = 0

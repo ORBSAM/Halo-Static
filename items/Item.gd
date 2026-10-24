@@ -8,6 +8,13 @@ extends Area2D
 
 enum ItemType { HARMONIC, CHAOTIC, KEY }
 
+const TYPE_TEXTURES := {
+	ItemType.HARMONIC: "res://items/item_images/harmonic_item.png",
+	ItemType.CHAOTIC:  "res://items/item_images/chaotic_item.png",
+	# key will just be a square. easier that way.
+}
+
+
 @export var item_type: ItemType = ItemType.HARMONIC:
 	set(value):
 		item_type = value
@@ -34,7 +41,7 @@ const TYPE_NAMES = {
 	ItemType.KEY: "Dungeon Key"
 }
 
-@onready var color_rect: ColorRect = $ColorRect
+@onready var color_rect: ColorRect = get_node_or_null("ColorRect")
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 @onready var light: PointLight2D = get_node_or_null("PointLight2D")
 
@@ -53,21 +60,33 @@ func _ready() -> void:
 func update_item_appearance() -> void:
 	var item_color = TYPE_COLORS.get(item_type, Color.WHITE)
 	item_name = TYPE_NAMES.get(item_type, "Item")
-	
-	# 1. update ColorRect placeholder (if using ColorRect)
-	if color_rect:
-		color_rect.color = item_color
-		
-	# 2. update Sprite tint (if using Sprite2D)
-	if sprite:
-		sprite.modulate = item_color
 
-	# 3. update PointLight2D glow color and energy
+	var path: String = TYPE_TEXTURES.get(item_type, "")
+	var tex: Texture2D = load(path) if path != "" and ResourceLoader.exists(path) else null
+
+	if tex:
+		# make sure a Sprite2D exists, even if the scene doesn't have one yet
+		if sprite == null:
+			sprite = Sprite2D.new()
+			sprite.name = "Sprite2D"
+			add_child(sprite)
+		sprite.texture = tex
+		sprite.modulate = Color.WHITE          # real art keeps its own colors
+		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		if color_rect:
+			color_rect.hide()
+	else:
+		# no art yet: the old tinted placeholder
+		if color_rect:
+			color_rect.show()
+			color_rect.color = item_color
+		if sprite:
+			sprite.modulate = item_color
+
 	if light:
-		light.color = item_color
+		light.color = item_color               # the glow still tells the types apart
 		light.energy = 1.5
-	
-	# only chaotic items can be shot or slashed
+
 	if item_type == ItemType.CHAOTIC:
 		add_to_group("destructible")
 	else:

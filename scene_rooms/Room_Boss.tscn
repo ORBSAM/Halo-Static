@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b8wska6p27oyf" path="res://scene_rooms/RoomBoss.gd" id="1_pnfd3"]
 [ext_resource type="Texture2D" uid="uid://bc4ay7ehrss8y" path="res://background_prefabs/dungeon_tiles_folder/walls_floor.png" id="1_ybnv4"]
 [ext_resource type="Texture2D" uid="uid://f10bqi0ts035" path="res://background_prefabs/dungeon_tiles_folder/doors_lever_chest_animation.png" id="2_pnfd3"]
+[ext_resource type="PackedScene" uid="uid://5ayvj7pl7uo2" path="res://scene_rooms/Light_Scene.tscn" id="4_den6x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ybnv4"]
 texture = ExtResource("1_ybnv4")
@@ -469,10 +470,6 @@ rendering_quadrant_size = 24
 
 [node name="Doors" type="Node2D" parent="." unique_id=451192783]
 
-[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=379047569]
-visible = false
-color = Color(0.06666667, 0.06666667, 0.101960786, 0.7294118)
-
 [node name="Spawns" type="Node2D" parent="." unique_id=741461710]
 
 [node name="PlayerSpawn" type="Marker2D" parent="Spawns" unique_id=1419799869]
@@ -484,18 +481,18 @@ position = Vector2(500, 467)
 position = Vector2(499, 295)
 
 [node name="ItemMarker2" type="Marker2D" parent="Spawns/ItemSpawns" unique_id=1886070919]
-position = Vector2(365, 236)
+position = Vector2(401, 237)
 
 [node name="ItemMarker3" type="Marker2D" parent="Spawns/ItemSpawns" unique_id=127663812]
 position = Vector2(342, 397)
 
 [node name="ItemMarker4" type="Marker2D" parent="Spawns/ItemSpawns" unique_id=1881601299]
-position = Vector2(565, 193)
+position = Vector2(560, 183)
 
 [node name="EnemySpawns" type="Node2D" parent="Spawns" unique_id=1950033083]
 
 [node name="EnemyMarker1" type="Marker2D" parent="Spawns/EnemySpawns" unique_id=1240293832]
-position = Vector2(294, 231)
+position = Vector2(339, 218)
 
 [node name="EnemyMarker2" type="Marker2D" parent="Spawns/EnemySpawns" unique_id=1630585673]
 position = Vector2(640, 235)
@@ -513,3 +510,12 @@ position = Vector2(232, 103)
 position = Vector2(761, 486)
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=537597412]
+
+[node name="Lights" type="Node2D" parent="." unique_id=285817381]
+position = Vector2(351, 314)
+
+[node name="LightScene" parent="Lights" unique_id=968041125 instance=ExtResource("4_den6x")]
+position = Vector2(-95, -89)
+
+[node name="LightScene2" parent="Lights" unique_id=177081029 instance=ExtResource("4_den6x")]
+position = Vector2(369, -90)

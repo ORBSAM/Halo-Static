@@ -6,9 +6,13 @@
 radius = 5.0
 
 [sub_resource type="Gradient" id="Gradient_3xlsc"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_354yk"]
 gradient = SubResource("Gradient_3xlsc")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
 
 [node name="Item" type="Area2D" unique_id=108440843]
 script = ExtResource("1_3xlsc")
@@ -18,16 +22,19 @@ position = Vector2(3, 3)
 shape = SubResource("CircleShape2D_flvv0")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1517267959]
+visible = false
 light_mask = 0
 offset_right = 6.2000003
 offset_bottom = 6.0
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=786292635]
-position = Vector2(2.9999998, 2.9999998)
-scale = Vector2(0.12499999, 0.125)
+position = Vector2(3, 3.4999995)
+scale = Vector2(0.24999999, 0.203125)
+energy = 3.75
 range_z_min = -10
 range_z_max = 10
 texture = SubResource("GradientTexture2D_354yk")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1534148403]
-visible = false
+position = Vector2(3, 3)
+scale = Vector2(0.005, 0.005)

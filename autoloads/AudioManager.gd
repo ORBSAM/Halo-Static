@@ -36,12 +36,12 @@ const MUSIC := {
 const SFX_DB := {
 	"ui_click": -6.0,
 	"ui_hover": -4.0,
-	"saber_swing": -7.0,
-	"enemy_hit": -5.0,
-	"enemy_die": -4.0,
-	"enemy_growl": -6.0,
-	"player_hurt": -2.0,
-	"door": -4.0,
+	"saber_swing": -10.0,
+	"enemy_hit": -6.0,
+	"enemy_die": -6.0,
+	"enemy_growl": -7.0,
+	"player_hurt": -7.0,
+	"door": -1.0,
 }
 
 # CREDIT_INFO

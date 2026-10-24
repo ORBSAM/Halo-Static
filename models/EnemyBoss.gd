@@ -21,7 +21,8 @@ enum State { INTRO, CHASE, TELEGRAPH, CHARGE, RECOVER, TRANSITION, DEAD }
 const PROJECTILE_SCRIPT = preload("res://models/EnemyProjectile.gd")
 
 # drop the final Boss_Demon art here (Inspector) when it is ready
-@export var boss_texture: Texture2D
+@export var boss_texture = preload("res://models/enemy_images/boss_sprite.png")
+
 # GDD range is 250-300 HP
 @export_range(250.0, 300.0) var boss_max_health: float = 300.0
 @export var intro_time: float = 1.5             # stands still when the fight starts
@@ -33,6 +34,20 @@ const PROJECTILE_SCRIPT = preload("res://models/EnemyProjectile.gd")
 @export var charge_damage: float = 30.0
 @export var recover_time: float = 1.2
 @export var hit_radius: float = 26.0
+
+@export_group("Anti-camp")
+@export var near_radius: float = 100.0     # "hugging" the boss
+@export var far_radius: float = 300.0     # "kiting" it (orb range is 400)
+@export var near_limit: float = 1.0       # seconds before it reacts
+@export var far_limit: float = 2.0
+@export var slam_radius: float = 130.0
+@export var slam_damage: float = 20.0
+
+
+# proximity variables
+var _near_t: float = 0.0
+var _far_t: float = 0.0
+var _ring: Line2D = null
 
 @export_group("Projectiles")
 @export var projectile_speed: float = 190.0
@@ -64,7 +79,7 @@ func setup_random_variant() -> void:
 	move_speed = PHASE_DATA[1]["speed"]
 	attack_damage = 20.0
 	attack_cooldown = 1.5
-	stop_distance = 60.0
+	stop_distance = 24.0
 
 	state = State.INTRO
 	state_timer = intro_time
@@ -114,14 +129,34 @@ func _process_intro(delta: float) -> void:
 
 # _process_chase
 func _process_chase(delta: float) -> void:
-	attack_timer = max(0.0, attack_timer - delta)
-
+	print("state=", state, " vel=", velocity, " pos=", global_position, 
+		" slides=", get_slide_collision_count(), " layer=", collision_layer, " mask=", collision_mask)
+		
 	var to_player: Vector2 = target_player.global_position - global_position
 	var dist: float = to_player.length()
+	
+	var pressure := 2.5 if dist < near_radius else 1.0   # attacks come faster when you hug him
+	attack_timer = maxf(0.0, attack_timer - delta * pressure)
 
 	var move_dir := Vector2.ZERO
-	if dist > stop_distance:
-		move_dir += to_player.normalized()
+	
+	if dist <= near_radius:
+		_near_t += delta
+	else:
+		_near_t = maxf(0.0, _near_t - delta * 2.0)     # drains quickly when the player backs off
+	_far_t = _far_t + delta if dist >= far_radius else 0.0
+
+	if _near_t >= near_limit:
+		_near_t = 0.0
+		_start_telegraph("slam")
+		return
+	if _far_t >= far_limit:
+		_far_t = 0.0
+		_start_telegraph("charge" if phase >= 2 else "burst")   # closes the gap or fills the room
+		return
+	
+	#if dist > stop_distance:
+	#	move_dir += to_player.normalized()
 
 	if move_dir != Vector2.ZERO:
 		velocity = move_dir.normalized() * move_speed
@@ -150,7 +185,9 @@ func _start_telegraph(attack: String) -> void:
 	velocity = Vector2.ZERO
 
 	# the dash gets a longer warning than the orbs
-	state_timer = 0.8 if attack == "charge" else 0.6
+	state_timer = 0.9 if attack == "slam" else (0.8 if attack == "charge" else 0.6)
+	if attack == "slam":
+		_show_ring()
 
 	var tween := create_tween()
 	tween.tween_property(sprite, "modulate", Color(1.0, 0.2, 0.2), state_timer)
@@ -177,6 +214,9 @@ func _process_telegraph(delta: float) -> void:
 			state = State.CHARGE
 			state_timer = charge_time
 			hit_this_charge = false
+		"slam":
+			_do_slam()
+			_finish_attack()
 
 # _finish_attack
 # go back to chasing and start the cooldown for the next attack
@@ -204,6 +244,36 @@ func _process_charge(delta: float) -> void:
 		state_timer = recover_time
 		velocity = Vector2.ZERO
 		sprite.modulate = Color(0.7, 0.7, 1.0)
+
+# show_ring
+# show ring around the boss
+func _show_ring() -> void:
+	_clear_ring()
+	_ring = Line2D.new()
+	_ring.width = 3.0
+	_ring.default_color = Color(1.0, 0.2, 0.2, 0.7)
+	for i in range(49):
+		_ring.add_point(Vector2.RIGHT.rotated(TAU * i / 48.0) * slam_radius)
+	add_child(_ring)
+
+# _clear_ring
+# when done with ring, clear it
+func _clear_ring() -> void:
+	if is_instance_valid(_ring):
+		_ring.queue_free()
+	_ring = null
+
+# _do_slam
+# do a slam!
+func _do_slam() -> void:
+	_clear_ring()
+	if global_position.distance_to(target_player.global_position) <= slam_radius:
+		if target_player.has_method("take_damage"):
+			target_player.take_damage(slam_damage)
+		# shove the player outside the ring so they can't just keep hugging it
+		var away: Vector2 = (target_player.global_position - global_position).normalized()
+		target_player.global_position = global_position + away * (slam_radius + 20.0)
+	_fire_burst(8)   # the ring of orbs punishes staying close after the shove
 
 # _process_recover
 func _process_recover(delta: float) -> void:
