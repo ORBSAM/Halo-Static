@@ -8,7 +8,7 @@ class_name StoryScroll
 # =========
 
 @export var story_text: String = ""
-@export var scroll_duration: float = 30.0
+@export var scroll_duration: float = 60.0
 @export var font_size: int = 28
 @export var side_margin: float = 120.0
 
