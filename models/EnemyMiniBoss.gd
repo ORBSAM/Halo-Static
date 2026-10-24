@@ -193,11 +193,9 @@ func die() -> void:
 	set_deferred("collision_layer", 0)
 	velocity = Vector2.ZERO
 
-	# EnemyBase.die() counts kills toward the boss-room requirement, and this
-	# override replaces it, so count the mini-boss here too
-	if DungeonManager and DungeonManager.has_method("add_kill"):
-		DungeonManager.add_kill()
-
+	# this override replaces EnemyBase.die(), so it doesn't count the kill itself.
+	# RoomLogic connects miniboss_defeated to DungeonManager.add_kill(), which
+	# counts it exactly once (counting here too made it worth 2 kills)
 	miniboss_defeated.emit()
 
 	var tween := create_tween()

@@ -46,13 +46,30 @@ const SFX_DB := {
 
 # CREDIT_INFO
 # handles the credit attributions
+const PIXABAY := "Pixabay Content License"
 const CREDIT_INFO := {
-	"boss":    {"title": "boss_battle_music",      "by": "John Evil", "license": "CC0", "url": "https://pixabay.com"},
-	"dungeon": {"title": "dungeon_ambient_piano",     "by": "Dueslower", "license": "CC0",       "url": "https://pixabay.com"},
-	"menu":    {"title": "resonating-very-far-away",    "by": "Freesound Community", "license": "CC0",       "url": "https://pixabay.com"},
-	"ui_click":    {"title": "UI click",  "by": "Kenney", "license": "CC0", "url": "kenney.nl"},
-	"ui_hover":    {"title": "UI hover",  "by": "Kenney", "license": "CC0", "url": "kenney.nl"},
-	"saber_swing": {"title": "Saber swing", "by": "jsfxr",  "license": "Generated", "url": "sfxr.me"},
+	# music
+	"boss":    {"title": "Evil Boss Battle Music",   "by": "John Evil",           "license": PIXABAY, "url": "pixabay.com"},
+	"dungeon": {"title": "Dungeon Ambient Piano",    "by": "Dueslower",           "license": PIXABAY, "url": "pixabay.com"},
+	"menu":    {"title": "Resonating Very Far Away", "by": "Freesound Community", "license": PIXABAY, "url": "pixabay.com"},
+	# sound effects (artist names come from the file names)
+	"ui_click":       {"title": "Menu Button Click",         "by": "Universfield",        "license": PIXABAY, "url": "pixabay.com"},
+	"ui_hover":       {"title": "Menu Button Hover",         "by": "Universfield",        "license": PIXABAY, "url": "pixabay.com"},
+	"pause_open":     {"title": "UI Holographic Menu Open",  "by": "SoundShelfStudio",    "license": PIXABAY, "url": "pixabay.com"},
+	"pause_close":    {"title": "UI Close",                  "by": "LitUpSubway",         "license": PIXABAY, "url": "pixabay.com"},
+	"dialogue_open":  {"title": "Paper Rustle",              "by": "Freesound Community", "license": PIXABAY, "url": "pixabay.com"},
+	"dialogue_blip":  {"title": "Keyboard Typing",           "by": "NCPrime",             "license": PIXABAY, "url": "pixabay.com"},
+	"dialogue_close": {"title": "Crumple",                   "by": "Freesound Community", "license": PIXABAY, "url": "pixabay.com"},
+	"saber_swing":    {"title": "Quick Swing",               "by": "XPMonster",           "license": PIXABAY, "url": "pixabay.com"},
+	"orb_fire":       {"title": "Steam Burst",               "by": "Freesound Community", "license": PIXABAY, "url": "pixabay.com"},
+	"enemy_hit":      {"title": "Monster Attack",            "by": "Freesound Community", "license": PIXABAY, "url": "pixabay.com"},
+	"enemy_die":      {"title": "Monster Death Grunt",       "by": "666HeroHero",         "license": PIXABAY, "url": "pixabay.com"},
+	"enemy_growl":    {"title": "Beast Growl",               "by": "Dragon Studio",       "license": PIXABAY, "url": "pixabay.com"},
+	"player_hurt":    {"title": "Jump Climb or Damage",      "by": "Freesound Community", "license": PIXABAY, "url": "pixabay.com"},
+	"pickup_good":    {"title": "Item Pickup",               "by": "Yodguard",            "license": PIXABAY, "url": "pixabay.com"},
+	"pickup_bad":     {"title": "Caution",                   "by": "Dragon Studio",       "license": PIXABAY, "url": "pixabay.com"},
+	"key":            {"title": "Key Collect",               "by": "LitUpSubway",         "license": PIXABAY, "url": "pixabay.com"},
+	"door":           {"title": "Creepy Cave Entrance",      "by": "Freesound Community", "license": PIXABAY, "url": "pixabay.com"},
 	# add one entry per key as you add the file
 }
 
